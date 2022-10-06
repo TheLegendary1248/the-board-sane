@@ -1,20 +1,27 @@
 //Modules
 require('dotenv').config()
+console.log(process.env)
 const express = require('express');
 const path = require('path');
 const app = express();
 
+//Settings
+app.use(express.urlencoded({ extended: true }))
+app.set('views', __dirname + '/views')
+app.set('view engine', 'jsx')
+app.engine('jsx', require('express-react-views').createEngine())
 // serve static front end in production mode
 if (process.env.NODE_ENV === "production") {
   console.log("Using production mode")
   app.use(express.static(path.join(__dirname, 'client', 'build')));
 }
-app.get('/main', function(req,res){
+else {
+  app.use(express.static('public'))
+}
+
+app.get('/', function(req,res){
   res.send('This is the main page')
 })
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 app.get('*', (req, res) => {
   console.log("Failed to get page")
