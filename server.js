@@ -19,9 +19,12 @@ else {
   app.use(express.static('public'))
 }
 
+app.use('/api', require('.controllers/api'))
+
 app.get('/', function(req,res){
-  res.send('This is the main page')
+  res.render('main')
 })
+app.get('/')
 
 app.get('*', (req, res) => {
   console.log("Failed to get page")
