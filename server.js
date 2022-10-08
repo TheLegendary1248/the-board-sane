@@ -4,6 +4,9 @@ console.log(process.env)
 const express = require('express');
 const path = require('path');
 const app = express();
+const mongoose = require('mongoose')
+//Connect to mongodb
+mongoose.connect(process.env.MONGO)
 
 //Settings
 app.use(express.urlencoded({ extended: true }))
