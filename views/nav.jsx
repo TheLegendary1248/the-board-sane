@@ -5,9 +5,9 @@ const NavLink = require('./navLink.jsx')
 function Nav(){
     return(
     <nav>
-        <NavLink link={{text:"Home",link:""}}></NavLink>
-        <NavLink param={{text:"About",link:""}}></NavLink>
-        <NavLink anything={{text:"Other link",link:""}}></NavLink>
+        <NavLink link={{text:'Home', link:''}}></NavLink>
+        <NavLink link={{text:'About', link:''}}></NavLink>
+        <NavLink link={{text:'Other link', link:''}}></NavLink>
     </nav>
     )
 }
