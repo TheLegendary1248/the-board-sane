@@ -1,1 +1,9 @@
-//As the bonus suggested, this controller will serve as the api path functions
+//
+const router = require('express').Router()
+
+//Psuedo Code time
+
+var path;
+var db;
+
+path.get("/news")
