@@ -1,7 +1,7 @@
-const { text } = require('express')
+//This is the navbar for the website
 const React = require('react')
 const NavLink = require('./navLink.jsx')
-//This is the navbar for the website
+
 function Nav(){
     return(
     <nav>

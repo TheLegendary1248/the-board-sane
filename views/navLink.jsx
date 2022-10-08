@@ -1,6 +1,6 @@
+//This will function as a link for navbar
 const React = require('react')
 
-//This will function as a link for navbar
 function NavLink(link){
     return(
     <div>
