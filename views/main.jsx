@@ -10,7 +10,7 @@ function Main(html)
                 <script type="text/javascript">
                     console.log("Hello")
                 </script>
-                <link rel="stylesheet" href="../styles.css"/>
+                <link rel="stylesheet" href="styles.css"/>
             </head>
             <body>
                 <Nav></Nav>

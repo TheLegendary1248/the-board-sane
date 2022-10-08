@@ -19,19 +19,19 @@ if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, 'public')));
 }
 else {
-  app.use(express.static('/public'))
+  app.use(express.static('public'))
 }
 
-app.use('/api', require('./controllers/api'))
+//app.use('/api', require('./controllers/api'))
 
 app.get('/home', function(req,res){
   res.render('main')
 })
 
-/*app.get('*', (req, res) => {
-  console.log("Failed to get page")
-  res.send("404 Failed to get page")
-})*/
+app.get('*', (req, res) => {
+  console.log(`Failed to get page at ${req.originalUrl}`)
+  res.send(`404 Failed to get page at ${req.originalUrl}`)
+})
 
 app.listen(process.env.PORT, function(err){
     if (err) console.log(err);
