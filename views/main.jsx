@@ -1,5 +1,5 @@
 const React = require('react')
-const Nav = require('./Nav')
+const Nav = require('./nav.jsx')
 
 function Main(html)
 {
@@ -7,9 +7,14 @@ function Main(html)
         <html>
             <head>
                 <title>The Board</title>
-                <link rel="stylesheet" href ="/styles.css"/>
+                <script type="text/javascript">
+                    console.log("Hello")
+                </script>
+                <link rel="stylesheet" href="../styles.css"/>
             </head>
             <body>
+                <Nav></Nav>
+
                 <p>Hello World</p>
                 {html.children}
             </body>

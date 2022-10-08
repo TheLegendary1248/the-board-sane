@@ -3,13 +3,14 @@ const router = require('express').Router()
 
 //Psuedo Code time
 
-var path;
 var db;
 
-path.get("/news")
+router.get("/news")
 
 //Path for loging into the app
-path.get("/login")
+router.get("/login")
 
 //Path for registering a new user
-path.get("/login/signup")
+router.get("/login/signup")
+
+module.exports = router

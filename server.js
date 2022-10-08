@@ -1,12 +1,12 @@
 //Modules
 require('dotenv').config()
-console.log(process.env)
+//console.log(process.env)
 const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose')
 //Connect to mongodb
-mongoose.connect(process.env.MONGO)
+//mongoose.connect(process.env.MONGO)
 
 //Settings
 app.use(express.urlencoded({ extended: true }))
@@ -16,23 +16,22 @@ app.engine('jsx', require('express-react-views').createEngine())
 // serve static front end in production mode
 if (process.env.NODE_ENV === "production") {
   console.log("Using production mode")
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
+  app.use(express.static(path.join(__dirname, 'public')));
 }
 else {
-  app.use(express.static('public'))
+  app.use(express.static('/public'))
 }
 
-app.use('/api', require('.controllers/api'))
+app.use('/api', require('./controllers/api'))
 
-app.get('/', function(req,res){
+app.get('/home', function(req,res){
   res.render('main')
 })
-app.get('/')
 
-app.get('*', (req, res) => {
+/*app.get('*', (req, res) => {
   console.log("Failed to get page")
   res.send("404 Failed to get page")
-})
+})*/
 
 app.listen(process.env.PORT, function(err){
     if (err) console.log(err);

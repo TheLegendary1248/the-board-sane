@@ -2,7 +2,7 @@
 const mongoose = require("mongoose")
 
 const contentBoard_s = new mongoose.Schema({
-    
+    user: 
 })
 
 module.exports = contentBoard_s
