@@ -2,7 +2,11 @@
 const mongoose = require("mongoose")
 
 const contentBoard_s = new mongoose.Schema({
-    user: 
+    //The title/name of the board
+    name:{type:String},
+    //The user the board belongs to
+    user: {type: mongoose.Schema.Types.ObjectId}
+    
 })
 
 module.exports = contentBoard_s

@@ -22,7 +22,7 @@ else {
   app.use(express.static('public'))
 }
 
-//app.use('/api', require('./controllers/api'))
+app.use('/api', require('./controllers/api'))
 
 app.get('/home', function(req,res){
   res.render('main')

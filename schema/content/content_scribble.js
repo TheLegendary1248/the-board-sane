@@ -4,6 +4,10 @@ const mongoose = require("mongoose")
 //Will figure this out some other time..
 //I want to use vector drawings, but I don't know how SVG in html quite works. I've made bezier curves, but it's format is confusing
 const contentScribble_s = new mongoose.Schema({
-    path: {}
+    //The SVG path of the scribble
+    path: {},
+    //The board it scribble belongs to
+    board:{type: mongoose.Schema.Types.ObjectId},
 })
 
+module.exports = contentScribble_s

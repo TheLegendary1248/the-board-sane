@@ -1,9 +1,9 @@
-//
+//This controller handles programmatic server-side calls
 const router = require('express').Router()
 
 //Psuedo Code time
 
-var db;
+
 
 router.get("/news")
 
