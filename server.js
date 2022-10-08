@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 //Connect to mongodb
 //mongoose.connect(process.env.MONGO)
 
+console.log(`Time of server start: ${Date()}`)
 //Settings
 app.use(express.urlencoded({ extended: true }))
 app.set('views', __dirname + '/views')

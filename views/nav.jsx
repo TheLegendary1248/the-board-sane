@@ -1,12 +1,15 @@
+const { text } = require('express')
 const React = require('react')
-const NavLink = require('./navLink')
+const NavLink = require('./navLink.jsx')
 //This is the navbar for the website
 function Nav(){
+    return(
     <nav>
-        <NavLink text="Home" link=""></NavLink>
-        <NavLink text="View Boards" link=""></NavLink>
-        <NavLink text="Other Link" link=""></NavLink>
+        <NavLink link={{text:"Home",link:""}}></NavLink>
+        <NavLink param={{text:"About",link:""}}></NavLink>
+        <NavLink anything={{text:"Other link",link:""}}></NavLink>
     </nav>
+    )
 }
 
 module.exports = Nav

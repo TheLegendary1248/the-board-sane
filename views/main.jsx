@@ -7,9 +7,6 @@ function Main(html)
         <html>
             <head>
                 <title>The Board</title>
-                <script type="text/javascript">
-                    console.log("Hello")
-                </script>
                 <link rel="stylesheet" href="styles.css"/>
             </head>
             <body>
