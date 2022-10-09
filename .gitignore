@@ -21,3 +21,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+#I might often had to move out files to see if they were cause of "x"
+#So this folder exists
+/shadow_realm
