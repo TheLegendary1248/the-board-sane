@@ -1,0 +1,1 @@
+//Placeholder js file for the board page logic

@@ -1,23 +1,17 @@
 //About page of the website
 const React = require("react")
-const Nav = require("./nav.jsx")
+const Default = require("")
 
 function About()
 {
     return(
-        <html>
-            <head>
-                <title>About</title>
-                <link rel="stylesheet" href="styles.css" />
-            </head>
-            <body>
-                <Nav></Nav>
-                <h2>About</h2>
-                <br></br>
-                <p>Insert text about us</p>
-                <p>Insert information about the whole project</p>
-            </body>
-        </html>
+        <Default>
+            <Nav></Nav>
+            <h2>About</h2>
+            <br></br>
+            <p>Insert text about us</p>
+            <p>Insert information about the whole project</p>
+        </Default>
     )
 }
 

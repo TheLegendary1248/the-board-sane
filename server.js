@@ -55,4 +55,6 @@ app.listen(process.env.PORT, function(err){
     console.log("Server listening on PORT", process.env.PORT);
 });
 
+//TODO Add dumb easter eggs when i've presented
+
 module.exports = app
