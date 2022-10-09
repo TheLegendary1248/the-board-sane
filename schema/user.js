@@ -6,6 +6,8 @@ const user_s = mongoose.Schema({
     name:{type:String},
     //The password of the user
     pass:{type:String},
+    //Time of account creation
+    creationDate:{type:Date},
 })
 
 module.exports = user_s

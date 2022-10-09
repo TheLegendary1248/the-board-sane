@@ -8,6 +8,7 @@ function About()
         <html>
             <head>
                 <title>About</title>
+                <link rel="stylesheet" href="styles.css" />
             </head>
             <body>
                 <Nav></Nav>

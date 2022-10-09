@@ -28,11 +28,20 @@ else {
 //Access the api controller for programmatic things
 app.use('/api', require('./controllers/api'))
 
-//The main page
-app.get('/home', (req, res) => res.render("main"))
-
 //The about page
 app.get('/about', (req,res) => res.render("about"))
+
+//The login page
+app.get('/login', (req,res) => res.render("login"))
+
+//A testing page, for frontend debugging nonsense
+app.get('/ohno', (req, res) => res.render("test"))
+
+//The default view as is
+app.get('/plain', (req, res) => res.render("default"))
+
+//The main page
+app.get('/', (req, res) => res.render("home"))
 
 //The error page
 app.get('*', (req, res) => {
@@ -45,3 +54,5 @@ app.listen(process.env.PORT, function(err){
     if (err) console.log(err);
     console.log("Server listening on PORT", process.env.PORT);
 });
+
+module.exports = app

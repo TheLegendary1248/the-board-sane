@@ -1,7 +1,8 @@
+//Homepage of the website
 const React = require('react')
 const Nav = require('./nav.jsx')
 
-function Main(html)
+function Home()
 {
     return(
         <html>
@@ -12,12 +13,12 @@ function Main(html)
             <body>
                 <Nav></Nav>
 
-                <p>Hello World</p>
-                {html.children}
+                <h1>the-board</h1>
+                
             </body>
         </html>
     )
 }
 
-module.exports = Main
+module.exports = Home
 
