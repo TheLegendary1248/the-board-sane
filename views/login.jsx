@@ -5,7 +5,6 @@ const Default = require("./default.jsx")
 function Login() {
     return (
         <Default>
-            <Nav></Nav>
             <h2>Login</h2>
             <p>Insert logging stuffs here.</p>
         </Default>
