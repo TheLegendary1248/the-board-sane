@@ -9,4 +9,4 @@ const contentBoard_s = new mongoose.Schema({
     
 })
 
-module.exports = contentBoard_s
+module.exports = mongoose.model("Boards", contentBoard_s)

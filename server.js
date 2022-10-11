@@ -7,7 +7,12 @@ const app = express();
 const mongoose = require('mongoose')
 
 //Connect to mongodb : Haven't setup the database yet
-//mongoose.connect(process.env.MONGO)
+mongoose.connect(process.env.MONGO, {
+  useNewUrlParser: true, 
+  useUnifiedTopology: true
+},
+() => {console.log('Connection to mongo: ', process.env.MONGO)})
+
 console.log(`Time of server start: ${Date()}`)
 
 //Settings

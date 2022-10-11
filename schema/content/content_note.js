@@ -9,4 +9,4 @@ const contentNote_s = new mongoose.Schema({
     board:{type: mongoose.Schema.Types.ObjectId},
 })
 
-module.exports = contentNote_s
+module.exports = mongoose.model("content_Note", contentNote_s)

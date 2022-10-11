@@ -10,4 +10,4 @@ const contentScribble_s = new mongoose.Schema({
     board:{type: mongoose.Schema.Types.ObjectId},
 })
 
-module.exports = contentScribble_s
+module.exports = mongoose.model("content_Scribble", contentScribble_s)

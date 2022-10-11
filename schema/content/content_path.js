@@ -13,4 +13,4 @@ const contentPath_s = new mongoose.Schema({
     board:{type: mongoose.Schema.Types.ObjectId},
 })
 
-module.exports = contentPath_s
+module.exports = mongoose.model("content_Path", contentPath_s)
