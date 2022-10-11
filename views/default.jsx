@@ -9,6 +9,7 @@ function Default(param)
             <head>
                 <title>{param.title}</title>
                 <link rel="stylesheet" href="styles.css" />
+                <link rel="icon" type="image/png" href="favicon.png"/>
             </head>
             <body>
                 <Nav></Nav>

@@ -8,7 +8,7 @@ const Default = require("./default.jsx")
 
 function Login() {
     return (
-        <Default>
+        <Default title="Login">
             <h2>Login</h2>
             <p>Insert logging stuffs here.</p>
             <form method="POST" action="/api/login">

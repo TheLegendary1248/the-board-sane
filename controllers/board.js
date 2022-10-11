@@ -5,7 +5,9 @@ const db = require("mongoose")
 //Make sure to authenticate usage
 
 //Retrieve all boards a user has access to
-router.get('/', (req, res) => {})
+router.get('/', (req, res) => {
+    res.render("boardSelect")
+})
 
 //Add a board, primarily giving access to the user
 router.post('/', (req, res) =>{})

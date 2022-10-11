@@ -5,7 +5,7 @@ const Default = require("./default.jsx")
 function About()
 {
     return(
-        <Default>
+        <Default title="About us">
             <h2>About</h2>
             <br></br>
             <p>Insert text about us</p>
