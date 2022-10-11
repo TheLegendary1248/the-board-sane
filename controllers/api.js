@@ -17,6 +17,7 @@ router.get("/checkUser", (req,res)=> {
 //Path for logging into the app
 router.get("/login", (req,res) => {
     //Find DB for match
+    //Use a delay to slow down brute force attacks
     //Return true or false depending if found
 })
 
@@ -26,5 +27,7 @@ router.post("/login", (req,res) => {
     //Add user
     //
 })
+
+router.use("/userContent", require("./userContent"))
 
 module.exports = router

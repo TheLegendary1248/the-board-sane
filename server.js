@@ -40,13 +40,16 @@ app.get('/ohno', (req, res) => res.render("test"))
 //The default view as is
 app.get('/plain', (req, res) => res.render("default"))
 
+//The board page
+app.use('/board', require('./controllers/board'))
+
 //The main page
 app.get('/', (req, res) => res.render("home"))
 
 //The error page
 app.get('*', (req, res) => {
-  console.log(`Failed to get page at ${req.originalUrl}`)
-  res.send(`404 Failed to get page at ${req.originalUrl}`)
+  //console.log(`Failed to get page at ${req.originalUrl}`)
+  res.render("error")
 })
 
 //Listen

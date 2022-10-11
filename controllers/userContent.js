@@ -17,3 +17,5 @@ router.post("")
 
 //Update user content
 router.put("")
+
+module.exports = router
