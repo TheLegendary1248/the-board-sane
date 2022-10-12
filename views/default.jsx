@@ -1,20 +1,14 @@
-//This contains the boilerplate I've noticed to copy from page to page
+//This contains the boilerplate html of both the head and body
 const React = require('react')
-const Nav = require('./nav.jsx')
+const Head = require('./defHead.jsx')
+const Body = require('./defBody.jsx')
 
 function Default(param)
 {
     return(
         <html>
-            <head>
-                <title>{param.title}</title>
-                <link rel="stylesheet" href="styles.css" />
-                <link rel="icon" type="image/png" href="favicon.png"/>
-            </head>
-            <body>
-                <Nav></Nav>
-                {param.children}
-            </body>
+            <Head title={param.title}/>
+            <Body>{param.children}</Body>
         </html>
     )
 }
