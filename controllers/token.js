@@ -1,5 +1,6 @@
 const Token = require('../schema/token');
 const User = require('../schema/user')
+const {v4: uuidv4 } = require('uuid')
 
 //Token related functions
 let tFunc = {
@@ -29,7 +30,7 @@ CheckToken: async function (req)
         //Otherwise return it
         else { return user; }
     }
-}
+},
 }
 
 module.exports = tFunc;
