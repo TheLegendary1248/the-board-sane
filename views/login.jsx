@@ -1,22 +1,13 @@
 //The login/signup page of app. Ill make it dual-purpose
-import React, {useEffect, useState} from "react";
-
+const React = require("React")
 const Head = require("./defHead.jsx")
 const Body = require("./defBody.jsx")
-const { useDeferredValue } = require("React")
 require('dotenv').config()
 //TODO Add pattern matching
 //TODO Reuse form for both login and register
 //TODO Add "forgot password" 
 
 function Login() {
-    const [available, setAvailable] = useState();
-
-    async function checkUser() {
-        console.log("hello")
-        await fetch(process.env.ROOT_URL + "/api/login/checkUser")
-        .then(res => { console.log(res); setAvailable(res);})
-    }
 
     return (
         <html>
@@ -27,9 +18,12 @@ function Login() {
                 <h2>Login</h2>
                 <p>Insert logging stuffs here.</p>
                 <form method="POST" action="/api/login">
-                    <p>{available}</p>
+                    <div>
+                        <p id="user_ok" className="ok" style={{display: "none"}}>That is available</p>
+                        <p id="user_warn" className="warn" style={{display: "none"}}>That username is taken</p>
+                    </div>
                     <label htmlFor="username" >Username</label>
-                    <input id="username" type="text" onChange={() => checkUser()}></input>
+                    <input id="username" type="text" ></input>
                     <label htmlFor="">Password</label>
                     <input id="password" type="text"></input>
                     <input type="submit" value="Login"></input>
