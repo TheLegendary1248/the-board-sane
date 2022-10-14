@@ -21,12 +21,24 @@ function Login() {
                     <div>
                         <p id="user_ok" className="ok" style={{display: "none"}}>That is available</p>
                         <p id="user_warn" className="warn" style={{display: "none"}}>That username is taken</p>
+                        <label htmlFor="username" >Username</label>
+                        <br/>
+                        <input id="username" type="text" placeholder="What do you like to go by?" required/>
                     </div>
-                    <label htmlFor="username" >Username</label>
-                    <input id="username" type="text" ></input>
-                    <label htmlFor="">Password</label>
-                    <input id="password" type="text"></input>
-                    <input type="submit" value="Login"></input>
+                    <div>
+                        <p id="user_pass_warn"></p>
+                        <label htmlFor="password" >Password</label>
+                        <br/>
+                        <input id="password" type="password" placeholder="Make sure it's a strong password" required/>
+                        <span id="show_pass">Show</span>
+                    </div>
+                    <br/>
+                    <div>
+                        <label htmlFor="email">Email</label>
+                        <br/>
+                        <input id="email" type="email" placeholder="Ex: hello@example.com - only required to register"/>
+                    </div>
+                    <input id="submit_form" type="submit" value="Login"></input>
                 </form>
             </Body>
         </html>

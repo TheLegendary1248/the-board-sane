@@ -37,3 +37,13 @@ usernameChecker.userField.oninput =
     clearTimeout(usernameChecker.delayedCall)
     usernameChecker.delayedCall = setTimeout(() => usernameChecker.checkUser(), 350);
 }
+
+//Password Checker
+const passwordChecker = {
+    passField: document.getElementById("password"),
+    retypeField: document.getElementById("")
+}
+
+//Email Checker
+/* */
+
