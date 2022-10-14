@@ -5,6 +5,7 @@ const usernameChecker = {
     userField: document.getElementById("username"),
     ok: document.getElementById("user_ok"),
     warn: document.getElementById("user_warn"),
+    delayedCall: null,
     async checkUser()
     {
         if(this.userField.value === "") //If the field is empty
@@ -30,4 +31,9 @@ const usernameChecker = {
     },
 }
 
-usernameChecker.userField.oninput = () => usernameChecker.checkUser()
+usernameChecker.userField.oninput = 
+() => 
+{
+    clearTimeout(usernameChecker.delayedCall)
+    usernameChecker.delayedCall = setTimeout(() => usernameChecker.checkUser(), 350);
+}
