@@ -40,15 +40,23 @@ router.post("/login/new", async (req,res) => {
 })
 
 //Path for logging into the app
+//TODO Prevent reloading page on incorrect credentials
+//TODO Cache username as cookie to showup on login status
 router.post("/login", async (req,res) =>  {
     //Check database
-    let retrieved = await User.exists(req.body.cred).exec()
+    console.log("Logged in")
+    let body = req.body
+    
+    delete body.email
+    console.log(body)
+    let retrieved = await User.exists(body).exec()
+    console.log(retrieved)
     //If null, return to login with failure message
-    if(retrieved === null) {res.redirect("/login?error=incorrect"); return;}
+    if(retrieved === null) {res.status(301).redirect("/login?error=incorrect"); return;}
     else
     {
         //Create token id, and id of user
-        T_Functions.CreateNewToken(res)
+        T_Functions.CreateNewToken(res, retrieved)
         //TODO Use a delay to slow down brute force attacks
         res.status(301).redirect("/board")
     }
