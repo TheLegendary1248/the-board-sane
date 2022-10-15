@@ -1,6 +1,8 @@
 //Placeholder js file for the login page
 
 //TODO Make submit button reflect login or sign up
+//TODO Remove name attr on email if logging in.
+//Just read(and accidental discovery), lack of name attribute does not pass the input into the form
 //Naming here could be better
 const submitInput = document.getElementById("submit_form")
 const header = document.getElementById("header")

@@ -21,20 +21,20 @@ function Login() {
                         <p id="user_warn" className="warn" style={{display: "none"}}>That username is taken</p>
                         <label htmlFor="username" >Username</label>
                         <br/>
-                        <input id="username" type="text" placeholder="What do you like to go by?" required/>
+                        <input id="username" name="name" type="text" placeholder="What do you like to go by?" required/>
                     </div>
                     <div>
                         <p id="user_pass_warn"></p>
                         <label htmlFor="password" >Password</label>
                         <br/>
-                        <input id="password" type="password" placeholder="Make sure it's a strong password" required/>
+                        <input id="password" name="pass" type="password" placeholder="Make sure it's a strong password" required/>
                         <span id="show_pass">Show</span>
                     </div>
                     <br/>
                     <div>
                         <label htmlFor="email">Email</label>
                         <br/>
-                        <input id="email" type="email" placeholder="Ex: hello@example.com - only required to register"/>
+                        <input id="email" name="email" type="email" placeholder="Ex: hello@example.com - only required to register"/>
                     </div>
                     <br/>
                     <input id="submit_form" type="submit" value="Login"></input>

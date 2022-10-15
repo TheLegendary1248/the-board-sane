@@ -1,4 +1,5 @@
 //This controller handles programmatic server-side calls
+//FIXME Add error handling
 const router = require('express').Router()
 const User = require('../schema/user')
 const Token = require('../schema/token')
@@ -7,7 +8,9 @@ const cookierParser = require('cookie-parser')
 const { CheckToken } = require('./token')
 
 //...
-router.get("/news")
+router.get("/news", (req,res) => {
+    res.status(301).redirect("/error")
+})
 
 //Checks if username is available
 router.get("/checkUser/:name", async (req,res)=> {
@@ -18,22 +21,22 @@ router.get("/checkUser/:name", async (req,res)=> {
 })
 
 //Path for registering a new user
+//TODO Add email validation 
 router.post("/login/new", async (req,res) => {
     //Double check with DB that user is available
-    let dupe = await User.exists(req).exec()
-    if(dupe !== null) 
+    let body = req.body
+    let dupe = await User.exists({name: body.name}).exec()
+    body.creationDate = new Date();
+    //If there is no duplication, create the new user
+    //FIXME Create token here
+    if(await dupe === null) 
     {
-        User.create(req.body.user)
+        User.create(body)
         res.status(301).redirect("/board")
     }
-    else
-    {
-        res.status(301).redirect("/login?error=dupe")
-    }
-
-    //Add user
-    User.create({name: "Hello", pass: "1248", creationDate: new Date()})
-    
+    //Otherwise, return the page
+    //TODO Make page display special error here
+    else res.status(301).redirect("/login?error=duplicate")
 })
 
 //Path for logging into the app
