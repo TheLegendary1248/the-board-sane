@@ -4,8 +4,7 @@ const Head = require("./defHead.jsx")
 const Body = require("./defBody.jsx")
 require('dotenv').config()
 //TODO Add pattern matching
-//TODO Reuse form for both login and register
-//TODO Add "forgot password" 
+//TODO Add "forgot password"
 
 function Login() {
 
@@ -15,11 +14,10 @@ function Login() {
                 <script rel="text/javascript" src={process.env.ROOT_URL + 'scripts/login.js'} defer></script>
             </Head>
             <Body>
-                <h2>Login</h2>
-                <p>Insert logging stuffs here.</p>
-                <form method="POST" action="/api/login">
+                <h2 id="header">Login</h2>
+                <form id="form" method="POST" action="/api/login">
                     <div>
-                        <p id="user_ok" className="ok" style={{display: "none"}}>That is available</p>
+                        <p id="user_ok" className="ok" style={{display: "none"}}>That username is available</p>
                         <p id="user_warn" className="warn" style={{display: "none"}}>That username is taken</p>
                         <label htmlFor="username" >Username</label>
                         <br/>
@@ -38,6 +36,7 @@ function Login() {
                         <br/>
                         <input id="email" type="email" placeholder="Ex: hello@example.com - only required to register"/>
                     </div>
+                    <br/>
                     <input id="submit_form" type="submit" value="Login"></input>
                 </form>
             </Body>
