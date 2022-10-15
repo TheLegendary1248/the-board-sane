@@ -25,7 +25,7 @@ router.get("/checkUser/:name", async (req,res)=> {
 router.post("/login/new", async (req,res) => {
     //Double check with DB that user is available
     let body = req.body
-    let dupe = await User.exists({name: body.name}).exec()
+    let dupe = await User.exists({name: body.name}).lean().exec()
     body.creationDate = new Date();
     //If there is no duplication, create the new user
     //FIXME Create token here
@@ -36,7 +36,7 @@ router.post("/login/new", async (req,res) => {
     }
     //Otherwise, return the page
     //TODO Make page display special error here
-    else res.status(301).redirect("/login?error=duplicate")
+    else res.status(301).redirect("/login?error=dupe&name=" + body.name)
 })
 
 //Path for logging into the app
@@ -49,7 +49,7 @@ router.post("/login", async (req,res) =>  {
     
     delete body.email
     console.log(body)
-    let retrieved = await User.exists(body).exec()
+    let retrieved = await User.exists(body).lean().exec()
     console.log(retrieved)
     //If null, return to login with failure message
     if(retrieved === null) {res.status(301).redirect("/login?error=incorrect"); return;}

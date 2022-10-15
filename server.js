@@ -37,7 +37,25 @@ app.use('/api', require('./controllers/api'))
 app.get('/about', (req,res) => res.render("about"))
 
 //The login page
-app.get('/login', (req,res) => res.render("login"))
+app.get('/login', (req,res) => 
+{
+  let rend = (e) => res.render("login", e)
+  let e = req.query["error"]
+  console.log(e)
+  if(e === null) res.render("login")
+  else switch (e) {
+    case "incorrect":
+      rend({message:"Username or password is incorrect"})
+      break;
+    case "dupe":
+      rend({message: `Hey! I said that '${req.query["name"]}' is unavailable`})
+      break;
+    default:
+      rend({message:"An error has occurred"})
+      break;
+  }
+  
+})
 
 //A testing page, for frontend debugging nonsense
 app.get('/ohno', (req, res) => res.render("test"))

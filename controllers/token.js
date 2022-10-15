@@ -23,7 +23,7 @@ CheckToken: async function (req)
     //Check if the user has a Session token to begin with
     if(req.cookies.Session === null) return null;
     //Get token in database
-    let retrieved = await Token.exists({token: req.cookies.Session}).exec()
+    let retrieved = await Token.exists({token: req.cookies.Session}).lean().exec()
     //If token does not exist
     if(retrieved === null) return null;
     else { 

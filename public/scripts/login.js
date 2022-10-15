@@ -2,11 +2,13 @@
 
 //TODO Make submit button reflect login or sign up
 //TODO Remove name attr on email if logging in.
+//FIXME Use consistent coding style
 //Just read(and accidental discovery), lack of name attribute does not pass the input into the form
 //Naming here could be better
 const submitInput = document.getElementById("submit_form")
 const header = document.getElementById("header")
 const form = document.getElementById("form")
+let userAvailable = true;
 
 const usernameChecker = {
     userField: document.getElementById("username"),
@@ -31,11 +33,13 @@ const usernameChecker = {
             {
                 this.ok.style = ""
                 this.warn.style = "display: none"
+                submitInput.disabled = userAvailable = false
             }
             else //Otherwise not
             {
                 this.ok.style = "display: none"
                 this.warn.style = ""
+                submitInput.disabled = userAvailable = true
             }
         }
     },
@@ -72,12 +76,14 @@ const emailChecker = {
         if(this.emailField.value == "")
         {
             submitInput.value = header.textContent = "Login"
+            submitInput.disabled = false 
             form.action = "/api/login"
         }
         //Otherwise, this is a sign up
         else 
         {
             submitInput.value = header.textContent = "Sign Up"
+            submitInput.disabled = userAvailable
             form.action = "/api/login/new"
         }
     }

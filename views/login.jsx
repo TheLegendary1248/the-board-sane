@@ -6,8 +6,12 @@ require('dotenv').config()
 //TODO Add pattern matching
 //TODO Add "forgot password"
 
-function Login() {
-
+function Login(data) {
+    let errorMessage;
+    if(data !== null)
+    {
+        errorMessage = <p id="error_message">{data.message}</p>
+    }
     return (
         <html>
             <Head title="Login">
@@ -16,6 +20,7 @@ function Login() {
             <Body>
                 <h2 id="header">Login</h2>
                 <form id="form" method="POST" action="/api/login">
+                    {errorMessage}
                     <div>
                         <p id="user_ok" className="ok" style={{display: "none"}}>That username is available</p>
                         <p id="user_warn" className="warn" style={{display: "none"}}>That username is taken</p>
