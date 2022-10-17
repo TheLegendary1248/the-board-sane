@@ -1,7 +1,7 @@
 //Schema for a board. A board is a collection of content that a user (or multiple users in the unlikely and far future) can modify
 const mongoose = require("mongoose")
 
-const contentBoard_s = new mongoose.Schema({
+const board_s = new mongoose.Schema({
     //The title/name of the board
     name:{type:String},
     //The user the board belongs to
@@ -9,4 +9,4 @@ const contentBoard_s = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.model("Boards", contentBoard_s)
+module.exports = mongoose.model("Board", board_s)

@@ -1,7 +1,7 @@
 //TODO UTILIZE EXPORTS PROPERLY
 //TODO ACKNOWLEDGE OTHER MORE DEVELOPED COUNTRIES HAVE LAWS ON COOKIES 
 //TODO DO COOKIE RESEARCH IN GENERAL
-const Token = require('../schema/token');
+const Token = require('../schema/token')
 const User = require('../schema/user')
 const {v4: uuidv4 } = require('uuid')
 
@@ -20,6 +20,7 @@ CreateNewToken: function (res, user)
 //FIXME Hash token, and give the user unhashed version
 CheckToken: async function (req)
 {
+    console.log(req.cookies)
     //Check if the user has a Session token to begin with
     if(req.cookies.Session === null) return null;
     //Get token in database

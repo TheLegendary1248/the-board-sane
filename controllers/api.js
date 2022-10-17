@@ -3,8 +3,7 @@
 const router = require('express').Router()
 const User = require('../schema/user')
 const Token = require('../schema/token')
-const T_Functions = require("./token")
-const cookierParser = require('cookie-parser')
+const TokenAuth = require("./token")
 const { CheckToken } = require('./token')
 
 //...
@@ -55,8 +54,9 @@ router.post("/login", async (req,res) =>  {
     if(retrieved === null) {res.status(301).redirect("/login?error=incorrect"); return;}
     else
     {
+    
         //Create token id, and id of user
-        T_Functions.CreateNewToken(res, retrieved)
+        TokenAuth.CreateNewToken(res, retrieved)
         //TODO Use a delay to slow down brute force attacks
         res.status(301).redirect("/board")
     }
@@ -67,7 +67,7 @@ router.post("/login", async (req,res) =>  {
 router.delete("/login", async (req, res) =>
 {
     //Check session cookie
-    let check = await T_Functions.CheckToken(req)
+    let check = await TokenAuth.CheckToken(req)
     if(check === false) {
 
     }

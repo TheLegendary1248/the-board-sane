@@ -10,6 +10,11 @@ function Board()
             <head>
                 <title>INSERT BOARD NAME HERE</title>
             </head>
+            <body>
+                <div id="backgroundHint">
+                    Start typing or drawing
+                </div>
+            </body>
         </html>
     )
 }

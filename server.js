@@ -1,10 +1,12 @@
 //Modules
+//TODO Review http status codes and ensure the right ones are returned
 require('dotenv').config()
 
 const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose')
+const cookierParser = require('cookie-parser')
 
 //Connect to mongodb : Haven't setup the database yet
 mongoose.connect(process.env.MONGO, {
@@ -16,6 +18,7 @@ mongoose.connect(process.env.MONGO, {
 console.log(`Time of server start: ${Date()}`)
 
 //Settings
+app.use(cookierParser())
 app.use(express.urlencoded({ extended: true }))
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jsx')
