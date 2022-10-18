@@ -3,9 +3,9 @@ const React = require('react')
 
 function NavLink(link){
     return(
-    <div>
+    <span>
         <a href={link.link.link}>{link.link.text}</a>
-    </div>
+    </span>
     )
 }
 

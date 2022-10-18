@@ -1,0 +1,36 @@
+
+:root{
+    --main-bg-color: #201a3c;
+    --other-color: #201
+}
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    box-sizing: border-box;
+}
+body {
+    background-color: var(--main-bg-color);
+    margin: 0px;
+    padding: 0px;
+}
+/*Navbar styling*/
+nav {
+    background-color: var(--other-color);
+    position: sticky;
+    top:0px;
+    width:calc(100%);
+    margin:0px;
+    padding:0px 5px;
+    padding-top: 5px;
+    border-bottom: white solid 2px;
+}
+nav img {vertical-align:super; display:inline-block; width: 40px; height: 40px}
+nav span, nav span a {
+    vertical-align:super;
+    display: inline-block;
+    margin: 0px;
+    font-size: x-large; 
+    text-decoration: none;
+    position: relative;
+}
+nav span {margin: 0px 10px; }

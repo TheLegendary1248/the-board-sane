@@ -15,10 +15,11 @@ function Login(data) {
     return (
         <html>
             <Head title="Login">
+                <link rel="stylesheet" href="styles/loginStyle.css" />
                 <script rel="text/javascript" src={process.env.ROOT_URL + 'scripts/login.js'} defer></script>
             </Head>
             <Body>
-                <h2 id="header">Login</h2>
+                <h2 id="header">Login</h2><span id="userShow"></span>
                 <form id="form" method="POST" action="/api/login">
                     {errorMessage}
                     <div>

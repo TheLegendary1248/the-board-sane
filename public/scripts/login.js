@@ -1,5 +1,4 @@
 //Placeholder js file for the login page
-
 //TODO Make submit button reflect login or sign up
 //TODO Remove name attr on email if logging in.
 //FIXME Use consistent coding style
@@ -8,6 +7,7 @@
 const submitInput = document.getElementById("submit_form")
 const header = document.getElementById("header")
 const form = document.getElementById("form")
+const userShow = document.getElementById("userShow")
 let userAvailable = true;
 
 const usernameChecker = {
@@ -49,6 +49,10 @@ const usernameChecker = {
 usernameChecker.userField.oninput = 
 () => 
 {
+    /*
+    let val = usernameChecker.userField.value
+    if(val !== "") userShow.textContent = " as " + val;
+    else userShow.textContent = "" */
     clearTimeout(usernameChecker.delayedCall)
     usernameChecker.delayedCall = setTimeout(() => usernameChecker.checkUser(), 350);
 }

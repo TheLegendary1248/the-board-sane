@@ -45,7 +45,7 @@ app.get('/login', (req,res) =>
   let rend = (e) => res.render("login", e)
   let e = req.query["error"]
   console.log(e)
-  if(e === null) res.render("login")
+  if(e == undefined) res.render("login")
   else switch (e) {
     case "incorrect":
       rend({message:"Username or password is incorrect"})
