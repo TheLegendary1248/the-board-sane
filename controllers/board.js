@@ -14,6 +14,10 @@ router.get('/', async (req, res) => {
     if(token === null) res.status(301).redirect("/login") 
     else
     {
+        //Virtual Testing. Not working yet
+        //let t = (await token.populate('user')).user
+        //let b = await t.populate('Board')
+        //console.log(b)
         let boards = await Board.find({user: token.user}).lean().exec()
         res.render("boardSelect", {boards: boards})
     } 

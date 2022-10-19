@@ -1,13 +1,18 @@
 //Homepage of the website
 const React = require('react')
-const Default = require("./default.jsx")
+const Head = require("./defHead.jsx")
+const Body = require("./defBody.jsx")
 
-function Home()
-{
-    return(
-        <Default title="The Board">
-            <h1>the-board</h1>
-        </Default>
+function Home() {
+    return (
+        <html>
+            <Head>
+
+            </Head>
+            <Body title="The Board">
+                <h1>the-board</h1>
+            </Body>
+        </html>
     )
 }
 

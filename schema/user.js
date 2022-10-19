@@ -1,8 +1,8 @@
 //Schema for a user, should be self explanatory enough
 const mongoose = require("mongoose")
-const board = require("./board")
+const Board = require("./board")
 
-const user_s = mongoose.Schema({
+const user_s = new mongoose.Schema({
     //The username of the user
     name:{type:String},
     //The password of the user
@@ -11,7 +11,7 @@ const user_s = mongoose.Schema({
     email:{type:String},
     //Time of account creation
     creationDate:{type:Date},
-})
+}, {toJSON: {virtuals: true}})
 
 
 //Virtual

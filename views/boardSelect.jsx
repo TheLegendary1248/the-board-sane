@@ -18,12 +18,19 @@ function BoardSelect(data)
     return(
         <html>
         <DefHead title="Your Boards">
-            
+            <link rel="stylesheet" href="styles/boardSelect.css"/>
         </DefHead>
         <DefBody>
             {boards}
-            <div id="addBoard" style={{position:"fixed", bottom: "50px", right:"50px", width:"100px", height: "100px"}}>
-                Add Board
+            <div id="addBoard">
+                <h2 id="addHeader">Create a new Board</h2>
+                <form method="POST" action="">
+                    <label for="new_title" hidden={true}>New title of board</label>
+                    <input name="name" id="new_title" type="text" placeholder="Board Title"/>
+                    <label for="new_isOffline">Offline</label>
+                    <input id="new_isOffline" type="checkbox"/>
+                    <input id="create_new" type="submit" value="Create"/> 
+                </form>
             </div>
         </DefBody>
         </html>

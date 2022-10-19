@@ -1,0 +1,19 @@
+#addBoard {
+    transition: all 1s;
+    position: fixed;
+    padding: 10px;
+    bottom: 50px;
+    right: 50px;
+    width: 75px;
+    height: 75px;
+    background-color: var(--other-color);
+    border-radius: calc(75px / 2);
+}
+#addBoard:hover {
+    border-radius: 10px;
+    width: 500px;
+    height: 150px;
+}
+input{ background-color: #0000;}
+#new_title{border: #000 none 0px;}
+#addHeader{margin:0px;}
