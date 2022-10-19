@@ -6,7 +6,7 @@ Front End: React*
 Back End: Node JS
 
 Packages I Remember Using
-- uuid : For 'unique' token id. As of writing this, i just searched up and found out about JS's builtint interface for cryptographically strong keys. Dammit
+- uuid : For 'unique' token id. As of writing this, i just searched up and found out about JS's built in interface for cryptographically strong keys. Dammit
 - cookie-parser : Addon package to express, for accessing cookies server side
 
 

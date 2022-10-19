@@ -7,7 +7,7 @@ const token_s = new mongoose.Schema({
     //Expiration date of the token
     expires: {type: Date},
     //User the token is for
-    user: {type: mongoose.Schema.Types.ObjectId} 
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'} 
 })
 
-module.exports = mongoose.model("Token", token_s)
+module.exports = mongoose.model('Token', token_s)

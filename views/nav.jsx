@@ -10,6 +10,9 @@ function Nav(){
         <NavLink link={{text:'Home', link:'/'}}></NavLink>
         <NavLink link={{text:'About', link:'/about'}}></NavLink>
         <NavLink link={{text:'Login', link:'/login'}}></NavLink>
+        <div id="userModal" style={{float: "right"}}>
+            <span>Welcome unknown</span>
+        </div>
     </nav>
     )
 }

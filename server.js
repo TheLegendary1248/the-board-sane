@@ -42,6 +42,7 @@ app.get('/about', (req,res) => res.render("about"))
 //The login page
 app.get('/login', (req,res) => 
 {
+  console.log("Hi. ")
   let rend = (e) => res.render("login", e)
   let e = req.query["error"]
   console.log(e)
@@ -59,7 +60,6 @@ app.get('/login', (req,res) =>
   }
   
 })
-
 //A testing page, for frontend debugging nonsense
 app.get('/ohno', (req, res) => res.render("test"))
 
@@ -68,6 +68,9 @@ app.get('/plain', (req, res) => res.render("default"))
 
 //The board page
 app.use('/board', require('./controllers/board'))
+
+//Test react page
+app.get('/try', (req, res) => res.render("react"))
 
 //The main page
 app.get('/', (req, res) => res.render("home"))
