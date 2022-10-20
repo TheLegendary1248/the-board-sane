@@ -36,8 +36,7 @@ function Login(data) {
             <form id="form" method="POST" action="/api/login">
                 {errorMessage}
                 <div id="usernameSection">
-                    <p id="user_ok" className="ok" style={{ display: (!isEmpty & userAvailable ? "" : "none") }}>That username is available</p>
-                    <p id="user_warn" className="warn" style={{ display: (!isEmpty & !userAvailable ? "" : "none") }}>That username is taken</p>
+                    <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
                     <label htmlFor="username" >Username</label>
                     <br />
                     <input onChange={(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
