@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './styles/main.css';
 import Head from './components/defHead';
 import Body from './components/defBody';
 import Home from './components/home'
@@ -15,10 +14,11 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
     <Body/>
-      <Routes path="/" element={<Home />}>
-        <Route path="/about" element={<About />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/board" element={<Board />} />
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="board" element={<Board />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
