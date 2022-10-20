@@ -18,6 +18,12 @@ mongoose.connect(process.env.MONGO, {
 console.log(`Time of server start: ${Date()}`)
 
 //Settings
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", `http://localhost:${process.env.PORT}`);
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+//ok code
 app.use(cookierParser())
 app.use(express.urlencoded({ extended: true }))
 app.set('views', __dirname + '/views')
