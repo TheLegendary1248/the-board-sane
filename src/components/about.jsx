@@ -1,17 +1,16 @@
 //About page of the website
-const React = require("react")
-const Default = require("./default.jsx")
+import React from 'react'
 
 function About()
 {
     return(
-        <Default title="About us">
+        <div>
             <h2>About</h2>
             <br></br>
             <p>Insert text about us</p>
             <p>Insert information about the whole project</p>
-        </Default>
+        </div>
     )
 }
 
-module.exports = About
+export default About

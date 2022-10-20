@@ -1,6 +1,6 @@
 //This contains the boilerplate head html
-const React = require('react')
-const Nav = require('./nav.jsx')
+import React from 'react' 
+import Nav from './nav.jsx'
 
 //For now, this only puts the navbar with every page
 function Body(html) {
@@ -12,4 +12,4 @@ function Body(html) {
     )
 }
 
-module.exports = Body
+export default Body

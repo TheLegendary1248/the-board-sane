@@ -1,5 +1,5 @@
 //The default head of a document
-const React = require('react')
+import React from 'react'
 
 //TODO Add params for loading css
 //Loads the default css style, favicon, along with title parameter
@@ -15,4 +15,4 @@ function Head(html)
     )
 }
 
-module.exports = Head
+export default Head

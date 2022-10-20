@@ -1,6 +1,6 @@
 //This is the navbar for the website
-const React = require('react')
-const NavLink = require('./navLink.jsx')
+import React from 'react'
+import NavLink from './navLink.jsx'
 
 //TODO Make a hamburger menu for mobile
 
@@ -21,4 +21,4 @@ function Nav(){
     )
 }
 
-module.exports = Nav
+export default Nav

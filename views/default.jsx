@@ -1,7 +1,7 @@
 //This contains the boilerplate html of both the head and body
 const React = require('react')
 const Head = require('./defHead.jsx')
-const Body = require('./defBody.jsx')
+const Body = require('../src/components/defBody.jsx')
 
 function Default(param)
 {

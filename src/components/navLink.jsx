@@ -1,5 +1,5 @@
 //This will function as a link for navbar
-const React = require('react')
+import React from 'react';
 
 function NavLink(link){
     return(
@@ -9,4 +9,4 @@ function NavLink(link){
     )
 }
 
-module.exports = NavLink
+export default NavLink
