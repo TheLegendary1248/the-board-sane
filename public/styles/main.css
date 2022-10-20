@@ -1,12 +1,15 @@
 
 :root{
-    --main-bg-color: #201a3c;
-    --other-color: #201
+    --main-bg-color: #16202e;
+    --other-color: #022b77;
+    --temp: #201a3c;
 }
 * {
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
 }
 body {
     background-color: var(--main-bg-color);
@@ -34,3 +37,9 @@ nav span, nav span a {
     position: relative;
 }
 nav span {margin: 0px 10px; }
+#userModal {
+    float: right;
+    position: relative;
+    top: 5px;
+    right: 5px;
+}

@@ -82,9 +82,9 @@ app.get('*', (req, res) => {
 })
 
 //Listen
-app.listen(process.env.PORT, function(err){
+app.listen(process.env.BACK_PORT, function(err){
     if (err) console.log(err);
-    console.log("Server listening on PORT", process.env.PORT);
+    console.log("Server listening on PORT", process.env.BACK_PORT);
 });
 
 //TODO Add dumb easter eggs when i've presented

@@ -1,4 +1,4 @@
-//The main purpose of the application
+//The board selection of the application
 const React = require("React")
 const Card = require("./boardCard.jsx")
 const Default = require("./default.jsx")
@@ -11,7 +11,7 @@ function BoardSelect(data)
 {
     let boards = data.boards.map(board => {
         return (
-            <Card board={{title:board.name}}></Card>
+            <Card board={board}></Card>
         )
     })
     if (boards.length == 0) boards = <h3>You currently have no boards</h3>
@@ -21,7 +21,11 @@ function BoardSelect(data)
             <link rel="stylesheet" href="styles/boardSelect.css"/>
         </DefHead>
         <DefBody>
-            {boards}
+            <h1>Your Boards</h1>
+            <div id="boardSelect">
+                {boards}
+            </div>
+            
             <div id="addBoard">
                 <h2 id="addHeader">Create a new Board</h2>
                 <form method="POST" action="">

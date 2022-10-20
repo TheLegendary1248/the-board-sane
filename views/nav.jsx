@@ -3,6 +3,12 @@ const React = require('react')
 const NavLink = require('./navLink.jsx')
 
 //TODO Make a hamburger menu for mobile
+
+let unusedModal = (
+<div id="userModal">
+    <span>Welcome unknown</span>
+</div>)
+
 function Nav(){
     return(
     <nav>
@@ -10,9 +16,7 @@ function Nav(){
         <NavLink link={{text:'Home', link:'/'}}></NavLink>
         <NavLink link={{text:'About', link:'/about'}}></NavLink>
         <NavLink link={{text:'Login', link:'/login'}}></NavLink>
-        <div id="userModal" style={{float: "right"}}>
-            <span>Welcome unknown</span>
-        </div>
+        <NavLink link={{text: 'MyBoards', link: '/board'}}></NavLink>
     </nav>
     )
 }

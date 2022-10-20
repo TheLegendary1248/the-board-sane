@@ -1,6 +1,7 @@
 //The default head of a document
 const React = require('react')
 
+//TODO Add params for loading css
 //Loads the default css style, favicon, along with title parameter
 function Head(html)
 {
