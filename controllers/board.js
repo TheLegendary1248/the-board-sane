@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
         //let b = await t.populate('Board')
         //console.log(b)
         let boards = await Board.find({user: token.user}).lean().exec()
-        res.render("boardSelect", {boards: boards})
+        res.send(boards)
     } 
 })
 

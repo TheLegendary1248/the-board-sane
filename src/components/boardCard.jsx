@@ -15,4 +15,4 @@ function BoardCard(board)
     )
 }
 
-module.exports = BoardCard
+export default BoardCard

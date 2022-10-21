@@ -16,7 +16,7 @@ function Nav(){
         <NavLink link={{text:'Home', link:'/'}}></NavLink>
         <NavLink link={{text:'About', link:'/about'}}></NavLink>
         <NavLink link={{text:'Login', link:'/login'}}></NavLink>
-        <NavLink link={{text: 'MyBoards', link: '/board'}}></NavLink>
+        <NavLink link={{text: 'Boards', link: '/board'}}></NavLink>
     </nav>
     )
 }

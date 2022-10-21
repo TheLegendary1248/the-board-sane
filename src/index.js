@@ -5,7 +5,7 @@ import Body from './components/defBody';
 import Home from './components/home'
 import About from './components/about'
 import Login from './components/login'
-import Board from './components/board'
+import BoardSelect from './components/boardSelect'
 import reportWebVitals from './reportWebVitals';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 
@@ -18,7 +18,7 @@ root.render(
         <Route path="/" element={<Home/>}/>
         <Route path="about" element={<About />} />
         <Route path="login" element={<Login />} />
-        <Route path="board" element={<Board />} />
+        <Route path="board" element={<BoardSelect />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

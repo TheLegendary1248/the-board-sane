@@ -2,8 +2,8 @@
 import {React, useState} from 'react'
 import '../styles/loginStyle.css'
 //TODO Add pattern matching
+//TODO I instantly forgot what to make this
 //TODO Add "forgot password"
-//TODO TRANSPILE JS INTO REACT STUFFS HERE BASED OFF 'login.js'
 function Login(data) {
     let errorMessage;
     if (data !== null) {
@@ -11,7 +11,14 @@ function Login(data) {
     }
     //If a username can be used
     const [userAvailable, setUserAvailability] = useState(0)
+    //If the username field is empty
     const [isEmpty, setEmpty] = useState(true)
+    //If the email field is empty
+    const [isLogin, setLogin] = useState(true)
+    //Self Explanatory - Password visibility
+    const [showPass, setVisible] = useState(false)
+    //Password warning - string contains said warning
+    const [passWarn, setWarn] = useState("")
     let delayCheckUser = 0;
     async function OnUserInputChange(target)
     {
@@ -30,10 +37,18 @@ function Login(data) {
             setUserAvailability(!res)
         }   
     }
+    function OnPassChange(target)
+    {
+        let text = target.currentTarget.value
+        if(text.length == 0) setWarn("")
+        else if(text.length <= 8) setWarn("Your password is shorter than 8 characters")
+        else if(false) setWarn("Your password has no special characters")
+        else setWarn("")
+    }
     return (
         <div>
-            <h2 id="header">Login</h2><span id="userShow"></span>
-            <form id="form" method="POST" action="/api/login">
+            <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
+            <form id="form" method="POST" action={"/api/login"+ (isLogin ? "" : "/new")}>
                 {errorMessage}
                 <div id="usernameSection">
                     <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
@@ -42,20 +57,23 @@ function Login(data) {
                     <input onChange={(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
                 </div>
                 <div id="passwordSection">
-                    <p id="user_pass_warn"></p>
+                    <div id="user_pass_warn" hidden={isLogin || (passWarn === "")}>
+                        <p id="warn_message">{passWarn}</p>
+                        <p id="warn_notice">We'll let you use that password, but that's on you</p>
+                    </div>
                     <label htmlFor="password" >Password</label>
                     <br />
-                    <input id="password" name="pass" type="password" placeholder="Make sure it's a strong password" required />
-                    <span id="show_pass">Show</span>
+                    <input id="password" onChange={OnPassChange} name="pass"  type={showPass ? "text" : "password" } placeholder="Make sure it's a strong password" required />
+                    <span id="show_pass" onClick={() => setVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
                 </div>
                 <br />
                 <div id="emailSection">
                     <label htmlFor="email">Email</label>
                     <br />
-                    <input id="email" name="email" type="email" placeholder="Ex: hello@example.com - only required to register" />
+                    <input onChange={e => setLogin(e.currentTarget.value === "")} id="email" name="email" type="email" placeholder="Ex: hello@example.com - only required to register" />
                 </div>
                 <br />
-                <input id="submit_form" type="submit" value="Login" disabled={!userAvailable}></input>
+                <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} disabled={!userAvailable}></input>
             </form>
         </div>
     )
