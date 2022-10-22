@@ -2,10 +2,16 @@
 import React from 'react'
 import Card  from './boardCard.jsx'
 import '../styles/boardSelect.css'
+//Container for boards.
+let boardCont = <p>Getting boards...</p>
 
+async function hello(){
+    
+}
 //TODO Allow this page to be accessed without signing up. Use cookies to save board info for unregistered users
 function BoardSelect(data)
 {
+    
     let boards = []
     /*
     //let get = await fetch("https://localhost:8000/board")

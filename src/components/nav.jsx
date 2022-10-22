@@ -1,6 +1,6 @@
 //This is the navbar for the website
 import React from 'react'
-import NavLink from './navLink.jsx'
+import { Link } from 'react-router-dom'
 
 //TODO Make a hamburger menu for mobile
 
@@ -13,10 +13,10 @@ function Nav(){
     return(
     <nav>
         <img src="this_came_out_better_than_expected.png"/>
-        <NavLink link={{text:'Home', link:'/'}}></NavLink>
-        <NavLink link={{text:'About', link:'/about'}}></NavLink>
-        <NavLink link={{text:'Login', link:'/login'}}></NavLink>
-        <NavLink link={{text: 'Boards', link: '/board'}}></NavLink>
+        <Link to={"/"}>Home</Link>
+        <Link to={"/about"}>About</Link>
+        <Link to={"/login"}>Login</Link>
+        <Link to={"/board"}>Board</Link>
     </nav>
     )
 }
