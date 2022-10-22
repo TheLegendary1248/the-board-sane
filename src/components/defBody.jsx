@@ -5,10 +5,10 @@ import Nav from './nav.jsx'
 //For now, this only puts the navbar with every page
 function Body(html) {
     return (
-        <body>
+        <div>
             <Nav></Nav>
             {html.children}
-        </body>
+        </div>
     )
 }
 
