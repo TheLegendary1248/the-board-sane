@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Head from './components/defHead';
 import Body from './components/defBody';
-import Nav from './components/nav';
 import Home from './components/home'
 import About from './components/about'
 import Login from './components/login'
@@ -14,13 +13,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+    <Body/>
       <Routes>
-        <Route path="/" element={<Nav/>}>
-          <Route index element={<Home/>}/>
-          <Route path="about" element={<About/>} />
-          <Route path="login" element={<Login/>} />
-          <Route path="board" element={<BoardSelect/>}/>
-        </Route>
+        <Route path="/" element={<Home/>}/>
+        <Route path="about" element={<About />} />
+        <Route path="login" element={<Login />} />
+        <Route path="board" element={<BoardSelect />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

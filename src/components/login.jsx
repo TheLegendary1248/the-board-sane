@@ -1,10 +1,11 @@
 //The login/signup page of app. Ill make it dual-purpose
 import {React, useState} from 'react'
-import '../styles/loginStyle.css'
 //TODO Add pattern matching
 //TODO I instantly forgot what to make this
 //TODO Add "forgot password"
 function Login(data) {
+    import('../styles/loginStyle.css')
+    
     let errorMessage;
     if (data !== null) {
         errorMessage = <p id="error_message">{data.message}</p>

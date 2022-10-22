@@ -1,7 +1,7 @@
 //The board selection of the application
-import React from 'react'
+import React, { useEffect } from 'react'
 import Card  from './boardCard.jsx'
-import '../styles/boardSelect.css'
+
 //Container for boards.
 let boardCont = <p>Getting boards...</p>
 
@@ -11,7 +11,8 @@ async function hello(){
 //TODO Allow this page to be accessed without signing up. Use cookies to save board info for unregistered users
 function BoardSelect(data)
 {
-    
+    let m;
+    import('../styles/boardSelect.css').then((e) => m = e)
     let boards = []
     /*
     //let get = await fetch("https://localhost:8000/board")
@@ -20,6 +21,10 @@ function BoardSelect(data)
             <Card board={board}></Card>
         )
     })*/
+    useEffect(() => {
+        console.log("Hi")
+        return function () {delete m}
+    })
     if (boards.length == 0) boards = <h3>You currently have no boards</h3>
     return(
         <div>

@@ -1,7 +1,8 @@
 //Homepage of the website
 import React from 'react'
-import '../styles/home.css'
+
 function Home() {
+    import ('../styles/home.css')
     return (<div>
         <div id="banner">
             <div id="bannerText">
