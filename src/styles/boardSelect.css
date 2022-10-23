@@ -1,22 +1,59 @@
 /* Root name: R_select*/
-/* Bottom right button for adding a new board*/
+/* ---Bottom right button for adding a new board---*/
 #addBoard {
     transition: all 1s;
     position: fixed;
-    padding: 10px;
     bottom: 50px;
     right: 50px;
     width: 75px;
     height: 75px;
-    background-color: var(--other-color);
+    background-image: linear-gradient(to right bottom, #109499 0%, #2234ad 100%);
     border-radius: calc(75px / 2);
+    border-color: white;
+    border-width: 5px;
+    border-style: solid;
+    overflow: clip;
+    z-index: 0;
+    box-shadow: 6px 6px 0px #0008;
 }
-
 #addBoard:hover {
     border-radius: 10px;
+    border-width: 2px;
     width: 500px;
     height: 150px;
+    
 }
+#addBoard #offHover {
+    transition: all 1s;
+    font-size: 75px;
+    right: 10px;
+    bottom: -10px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    position: absolute;
+    color: #fff;
+}
+#addBoard:hover #offHover {
+    color: #ffff;
+    font-size: 150px;
+    opacity: 1;
+}
+#addBoard #onHover{
+    transition: all 1s;
+    opacity: 0;
+    position: absolute;
+    width: 10px;
+    height: 150px;
+    margin: 10px;
+    overflow: clip;
+    white-space: nowrap;
+}
+#addBoard:hover #onHover {
+    opacity: 1;
+    width: 250px;
+}
+
 #R_select input {
     background-color: #0000;
 }
