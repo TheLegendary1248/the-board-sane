@@ -1,1 +1,0 @@
-//TThis script controls the "Login" part of navbar
