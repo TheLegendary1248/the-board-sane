@@ -1,5 +1,5 @@
 //The board selection of the application
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Card from './components/boardCard.jsx'
 
 //Container for boards.
@@ -13,6 +13,7 @@ function BoardSelect(data) {
     let m;
     import('../styles/boardSelect.css').then((e) => { m = e.default; console.log("Vars:", m, e) })
     let boards = []
+    let input = useRef(null);
     /*
     //let get = await fetch("https://localhost:8000/board")
     let boards = data.boards.map(board => {
@@ -37,13 +38,13 @@ function BoardSelect(data) {
                     <h2 id="addHeader">Create a new Board</h2>
                     <form method="POST" action="">
                         <label htmlFor="new_title" hidden={true}>New title of board</label>
-                        <input name="name" id="new_title" type="text" placeholder="Board Title" />
+                        <input ref={input} name="name" id="new_title" type="text" placeholder="Board Title" />
                         <label for="new_isOffline">Offline</label>
                         <input id="new_isOffline" type="checkbox" />
                         <input id="create_new" type="submit" value="Create" />
                     </form>
                 </div>
-                <div id="offHover">+</div>
+                <div id="offHover" onClick={() => input.current.focus()}>+</div>
             </div>
         </div>
     )
