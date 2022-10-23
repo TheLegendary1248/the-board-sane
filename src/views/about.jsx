@@ -4,7 +4,7 @@ import React from 'react'
 function About()
 {
     return(
-        <div>
+        <div id="R_about">
             <h2>About</h2>
             <br></br>
             <p>Insert text about us</p>

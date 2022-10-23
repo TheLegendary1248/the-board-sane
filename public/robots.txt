@@ -1,3 +1,4 @@
 # https://www.robotstxt.org/robotstxt.html
+#TODO Configure robots.txt in the future
 User-agent: *
 Disallow:

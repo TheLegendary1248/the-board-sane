@@ -3,7 +3,8 @@ import React from 'react'
 
 function Home() {
     import ('../styles/home.css')
-    return (<div>
+    return (
+    <div id="R_home">
         <div id="banner">
             <div id="bannerText">
                 <h1>the-board</h1>

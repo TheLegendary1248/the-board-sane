@@ -1,11 +1,12 @@
+//React modules
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import Head from './components/defHead';
-import Body from './components/defBody';
-import Home from './components/home'
-import About from './components/about'
-import Login from './components/login'
-import BoardSelect from './components/boardSelect'
+//Homebrewed modules
+import Nav from './views/components/nav';
+import Home from './views/home'
+import About from './views/about'
+import Login from './views/login'
+import BoardSelect from './views/boardSelect'
 import reportWebVitals from './reportWebVitals';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 
@@ -13,7 +14,7 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Body/>
+    <Nav/>
       <Routes>
         <Route path="/" element={<Home/>}/>
         <Route path="about" element={<About />} />

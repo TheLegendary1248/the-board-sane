@@ -5,7 +5,7 @@ import {React, useState} from 'react'
 //TODO Add "forgot password"
 function Login(data) {
     import('../styles/loginStyle.css')
-    
+
     let errorMessage;
     if (data !== null) {
         errorMessage = <p id="error_message">{data.message}</p>
@@ -47,7 +47,7 @@ function Login(data) {
         else setWarn("")
     }
     return (
-        <div>
+        <div id="R_login">
             <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
             <form id="form" method="POST" action={"/api/login"+ (isLogin ? "" : "/new")}>
                 {errorMessage}

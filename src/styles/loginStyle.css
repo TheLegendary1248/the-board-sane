@@ -1,3 +1,4 @@
+/* Root name: R_login*/
 #header
 {
     font-size: 40px;
@@ -6,10 +7,10 @@
     width: 80%;
 }
 
-body h2, body form {
+#R_login body h2,#R_login body form {
     margin-left:5%;
 }
-input {
+#R_login input {
     transition: background-color 0.25s;
     background-color:  #555;
     box-shadow: 5px 5px 2px black;
@@ -21,8 +22,8 @@ input {
     margin-right: 20px;
     border-radius: 6px;
 }
-input:hover{
+#R_login input:hover{
     background-color: #333;
 }
-input:disabled {background-color: #0002;}
-input:not(:placeholder-shown):invalid{ border: 2px solid red;}
+#R_login input:disabled {background-color: #0002;}
+#R_login input:not(:placeholder-shown):invalid{ border: 2px solid red;}
