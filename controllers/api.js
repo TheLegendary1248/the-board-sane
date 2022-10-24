@@ -31,11 +31,10 @@ router.post("/login/new", async (req,res) => {
     if(await dupe === null) 
     {
         User.create(body)
-        res.status(301).redirect("/board")
+        res.send(true)
     }
     //Otherwise, return the page
-    //TODO Make page display special error here
-    else res.status(301).redirect("/login?error=dupe&name=" + body.name)
+    else res.send(false)
 })
 
 //Path for logging into the app
@@ -45,20 +44,23 @@ router.post("/login", async (req,res) =>  {
     //Check database
     console.log("Logged in")
     let body = req.body
-    
-    delete body.email
     console.log(body)
+    if(body.name === undefined || body.pass === undefined){
+        console.log("Request body does not contain all fields required")
+        res.send(false)
+        return;
+    }
     let retrieved = await User.exists(body).lean().exec()
     console.log(retrieved)
-    //If null, return to login with failure message
-    if(retrieved === null) {res.status(301).redirect("/login?error=incorrect"); return;}
+    //If null, return false
+    if(retrieved === null) {console.log("What?");res.send(false); }
     else
     {
-    
+        console.log("HEH?")
         //Create token id, and id of user
         TokenAuth.CreateNewToken(res, retrieved)
         //TODO Use a delay to slow down brute force attacks
-        res.status(301).redirect("/board")
+        res.send(true)
     }
 })
 

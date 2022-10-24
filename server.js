@@ -6,7 +6,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const mongoose = require('mongoose')
-const cookierParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 
 //Connect to mongodb : Haven't setup the database yet
 mongoose.connect(process.env.MONGO, {
@@ -24,7 +24,8 @@ app.use(function(req, res, next) {
   next();
 });
 //ok code
-app.use(cookierParser())
+app.use(cookieParser())
+app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jsx')
@@ -48,7 +49,7 @@ app.get('/about', (req,res) => res.render("about"))
 //The login page
 app.get('/login', (req,res) => 
 {
-  console.log("Hi. ")
+  console.log("Hi")
   let rend = (e) => res.render("login", e)
   let e = req.query["error"]
   console.log(e)

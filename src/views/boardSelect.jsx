@@ -22,7 +22,6 @@ function BoardSelect(data) {
         )
     })*/
     useEffect(() => {
-        console.log("Hi")
         return () => { console.log("Before:", m); m = null; console.log("After:", m); }
     }, [])
     if (boards.length == 0) boards = <h3>You currently have no boards</h3>
