@@ -4,12 +4,13 @@ import React from 'react'
 function About()
 {
     return(
-        <div id="R_about">
-            <h2>About</h2>
+        <main id="R_about">
+            <title>About The Board</title>
+            <h2 id="header">About</h2>
             <br></br>
             <p>Insert text about us</p>
             <p>Insert information about the whole project</p>
-        </div>
+        </main>
     )
 }
 

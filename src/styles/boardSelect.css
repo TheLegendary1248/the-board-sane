@@ -33,11 +33,13 @@
     display: block;
     position: absolute;
     color: #fff;
+    text-shadow: 0px 0px 0px #000F;
 }
 #addBoard:focus-within #offHover, #addBoard:hover #offHover {
     color: #ffff;
     font-size: 150px;
     opacity: 1;
+    text-shadow: 5px 5px 3px #0005;
 }
 #addBoard #onHover{
     transition: all 1s;

@@ -4,7 +4,8 @@ import React from 'react'
 function Home() {
     import ('../styles/home.css')
     return (
-    <div id="R_home">
+    <main id="R_home">
+        <title>The Board</title>
         <div id="banner">
             <div id="bannerText">
                 <h1>the-board</h1>
@@ -22,7 +23,7 @@ function Home() {
         <div>
             Point 3
         </div>
-    </div>
+    </main>
     )
 }
 

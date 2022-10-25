@@ -9,7 +9,8 @@ import Login from './views/login'
 import BoardSelect from './views/boardSelect'
 import reportWebVitals from './reportWebVitals';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
-
+//Import CSS
+import './default.css'
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

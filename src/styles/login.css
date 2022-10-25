@@ -1,0 +1,31 @@
+/* Root name: R_login*/
+
+#R_login{
+    margin-top: 2%;
+    margin-left: 2%;
+}
+#R_login input {
+    transition: all 0.5s;
+    background-color:  #555;
+    box-shadow: 5px 5px 2px black;
+    border: 0px solid white;
+    padding: 10px;
+    font-size: 15px;
+    width: min(500px,75%);
+    margin: 10px 0px;
+    margin-right: 20px;
+    border-radius: 6px;
+}
+#R_login input:hover{
+    background-color: #333;
+}
+#R_login input:disabled {background-color: #0002;}
+#R_login input:not(:placeholder-shown):invalid, #R_login input.warn
+{ 
+    margin: 8px 0px;
+    margin-right: 18px;
+    border: 4px solid red;
+    border-radius: 0px;
+    box-shadow: 5px 5px 0px #300;
+    background-color: #600;
+}

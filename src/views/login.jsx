@@ -2,10 +2,9 @@
 import {React, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 //TODO Add pattern matching
-//TODO I instantly forgot what to make this
 //TODO Add "forgot password"
 function Login(data) {
-    import('../styles/loginStyle.css')
+    import('../styles/login.css')
     //Navigate hook
     const navigate = useNavigate();
     //STATES
@@ -72,10 +71,11 @@ function Login(data) {
         else setError(isLogin ? "Invalid credentials" : "An error has ocurred")
     }
     return (
-        <div id="R_login">
+        <main id="R_login">
+            <title>Login into the Board</title>
             <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
             <form id="form" method="POST" onSubmit={(e) => HandleSubmit(e)} action={"http://localhost:8000/api/login"+ (isLogin ? "" : "/new")}>
-                <p hidden={error !== ""}>{error}</p>
+                <p hidden={error == ""}>{error}</p>
                 <div id="usernameSection">
                     <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
                     <label htmlFor="username" >Username</label>
@@ -89,7 +89,9 @@ function Login(data) {
                     </div>
                     <label htmlFor="password" >Password</label>
                     <br />
-                    <input id="password" onChange={OnPassChange} name="pass"  type={showPass ? "text" : "password" } placeholder="Make sure it's a strong password" required />
+                    <input 
+                        id="password" name="pass" placeholder="Make sure it's a strong password"
+                        onChange={OnPassChange} type={showPass ? "text" : "password" }  required />
                     <span id="show_pass" onClick={() => setVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
                 </div>
                 <br />
@@ -101,7 +103,7 @@ function Login(data) {
                 <br />
                 <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} disabled={!userAvailable && !isLogin}/>
             </form>
-        </div>
+        </main>
     )
 }
 
