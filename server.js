@@ -1,7 +1,11 @@
 //Modules
 //TODO Review http status codes and ensure the right ones are returned
-require('dotenv').config()
-
+//You gotta be fucking kidding me that I need to trim a single white space
+//Because that's what's been causing dotenv to not find the appropiate file
+console.log(`${process.env.NODE_ENV.trim()}`)
+require('dotenv').config({debug:true, path: ".env."+process.env.NODE_ENV.trim()})
+//
+console.log(process.env.FAILED)
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -14,7 +18,7 @@ mongoose.connect(process.env.MONGO, {
   useUnifiedTopology: true
 },
 () => {console.log('Connection to mongo: ', process.env.MONGO)})
-
+console.log("PATH",`.env.${process.env.NODE_ENV}`)
 console.log(`Time of server start: ${Date()}`)
 
 //Settings
@@ -27,22 +31,24 @@ app.use(function(req, res, next) {
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
-app.set('views', __dirname + '/views')
-app.set('view engine', 'jsx')
-app.engine('jsx', require('express-react-views').createEngine())
+
 
 //Does this code even exist for a good reason anymore?
 if (process.env.NODE_ENV === "production") {
   console.log("Using production mode")
-  app.use(express.static(path.join(__dirname, 'public')));
+  app.use(express.static('build'));
 }
 else {
+  console.log("Using development mode")
   app.use(express.static('public'))
 }
 
 //Access the api controller for programmatic things
 app.use('/api', require('./controllers/api'))
-
+app.use('*', (req, res) => res.sendFile("./", {
+  root: path.join(__dirname, 'build')}
+))
+/*
 //The about page
 app.get('/about', (req,res) => res.render("about"))
 
@@ -87,11 +93,11 @@ app.get('*', (req, res) => {
   //console.log(`Failed to get page at ${req.originalUrl}`)
   res.render("error")
 })
-
+*/
 //Listen
 app.listen(process.env.BACK_PORT, function(err){
     if (err) console.log(err);
-    console.log("Server listening on PORT", process.env.BACK_PORT);
+    console.log("Server listening on port:", process.env.BACK_PORT);
 });
 
 //TODO Add dumb easter eggs when i've presented
