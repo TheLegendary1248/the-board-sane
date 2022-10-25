@@ -31,7 +31,7 @@ function Login(data) {
         else
         {
             setEmpty(false)
-            let get = await fetch("http://localhost:8000/api/checkUser/" + event.target.value);
+            let get = await fetch("/api/checkUser/" + event.target.value);
             let res = await get.json()
             console.log(res)
             //TODO Combine warn and ok, they both start with "That username is..."
@@ -53,7 +53,7 @@ function Login(data) {
         //Check with server
         //return;
         let req = 
-        await fetch("http://localhost:8000/api/login" + (isLogin ? "" : "/new"),{
+        await fetch("/api/login" + (isLogin ? "" : "/new"),{
         method: 'POST',
         headers: {
             //Note: FormData is .json, lovely aint it?
