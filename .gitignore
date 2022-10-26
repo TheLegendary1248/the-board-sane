@@ -27,3 +27,4 @@ yarn-error.log*
 /shadow_realm
 firebase-debug.log
 secrets.json
+.firebase

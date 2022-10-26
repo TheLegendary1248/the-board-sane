@@ -25,11 +25,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "set NODE_ENV=development&& nodemon server",
+    "dev": "set NODE_ENV=development&& nodemon back/server",
     "build": "react-scripts build",
     "test": "echo \"Error no test specified\" && exit 1",
     "eject": "react-scripts eject",
-    "prod": "set NODE_ENV=production&& nodemon server"
+    "prod": "set NODE_ENV=production&& nodemon back/server"
   },
   "eslintConfig": {
     "extends": [

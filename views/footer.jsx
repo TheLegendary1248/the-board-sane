@@ -1,1 +1,0 @@
-//Every company webpage just has a footer. May or may not make one myself
