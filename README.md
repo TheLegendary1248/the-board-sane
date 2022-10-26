@@ -10,4 +10,3 @@ Packages I Remember Using
 - cookie-parser : Addon package to express, for accessing cookies server side
 
 
-\* React _is_ used, but as of right now, is SSR using `express-react-views`

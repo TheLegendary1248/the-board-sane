@@ -1,4 +1,5 @@
 //Modules
+//TODO Eventually, might want to split backend and frontend, as you can see the cracks between them widening
 //TODO Review http status codes and ensure the right ones are returned
 //You gotta be fucking kidding me that I need to trim a single white space
 //Because that's what's been causing dotenv to not find the appropiate file
@@ -42,7 +43,7 @@ else {
   console.log("Using development mode")
   app.use(express.static('public'))
 }
-
+app.get('/hello', (req, res) => res.send("Hello to you"))
 //Access the api controller for programmatic things
 app.use('/api', require('./controllers/api'))
 app.use('*', (req, res) => res.sendFile("./", {
