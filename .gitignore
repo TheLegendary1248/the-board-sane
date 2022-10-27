@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+**/node_modules
 /.pnp
 .pnp.js
 
@@ -9,7 +9,7 @@
 /coverage
 
 # production
-/build
+frontend/build
 
 # misc
 .DS_Store
@@ -24,7 +24,7 @@ yarn-error.log*
 
 #I might often had to move out files to see if they were cause of "x"
 #So this folder exists
-/shadow_realm
+**/shadow_realm
 firebase-debug.log
 secrets.json
 .firebase

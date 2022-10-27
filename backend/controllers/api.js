@@ -6,7 +6,7 @@ const Token = require('../schema/token')
 const TokenAuth = require("./token")
 const { CheckToken } = require('./token')
 
-//...
+//News about the webpage
 router.get("/news", (req,res) => {
     res.status(301).redirect("/error")
 })

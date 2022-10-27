@@ -2,34 +2,26 @@
   "name": "the-board-sane",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8000",
+  "proxy": "http://localhost:8421",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
-    "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.6",
     "dotenv": "^16.0.3",
-    "express": "^4.18.1",
-    "express-react-views": "^0.11.0",
     "firebase": "^9.12.1",
     "firebase-tools": "^11.15.0",
-    "mongoose": "^6.6.5",
-    "node-fetch": "^3.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.2",
     "react-scripts": "5.0.1",
-    "uuid": "^9.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "set NODE_ENV=development&& nodemon back/server",
     "build": "react-scripts build",
     "test": "echo \"Error no test specified\" && exit 1",
     "eject": "react-scripts eject",
-    "prod": "set NODE_ENV=production&& nodemon back/server"
+    "runbuild": "set NODE_ENV=production&& nodemon back/server"
   },
   "eslintConfig": {
     "extends": [

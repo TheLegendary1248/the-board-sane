@@ -1,12 +1,11 @@
-# The Board  
-A website application intended to be like Ever Note, One Note, Milanote and Trello  
+# [The Board](https://the-board-ab255.web.app)  
+![Site Logo](/frontend/public/this_came_out_better_than_expected.png)  
+### A website application intended to be like Ever Note, One Note, Milanote and Trello  
 
-Technologies Used
-Front End: React*
-Back End: Node JS
-
-Packages I Remember Using
-- uuid : For 'unique' token id. As of writing this, i just searched up and found out about JS's built in interface for cryptographically strong keys. Dammit
-- cookie-parser : Addon package to express, for accessing cookies server side
+Major Technologies Used  
+Front End: React - Create From Create React App  
+Back End: Node JS  
+Database: MongoDB  
+Hosting: Firebase(frontend) / Cloud Run(backend)
 
 
