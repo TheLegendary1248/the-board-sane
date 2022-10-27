@@ -3,9 +3,9 @@
 //TODO Review http status codes and ensure the right ones are returned
 //You gotta be fucking kidding me that I need to trim a single white space
 //Because that's what's been causing dotenv to not find the appropiate file
+if(process.env.NODE_ENV == undefined) require('dotenv').config({debug: true})
+else require('dotenv').config({debug:true, path: ".env."+process.env.NODE_ENV.trim()})
 console.log(`${process.env.NODE_ENV.trim()}`)
-require('dotenv').config({debug:true, path: ".env."+process.env.NODE_ENV.trim()})
-//
 console.log(process.env.FAILED)
 const express = require('express');
 const path = require('path');

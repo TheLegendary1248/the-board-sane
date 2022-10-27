@@ -1,0 +1,16 @@
+{
+  "name": "the-board-sane",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.5",
+    "uuid": "^9.0.0"
+  },
+  "scripts": {
+    "start": "node server"
+  }
+}

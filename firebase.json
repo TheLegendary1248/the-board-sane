@@ -1,11 +1,23 @@
 {
   "hosting": {
-    "site": "the-board-site",
     "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source" : "/api/**",
+        "run" : {
+        "serviceId" : "board-backend",
+        "region":"us-central1"
+        }
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }
