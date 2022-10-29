@@ -1,14 +1,9 @@
 //This is the navbar for the website
 import React from 'react'
 import { Link } from 'react-router-dom'
+import UserModal from './userModal'
 
 //TODO Make a hamburger menu for mobile
-
-let unusedModal = (
-<div id="userModal">
-    <span>Welcome unknown</span>
-</div>)
-
 function Nav(){
     return(
     <nav>
@@ -17,6 +12,7 @@ function Nav(){
         <Link to={"/about"}>About</Link>
         <Link to={"/login"}>Login</Link>
         <Link to={"/board"}>Board</Link>
+        <UserModal/>
     </nav>
     )
 }

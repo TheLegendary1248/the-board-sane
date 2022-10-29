@@ -3,8 +3,8 @@
 #addBoard {
     transition: all 1s;
     position: fixed;
-    bottom: 50px;
-    right: 50px;
+    bottom: 3%;
+    right: 3%;
     width: 75px;
     height: 75px;
     background-image: linear-gradient(to right bottom, #109499 0%, #2234ad 100%);
