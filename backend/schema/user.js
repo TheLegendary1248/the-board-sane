@@ -4,11 +4,11 @@ const Board = require("./board")
 
 const user_s = new mongoose.Schema({
     //The username of the user
-    name:{type:String},
+    name:{type:String, unique: true},
     //The password of the user
     pass:{type:String},
     //The email of the user
-    email:{type:String},
+    email:{type:String, unique: true},
     //Time of account creation
     creationDate:{type:Date},
 }, {toJSON: {virtuals: true}})

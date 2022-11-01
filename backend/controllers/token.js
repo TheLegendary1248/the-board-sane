@@ -5,20 +5,18 @@ const Token = require('../schema/token')
 const User = require('../schema/user')
 const {v4: uuidv4 } = require('uuid')
 
-//Token related functions
-let tFunc = {
 //Function that creates new tokens
-CreateNewToken: function (res, user)
+function CreateNewToken (res, user)
 {   
     //TODO Check for duplicates
     let token = uuidv4();
     Token.create({token: token, expires: Date(), user: user._id})
     res.cookie("Session", token)
-},
+}
 //Function that checks for token
 //TODO Add return for token expiration, aka log out user after set time
 //FIXME Hash token, and give the user unhashed version
-CheckToken: async function (req)
+async function CheckToken(req)
 {
     console.log(req.cookies)
     //Check if the user has a Session token to begin with
@@ -36,13 +34,13 @@ CheckToken: async function (req)
         //Otherwise return it
         else { return user; }
     }
-},
-DeleteToken: async function (res)
+} 
+async function DeleteToken(res)
 {
     let cookie = res.cookie.Session
     res.clearCookie("Session")
     Token.deleteOne({token: cookie}).exec()
 }
-}
 
-module.exports = tFunc;
+
+module.exports = {CreateNewToken, CheckToken, DeleteToken};

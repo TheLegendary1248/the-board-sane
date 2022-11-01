@@ -1,6 +1,8 @@
 //REQUIRE MODULES
 //TODO Review http status codes and ensure the right ones are returned
 require('dotenv').config()
+//Configure secrets, on local computer
+require('dotenv').config({debug:true, path: '.env.secrets'})
 const express = require('express');
 const path = require('path');
 const app = express();
@@ -31,10 +33,7 @@ app.use('/api', require('./controllers/api'))
 //Overall check the thing is responding
 app.get('/', (req, res) => res.sendFile("hi.html", { root: __dirname }) )
 app.get('*', (req,res) => res.status(404).end())
-/*
-app.use('*', (req, res) => res.sendFile("./", {
-  root: path.join(__dirname, 'build')}
-)) */
+
 //Listen on port
 app.listen(process.env.PORT, function(err){
     if (err) console.log(err);

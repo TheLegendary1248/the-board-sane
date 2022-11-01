@@ -28,3 +28,4 @@ yarn-error.log*
 firebase-debug.log
 secrets.json
 .firebase
+backend/.env.secrets
