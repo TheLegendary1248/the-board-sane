@@ -4,6 +4,8 @@ const router = require('express').Router()
 const salt = 12
 const {CreateNewToken, DeleteToken, CheckToken} = require("./token")
 const {SendMail} = require('../utils/emailHandler.js')
+const {GetHtmlFile}= require('../utils/htmlReader.js')
+const path = require('path');
 //Path for creating a new user
 //TODO Add email validation
 router.post("/new", async (req, res) => {
@@ -17,17 +19,20 @@ router.post("/new", async (req, res) => {
     if (await dupe === null) {
         let hash = await bcrypt.hash(body.pass, salt)
         body.pass = hash;
-        //let newUser = await userDB.create(body);
-        //console.log(newUser)
-        //CreateNewToken(res, newUser);
-        //await SendMail(body.email, "The Board - Verify your email", 
-        //"<h1>Hello!</h1><a href=\"http:localhost:1248\">Verify Email</a>");
+        let emailHTML = await GetHtmlFile(path.join(__dirname,"../emailPresets/verify.html"))
+        emailHTML.inserts.name = body.name
+        //TODO Set to correct url
+        emailHTML.inserts.url = "https://localhost:1248/api/verify"
+        userDB.create(body);
+        await SendMail(body.email, "The Board - Verify your email", emailHTML.Join());
         res.send(true)
     }
     //Otherwise, return the page
     else res.send(false)
 })
-
+router.get('/verify', async(req, res) => {
+    res.status(302).redirect("/board")
+})
 //TODO Prevent reloading page on incorrect credentials
 //TODO Cache username as cookie to showup on login status
 router.post("/", async (req, res) => {

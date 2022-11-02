@@ -9,14 +9,6 @@ const app = express();
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 const {GetHtmlFile}= require('./utils/htmlReader.js')
-async function rand() {
-  let rep = await GetHtmlFile(path.join(__dirname,"./emailPresets/test.html"))
-  rep.inserts.name = "John Doe"
-  rep.inserts.url = "https://www.youtube.com"
-  var m = rep.Join()
-  console.log(m);
-  return m;
-}
 app.get('/idk', async (req,res) => res.send(await rand()))
 //CONFIGURE MODULES
 //Connect to mongodb
