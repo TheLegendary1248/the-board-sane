@@ -3,8 +3,7 @@ const userDB = require('../schema/user')
 const router = require('express').Router()
 const salt = 12
 const {CreateNewToken, DeleteToken, CheckToken} = require("./token")
-const {SendMail} = require('../email.js')
-
+const {SendMail} = require('../utils/emailHandler.js')
 //Path for creating a new user
 //TODO Add email validation
 router.post("/new", async (req, res) => {
@@ -21,8 +20,8 @@ router.post("/new", async (req, res) => {
         //let newUser = await userDB.create(body);
         //console.log(newUser)
         //CreateNewToken(res, newUser);
-        await SendMail(body.email, "The Board - Verify your email", 
-        "<h1>Hello!</h1><a href=\"http:localhost:1248\">Verify Email</a>");
+        //await SendMail(body.email, "The Board - Verify your email", 
+        //"<h1>Hello!</h1><a href=\"http:localhost:1248\">Verify Email</a>");
         res.send(true)
     }
     //Otherwise, return the page

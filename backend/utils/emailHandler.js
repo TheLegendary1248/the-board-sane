@@ -57,11 +57,11 @@ async function SendMail(recipient, subject, html) {
             to: recipient,
         }
         let transporter = await GetTransport();
-        return;
         const result = await transporter.sendMail(options);
         console.log(result)
     } catch (error) {
         console.log(error);
+        return null;
     }
 }
 module.exports = { SendMail };
