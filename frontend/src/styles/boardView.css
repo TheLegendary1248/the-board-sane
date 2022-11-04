@@ -1,0 +1,52 @@
+#hint {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: calc(2vh + 2vw);
+    overflow: visible;
+    white-space: nowrap;
+    user-select: none;
+    opacity: 0.1;
+}
+
+#contentContainer {
+    position: fixed;
+    overflow: visible;
+}
+#selectionPopup {
+    background-color: gray;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 25vw;
+    height: 20vh;
+    transform: translate(-50%, -50%);
+    background-color: grey;
+    border-radius: 5px;
+    border: 1px white solid;
+    box-shadow: 5px 5px 1px #0003;
+}
+#selectInput {
+    background-color: transparent;
+    width: 100%;
+    height: 20px;
+    border-width: 0px;
+    border-bottom: 2px #fff solid;
+}
+#selectContent {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: calc(100% - 24px);
+}
+#selectContent div {
+    margin-left: 5px;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+#selectContent div span{
+    background-color: #333;
+    border-radius: 5px;
+    padding: 1px;
+    font-family: monospace;
+}
