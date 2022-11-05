@@ -27,6 +27,4 @@ router.get("/checkEmail/email", async (req,res)=> {
 //Login path
 router.use('/login', require('./login'))
 
-router.use("/userContent", require("./userContent"))
-
 module.exports = router

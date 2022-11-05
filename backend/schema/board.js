@@ -1,6 +1,5 @@
-//Schema for a board. A board is a collection of content that a user (or multiple users in the unlikely and far future) can modify
+//Schema for a board. A board is a collection of item that a user (or multiple users in the unlikely and far future) can modify
 const mongoose = require("mongoose")
-const contentNote = require("./content/content_note")
 
 const board_s = new mongoose.Schema({
     //The title/name of the board
@@ -10,7 +9,7 @@ const board_s = new mongoose.Schema({
     
 })
 
-//TODO Use programmatic looping to get all content schemas in "content" and apply a virtual to all
+//TODO Use programmatic looping to get all item schemas in "item" and apply a virtual to all
 
 //Virtual
 board_s.virtual('Board', 

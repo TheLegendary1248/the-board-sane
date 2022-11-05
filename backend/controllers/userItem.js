@@ -7,15 +7,15 @@ var path;
 var db;
 
 //Rather dumb having forgot the object is right there ^
-//Get all of the user's content
+//Get all of the user's item
 router.get("/",(res,req) =>{
     
     db.Content.get({with: req.body.userHash})
 })
-//Add user content
+//Add user item
 router.post("")
 
-//Update user content
+//Update user item
 router.put("")
 
 module.exports = router

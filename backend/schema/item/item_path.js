@@ -1,9 +1,9 @@
-//Schema for paths, lines connecting two pieces of "content"
+//Schema for paths, lines connecting two pieces of "item"
 const mongoose = require("mongoose")
 
-//A path should reference the content it connects, the kind of path
+//A path should reference the item it connects, the kind of path
 //And any text on it
-const contentPath_s = new mongoose.Schema({
+const itemPath_s = new mongoose.Schema({
     //The text the path has
     text:{type:String},
     //The type of path it is
@@ -13,4 +13,4 @@ const contentPath_s = new mongoose.Schema({
     board:{type: mongoose.Schema.Types.ObjectId},
 })
 
-module.exports = mongoose.model("content_Path", contentPath_s)
+module.exports = mongoose.model("item_Path", itemPath_s)
