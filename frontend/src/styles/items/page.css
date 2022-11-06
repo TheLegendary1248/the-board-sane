@@ -1,0 +1,18 @@
+/*Styling for a 'page'*/
+.i_page {
+    resize: both;
+    overflow: auto;
+}
+.i_page .title{
+    position: relative; 
+    width: calc(100% - 10px); 
+    height: 20px; 
+    resize:none; 
+    white-space: nowrap; 
+    overflow:hidden;
+}
+.i_page .body{
+    width: calc(100% - 10px);
+    height: calc(100% - 45px); 
+    resize: none;
+}

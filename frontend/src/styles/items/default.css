@@ -1,0 +1,8 @@
+/*General styling for all item types*/
+.item, .item * {
+    position: absolute;
+    background-color: var(--item-bg);
+}
+#itemContainer {
+    --item-bg: #000;
+}

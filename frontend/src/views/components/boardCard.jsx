@@ -1,8 +1,7 @@
 //A view card for the boards in board view
-const React = require('react')
+import React from 'react'
 
-
-function BoardCard(board)
+export default function BoardCard(board)
 {
     //Ok react, this is beyond stupid
 
@@ -18,5 +17,3 @@ function BoardCard(board)
         <div>ERROR GETTING BOARD</div>
     )
 }
-
-export default BoardCard

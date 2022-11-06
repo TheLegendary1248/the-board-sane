@@ -1,41 +1,50 @@
-//The main purpose of the application
 import React from 'react'
-import { useRef } from 'react'
-
+import { useEffect, useRef } from 'react'
+import SuggestionPopup from './board_components/suggestionPopup'
+import Note from './items/note'
+import '../styles/boardView.css'
+import '../styles/items/default.css'
+let zoom = 1;
+///// The React view for the board page
 
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
-function Board()
-{
-    import('../styles/boardView.css')
+function Board() {
+
     const container = useRef(null)
     const selection = useRef(null)
-    document.addEventListener("keypress", () => console.log("Hello!"))
-    return(
+    //REMINDERS
+    //The element in focus
+    //document.activeElement
+    useEffect(() => {
+
+    }, [])
+    //Modularize this, because it's gonna get heavy
+    function eventHandler() {
+
+    }
+    //document.addEventListener("keypress", () => console.log("Hello!"))
+    function Zoom(event){
+        if(event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
+    }
+    function Pan(event){
+
+    }
+    return (
         <div id="R_board">
+            <div id='ui_toolbar' hidden={true}>Placeholder for ui toolbar when I make that</div>
+            <div id="focusLevel">
+                Focus Level: Note
+            </div>
             <div id="hint">
                 Start typing or drawing
             </div>
-            <div id="itemContainer" ref={container}>
-
+            <div id="itemContainer" ref={container} tabIndex={0} onWheel={Zoom} onDrag={Pan}>
+                <Note></Note>
+                <Note></Note>
+                <Note></Note>
             </div>
-            <div id="selectionPopup">
-                <input id="selectInput" type="text"></input>
-                <div id="selectItem">
-                    <div>
-                        <span>note:</span> A standard note
-                    </div>
-                    <div>
-                        <span>timer:</span> A clock that ticks down
-                    </div>
-                    <div>
-                        <span>path:</span> A line that connects items
-                    </div>
-                    <div>
-                        <span>table:</span> A table. Legs not included
-                    </div>
-                </div>
-            </div>
+            <SuggestionPopup hidden={true}/>
         </div>
     )
 }
