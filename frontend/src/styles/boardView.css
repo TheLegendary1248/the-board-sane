@@ -12,12 +12,6 @@
     user-select: none;
     opacity: 0.1;
 }
-
-#itemContainer {
-    position: fixed;
-    overflow: visible;
-    
-}
 #selectionPopup {
     background-color: gray;
     position: fixed;
@@ -88,4 +82,15 @@
     padding: 4px;
     font-size: 20px;
     background-color: darkblue;
+}
+#fullscreen{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+}
+#itemContainer {
+    position: fixed;
+    overflow: visible;
+    top: 50%;
+    left: 50%;
 }

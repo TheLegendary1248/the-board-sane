@@ -31,7 +31,7 @@ export default function SuggestionPopup() {
     useEffect(()=> {
     }, [input])
     return(
-    <div id="selectionPopup">
+    <div id="selectionPopup" hidden={true}>
         <input id="selectInput" type="text" onChange={handleInputChange}></input>
         <div id="selectItem" tabIndex={-1}>
         {

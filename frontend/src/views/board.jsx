@@ -24,10 +24,11 @@ function Board() {
 
     }
     //document.addEventListener("keypress", () => console.log("Hello!"))
-    function Zoom(event){
-        if(event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
+    function Zoom(event) {
+        //TODO Make zoom focus on mouse location
+        if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
-    function Pan(event){
+    function Pan(event) {
 
     }
     return (
@@ -39,12 +40,16 @@ function Board() {
             <div id="hint">
                 Start typing or drawing
             </div>
-            <div id="itemContainer" ref={container} tabIndex={0} onWheel={Zoom} onDrag={Pan}>
-                <Note></Note>
-                <Note></Note>
-                <Note></Note>
+            {/*Used to center the board screen*/}
+            <div id="fullscreen">
+                <div id="itemContainer" ref={container} tabIndex={0} onWheel={Zoom} onDrag={Pan}>
+                    <Note></Note>
+                    <Note></Note>
+                    <Note></Note>
+                </div>
             </div>
-            <SuggestionPopup hidden={true}/>
+
+            <SuggestionPopup/>
         </div>
     )
 }

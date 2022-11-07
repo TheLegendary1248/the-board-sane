@@ -37,7 +37,7 @@ root.render(
   <React.StrictMode>
     <isboardView.Provider value={true}>
       <BrowserRouter>
-        <Nav />
+        {/*<Nav />*/}
         <Routes>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
@@ -64,7 +64,6 @@ let temp = <div>
     <Route path="board/:boardId" element={<Board />} />
     <Route path="*" />
   </Routes>
-
 </div>
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
