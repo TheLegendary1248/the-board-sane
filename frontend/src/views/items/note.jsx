@@ -9,15 +9,12 @@ export default function Note(data){
     import('../../styles/items/note.css')
     //TODO Make draggable only on focus
     function Drop(event){
-        console.log(event)
         event.target.style.left = getX(event) - offsetX + "px"
         event.target.style.top = getY(event) - offsetY + "px"
     }
     function Pickup(event) {
-        console.log(event.target.offsetLeft)
         offsetX = getX(event) - event.target.offsetLeft
         offsetY = getY(event) - event.target.offsetTop
-        console.log(offsetX, ";", offsetY)
     }
     return(
     <div className="item i_page" draggable="true" style={{width: data.width, height: data.height}} onDragStart={Pickup} onDragEnd={Drop}>

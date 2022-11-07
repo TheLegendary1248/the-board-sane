@@ -29,7 +29,7 @@ function Board() {
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
     function Pan(event) {
-
+        
     }
     return (
         <div id="R_board">
@@ -41,7 +41,7 @@ function Board() {
                 Start typing or drawing
             </div>
             {/*Used to center the board screen*/}
-            <div id="fullscreen">
+            <div id="center">
                 <div id="itemContainer" ref={container} tabIndex={0} onWheel={Zoom} onDrag={Pan}>
                     <Note></Note>
                     <Note></Note>
