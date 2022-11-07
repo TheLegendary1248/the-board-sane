@@ -1,17 +1,16 @@
 //Courtesy aspirin by Fusebit 
 //https://fusebit.io/blog/gmail-api-node-tutorial/
-const axios = require("axios");
 const nodemailer = require("nodemailer");
 const { google } = require("googleapis");
-const googleApiUrl = 'https://gmail.googleapis.com/gmail/v1/users';
+
 //CONFIGURATION
-//Instantiate client
-const oAuth2Client = new google.auth.OAuth2(
+//Instantiate OAuth2 Client
+const authClient = new google.auth.OAuth2(
     process.env.MAIL_CLIENT_ID,
     process.env.MAIL_CLIENT_SECRET,
     process.env.REDIRECT_URI
 );
-oAuth2Client.setCredentials({ refresh_token: process.env.MAIL_REFRESH_TOKEN });
+authClient.setCredentials({ refresh_token: process.env.MAIL_REFRESH_TOKEN });
 //Auth used for sending mail
 const auth = {
     type: 'OAuth2',
@@ -27,11 +26,9 @@ const transport = {
 }
 //Function to get token 
 async function GetTransport() {
-    //Get a new transport if it's been longer than a minute
-    console.log(new Date() - transport.creationTime)
+    //Create a new transport if it's been longer than a minute
     if (!transport.creationTime ? true : (new Date() - transport.creationTime > 60000)) {
-        console.log("Generating new token");
-        let token = await oAuth2Client.getAccessToken();
+        let token = await authClient.getAccessToken();
         let newTransport = nodemailer.createTransport({
             service: "gmail",
             auth: {
@@ -43,6 +40,7 @@ async function GetTransport() {
         transport.creationTime = new Date()
         return newTransport;
     }
+    //Else return the existing one
     else return transport.value;
 };
 
@@ -57,35 +55,11 @@ async function SendMail(recipient, subject, html) {
             to: recipient,
         }
         let transporter = await GetTransport();
-        const result = await transporter.sendMail(options);
-        console.log(result)
+        transporter.sendMail(options);
     } catch (error) {
         console.log(error);
         return null;
     }
 }
+
 module.exports = { SendMail };
-//Unused
-async function General() {
-    console.log("HELLO!")
-    try {
-        const url = `https://gmail.googleapis.com/gmail/v1/users/${process.env.MAIL_EMAIL}/profile`;
-        const { token } = await oAuth2Client.getAccessToken();
-        //const token = await getAccessToken();
-        const config = generateConfig(url, token);
-        const response = await axios(config);
-        console.log(response.data)
-    } catch (error) {
-        console.log(error);
-    }
-}
-const generateConfig = (url, token) => {
-    return {
-        method: "get",
-        url: url,
-        headers: {
-            Authorization: `Bearer ${token} `,
-            "Content-type": "application/json",
-        },
-    };
-};
