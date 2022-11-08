@@ -8,7 +8,7 @@ let prevInput = ""
 let precomposedArray = Object.keys(itemTable).concat(words).sort((a, b) => a.localeCompare(b))
 let arr = Array.from(precomposedArray)
 
-export default function SuggestionPopup() {
+export default function SuggestionPopup(data) {
     const [input, setInput] = useState("")
     //If the new input is just an addition of the previous, do not waste time re-reducing the whole array, again...
     function handleInputChange(e){

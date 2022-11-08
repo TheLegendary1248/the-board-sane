@@ -1,16 +1,18 @@
+import React from 'react'
+
 //Refers to all items
 let itemTable = {
     note : {
         desc: "A standard note",
-        import: () => import('./note')
+        import: () => React.lazy(() => import('./note'))
     },
     page : {
         desc: "Just like a note, but with a title",
-        import: () => import('./page')
+        import: () => React.lazy(() => import('./page'))
     },
     clock : {
         desc: "A thing that measures time",
-        import: () => import('./clock')
+        import: () => React.lazy(() => import('./clock'))
     },
     grid: {
         desc: "This differs from a table in some way"

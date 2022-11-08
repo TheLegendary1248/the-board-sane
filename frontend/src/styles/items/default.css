@@ -1,6 +1,8 @@
 /*General styling for all item types*/
-.item, .item * {
+.itemwrapper{
     position: absolute;
+}
+.itemwrapper * {
     background-color: var(--item-bg);
 }
 #itemContainer {
