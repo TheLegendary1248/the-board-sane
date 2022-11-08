@@ -1,21 +1,11 @@
 //Manipulates the users stuff
 const router = require('express').Router()
+//Psuedo code
+const database = null;
 
-//Moar Psuedo code
-
-var path;
-var db;
-
-//Rather dumb having forgot the object is right there ^
-//Get all of the user's item
-router.get("/",(res,req) =>{
-    
-    db.Content.get({with: req.body.userHash})
-})
-//Add user item
-router.post("")
-
-//Update user item
-router.put("")
+//Routes
+router.get("/", () => null())
+router.patch("/", () => null())
+router.put("/", () => null())
 
 module.exports = router

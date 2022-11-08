@@ -3,7 +3,7 @@ const mongoose = require("mongoose")
 
 const token_s = new mongoose.Schema({
     //The token of the user
-    token: {type: String},
+    token: {type: String, unique: true},
     //Expiration date of the token
     expires: {type: Date},
     //User the token is for

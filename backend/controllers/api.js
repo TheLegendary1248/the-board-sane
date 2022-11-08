@@ -12,16 +12,12 @@ router.get("/news", (req,res) => {
 
 //Checks if username is available
 router.get("/checkUser/:name", async (req,res)=> {
-    //Get from DB
     let dupe = await User.exists({name: req.params.name}).lean().exec()
-    //Return True or False depending if found or not
     res.send(dupe !== null)
 })
 //Checks if username is available
 router.get("/checkEmail/email", async (req,res)=> {
-    //Get from DB
     let dupe = await User.exists({email: req.params.email}).lean().exec()
-    //Return True or False depending if found or not
     res.send(dupe !== null)
 })
 //Login path

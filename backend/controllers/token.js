@@ -1,15 +1,16 @@
-//TODO UTILIZE EXPORTS PROPERLY
-//TODO ACKNOWLEDGE OTHER MORE DEVELOPED COUNTRIES HAVE LAWS ON COOKIES 
 //TODO DO COOKIE RESEARCH IN GENERAL
 const Token = require('../schema/token')
 const User = require('../schema/user')
-const {v4: uuidv4 } = require('uuid')
+const { randomBytes } = require('crypto')
+const bcrypt = require('bcrypt')
 
 //Function that creates new tokens
 function CreateNewToken (res, user)
 {   
     //TODO Check for duplicates
-    let token = uuidv4();
+    //TODO Hash token
+    let token = randomBytes(72).toString('hex')
+    console.log(token)
     Token.create({token: token, expires: Date(), user: user._id})
     res.cookie("Session", token)
 }

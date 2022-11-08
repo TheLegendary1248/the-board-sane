@@ -1,16 +1,16 @@
 const bcrypt = require('bcrypt')
 const userDB = require('../schema/user')
 const router = require('express').Router()
-const salt = 12
 const {CreateNewToken, DeleteToken, CheckToken} = require("./token")
 const {SendMail} = require('../utils/emailHandler.js')
 const {GetHtmlFile}= require('../utils/htmlReader.js')
 const path = require('path');
+const salt = 12
+
 //Path for creating a new user
 //TODO Add email validation
 router.post("/new", async (req, res) => {
     //Double check with DB that user is available
-    console.log("Creating new")
     let body = req.body
     let dupe = await userDB.exists({ name: body.name }).lean().exec()
     body.creationDate = new Date();
