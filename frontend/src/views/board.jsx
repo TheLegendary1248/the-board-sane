@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { useEffect, useRef } from 'react'
 import SuggestionPopup from './board_components/suggestionPopup'
 import note from './items/note'
@@ -14,6 +14,7 @@ let zoom = 1;
 let itemImports = {
     'note': itemTable.note.import() 
 };
+let counter = 0;
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
@@ -49,8 +50,10 @@ function Board() {
             itemImports[name] = itemTable[name].import()
         }
         let Item = itemImports[name]
-        setItems(items.concat(<Item/>))
+        setItems(items.concat(<Suspense key={++counter}><Item/></Suspense>))
     }
+    //Defaults to adding a note
+    function AddDefault(t) { setItems(items.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
     function RemoveItems(){
 
     }
@@ -59,7 +62,9 @@ function Board() {
     }
     //On key down with the board in focus, detect input 
     function KeyDown(event) {
+        console.log(SetChildInput)
         SetChildInput.current(event.target.value)
+        event.target.value = ""
     }
     const SetChildInput = useRef(null)
     return (
@@ -78,7 +83,7 @@ function Board() {
                     {items}
                 </div>
             </div>
-            <SuggestionPopup setInput={SetChildInput} addItem={AddItem}/>
+            <SuggestionPopup setInput={SetChildInput} addItem={AddItem} addDefault={AddDefault}/>
         </div>
     )
 }

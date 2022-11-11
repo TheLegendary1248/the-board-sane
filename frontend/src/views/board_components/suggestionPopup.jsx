@@ -26,7 +26,11 @@ export default function SuggestionPopup(data) {
         //Detect when the word is completed, and use the best suggestion
         if(input[input.length - 1] === ' ') 
         {
-            console.warn("Suggestion exit function non-existent")
+            let i = arr.indexOf(input)
+            if(i !== -1) data.addItem(arr[i])
+            else data.addDefault(input)
+            setHidden(true)
+            return
         }
         //If the new input is just an addition of the previous, do not waste time re-reducing the whole array again
         if(!input.includes(previousInput)) arr = Array.from(precomposedArray)
@@ -37,17 +41,22 @@ export default function SuggestionPopup(data) {
         setInputValue(input)
     }
     function getFocus(text){
-        inputField.current.value = text;
-        inputField.current.focus()
         setHidden(false);
+        console.log(inputField.current.focus)
+        console.log(inputField.current)
+        inputField.current.value = text;
+        inputField.current.focus();
     }
     useEffect(()=> {
+        console.log("Render")
         data.setInput.current = getFocus
-        
-    }, [inputValue])
+    }, [])
+    useEffect(()=> {
+        if(!isHidden) inputField.current.focus()
+    }, [isHidden])
     return(
     <div id="selectionPopup" hidden={isHidden}>
-        <input id="selectInput" type="text" onChange={handleInputChange} ref={inputField}></input>
+        <input id="selectInput" type="text" onChange={handleInputChange} ref={inputField} tabIndex={0}></input>
         <div id="selectItem" tabIndex={-1}>
         {
             arr.map((key) => 

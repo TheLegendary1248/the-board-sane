@@ -8,13 +8,9 @@ export default function Page(data) {
     return (
         <Wrapper>
             <label>
-                <textarea placeholder='Title' rows='1' wrap='off'>
-                    {data.title}
-                </textarea>
+                <textarea placeholder='Title' rows='1' wrap='off' value={data.title}/>
             </label>
-            <textarea placeholder='Type anything here!'>
-                {data.text}
-            </textarea>
+            <textarea placeholder='Type anything here!' value={data.text}/>
         </Wrapper>
     )
 }
