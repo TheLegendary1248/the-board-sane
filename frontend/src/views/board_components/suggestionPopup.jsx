@@ -1,15 +1,24 @@
 //The popup for the board view which suggests the items. Grammar 100
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import itemTable from "../items";
 import Suggestion from "./itemSuggestion";
-const words = ["help","sos","guide","aid"]
-let prevInput = ""
+//A selection of words that'll direct the user to the guide
+const helpWords = ["help","sos","guide","aid"]
+//The last value the input field was. Used to detect if the user kept spelling or otherwise
+let previousInput = ""
 
-let precomposedArray = Object.keys(itemTable).concat(words).sort((a, b) => a.localeCompare(b))
+//Create a precomposed array of all the items and help conjoined and sorted
+let precomposedArray = Object.keys(itemTable).concat(helpWords).sort((a, b) => a.localeCompare(b))
 let arr = Array.from(precomposedArray)
 
 export default function SuggestionPopup(data) {
-    const [input, setInput] = useState("")
+    //The input field VALUE, not the element itself
+    const [inputValue, setInputValue] = useState("")
+    //Set the component visibility
+    const [isHidden, setHidden] = useState(true)
+    //The input field
+    const inputField = useRef(null)
+    
     //If the new input is just an addition of the previous, do not waste time re-reducing the whole array, again...
     function handleInputChange(e){
         //Force lowercase
@@ -17,22 +26,28 @@ export default function SuggestionPopup(data) {
         //Detect when the word is completed, and use the best suggestion
         if(input[input.length - 1] === ' ') 
         {
-            
             console.warn("Suggestion exit function non-existent")
         }
         //If the new input is just an addition of the previous, do not waste time re-reducing the whole array again
-        if(!input.includes(prevInput)) arr = Array.from(precomposedArray)
+        if(!input.includes(previousInput)) arr = Array.from(precomposedArray)
         //Filter
         arr = arr.filter(m => m.includes(input))
         //Set previous input value
-        prevInput = input
-        setInput(input)
+        previousInput = input
+        setInputValue(input)
+    }
+    function getFocus(text){
+        inputField.current.value = text;
+        inputField.current.focus()
+        setHidden(false);
     }
     useEffect(()=> {
-    }, [input])
+        data.setInput.current = getFocus
+        
+    }, [inputValue])
     return(
-    <div id="selectionPopup" hidden={true}>
-        <input id="selectInput" type="text" onChange={handleInputChange}></input>
+    <div id="selectionPopup" hidden={isHidden}>
+        <input id="selectInput" type="text" onChange={handleInputChange} ref={inputField}></input>
         <div id="selectItem" tabIndex={-1}>
         {
             arr.map((key) => 

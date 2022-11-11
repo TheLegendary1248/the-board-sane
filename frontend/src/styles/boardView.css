@@ -11,6 +11,7 @@
     white-space: nowrap;
     user-select: none;
     opacity: 0.1;
+    
 }
 #selectionPopup {
     background-color: gray;
@@ -92,4 +93,28 @@
     position: absolute;
     overflow: visible;
     
+}
+#fullscreen {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    cursor:move;
+    /*background-image: linear-gradient( #0000 90%, #fff1 90% ), linear-gradient(90deg, #0000 95%, #fff1 95% ); */
+    background-image: radial-gradient(#0000 90%, #fff1 90%);
+    background-size: 50px 50px;
+    background-repeat: repeat;
+    background-origin: content-box;
+    background-color: #0000;
+    opacity: 0;
+    border-width: 0px;
+    color:#0000;
+    padding: 12px;
+    z-index: -9999;
+    transition: opacity 0.5s;
+    resize: none;
+}
+#fullscreen:hover {
+    opacity: 1;
 }

@@ -5,6 +5,10 @@ import note from './items/note'
 import '../styles/boardView.css'
 import '../styles/items/default.css'
 import itemTable from './items'
+let offsetX = 0;
+let offsetY = 0;
+const getX = (event) => (event.clientX - window.innerWidth / 2)
+const getY = (event) => (event.clientY - window.innerHeight / 2)
 let zoom = 1;
 ///// The React view for the board page
 let itemImports = {
@@ -33,7 +37,11 @@ function Board() {
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
     function Pan(event) {
-        
+    }
+    function PanStart(event) 
+    {
+        console.log(event)
+        // event.dataTransfer.setDragImage({}, 0,0)
     }
     function AddItem(name) {
         if(itemImports[name] === undefined)
@@ -46,6 +54,14 @@ function Board() {
     function RemoveItems(){
 
     }
+    function Click(event) {
+
+    }
+    //On key down with the board in focus, detect input 
+    function KeyDown(event) {
+        SetChildInput.current(event.target.value)
+    }
+    const SetChildInput = useRef(null)
     return (
         <div id="R_board">
             <div id='ui_toolbar' hidden={true}>Placeholder for ui toolbar when I make that</div>
@@ -57,11 +73,12 @@ function Board() {
             </div>
             {/*Used to center the board screen*/}
             <div id="center">
-                <div id="itemContainer" ref={container} tabIndex={0} onWheel={Zoom} onDrag={Pan}>
-                    {<itemImports.note/>}
+                <textarea id="fullscreen" draggable="true" onWheel={Zoom} onDragStart={PanStart} onDrag={Pan} onClick={Click} onChange={KeyDown}></textarea>
+                <div id="itemContainer" ref={container} tabIndex={0} >
+                    {items}
                 </div>
             </div>
-            <SuggestionPopup/>
+            <SuggestionPopup setInput={SetChildInput} addItem={AddItem}/>
         </div>
     )
 }
