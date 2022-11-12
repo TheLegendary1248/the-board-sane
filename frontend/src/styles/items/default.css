@@ -1,11 +1,21 @@
 /*General styling for all item types*/
-.itemwrapper{
+.dragwrapper{
     position: absolute;
 }
-.itemwrapper * {
+.dragwrapper * {
     background-color: var(--item-bg);
 }
+.item{
+    transition: outline 0.5s, box-shadow 0.5s;
+    border-radius: 5px;
+    outline: 0.5px solid #0003;
+    box-shadow: 7px 7px 0px #0003;
+}
+.item:hover{
+    outline-width: 5px;
+    outline-color: #fff3;
+    box-shadow: 10px 10px 0px #0003;
+}
 #itemContainer {
-    --item-bg: #000;
-    
+    --item-bg: rgb(39, 129, 84);
 }

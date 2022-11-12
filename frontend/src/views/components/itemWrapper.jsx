@@ -5,7 +5,7 @@ const getX = (event) => (event.clientX - window.innerWidth / 2)
 const getY = (event) => (event.clientY - window.innerHeight / 2)
 
 //Wrapper for items
-export default function Note(data){
+export default function DragWrapper(data){
     //TODO Make draggable only on focus
     function Drop(event){
         event.target.style.left = getX(event) - offsetX + "px"
@@ -16,7 +16,7 @@ export default function Note(data){
         offsetY = getY(event) - event.target.offsetTop
     }
     return(
-    <div className="itemwrapper" draggable="true" style={{width: data.width, height: data.height}} onDragStart={Pickup} onDragEnd={Drop}>
+    <div className="dragwrapper" draggable="true" onDragStart={Pickup} onDragEnd={Drop}>
         {data.children}
     </div>
     )

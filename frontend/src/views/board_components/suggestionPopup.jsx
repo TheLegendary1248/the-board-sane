@@ -26,6 +26,7 @@ export default function SuggestionPopup(data) {
         //Detect when the word is completed, and use the best suggestion
         if(input[input.length - 1] === ' ') 
         {
+            input = input.trimEnd()
             let i = arr.indexOf(input)
             if(i !== -1) data.addItem(arr[i])
             else data.addDefault(input)

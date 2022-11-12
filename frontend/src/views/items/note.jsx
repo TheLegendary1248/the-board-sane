@@ -7,7 +7,7 @@ export default function Note(data) {
     import('../../styles/items/note.css')
     return (
         <Wrapper>
-            <textarea placeholder='Type anything here!' defaultValue={data.text}>
+            <textarea className='item' placeholder='Type anything here!' defaultValue={data.text}>
             </textarea>
         </Wrapper>
     )
