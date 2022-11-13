@@ -62,7 +62,6 @@ function Board() {
     }
     //On key down with the board in focus, detect input 
     function KeyDown(event) {
-        console.log(SetChildInput)
         SetChildInput.current(event.target.value)
         event.target.value = ""
     }

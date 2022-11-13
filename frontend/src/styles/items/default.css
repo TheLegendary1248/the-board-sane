@@ -19,3 +19,6 @@
 #itemContainer {
     --item-bg: rgb(39, 129, 84);
 }
+.item input {
+    border: 0px solid #000;
+}

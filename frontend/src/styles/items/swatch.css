@@ -1,0 +1,16 @@
+.i_swatch {
+    background-color: #2140de;
+    width: 125px;
+    height: 125px;
+    border-radius: 5px;
+}
+.i_swatch .value{
+    position:absolute;
+    bottom: 5px;
+    left: 5px;
+    background-color: transparent;
+    width: 120px;
+    text-shadow: 2px 2px 0px #0003;
+    font-size: 15px;
+    font-weight: 700;
+}

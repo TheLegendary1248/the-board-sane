@@ -41,13 +41,7 @@ export default function SuggestionPopup(data) {
         previousInput = input
         setInputValue(input)
     }
-    function getFocus(text){
-        setHidden(false);
-        console.log(inputField.current.focus)
-        console.log(inputField.current)
-        inputField.current.value = text;
-        inputField.current.focus();
-    }
+    function getFocus(text){ setHidden(false); inputField.current.value = text; }
     useEffect(()=> {
         console.log("Render")
         data.setInput.current = getFocus

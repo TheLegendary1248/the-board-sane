@@ -27,7 +27,8 @@ let itemTable = {
         desc: "Connects two items"
     },
     swatch: {
-        desc: "Color me confused"
+        desc: "Color me confused",
+        import: () => React.lazy(() => import('./swatch'))
     },
     webclip: {
         desc: "This sounds like too much work to make happen"
