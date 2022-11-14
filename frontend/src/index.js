@@ -37,7 +37,7 @@ root.render(
   <React.StrictMode>
     <isboardView.Provider value={true}>
       <BrowserRouter>
-        {/*<Nav />*/}
+        {<Nav />}
         <Routes>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />

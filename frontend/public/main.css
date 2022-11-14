@@ -1,4 +1,5 @@
 
+/*Here should lie all 'reset' CSS*/
 :root{
     --main-bg-color: #16202e;
     --other-color: #022b77;
@@ -10,6 +11,31 @@
     box-sizing: border-box;
     margin: 0px;
     padding: 0px;
+}
+*::-webkit-input-placeholder {
+    color: #fff;
+}
+*:-moz-placeholder {
+    /* FF 4-18 */
+    color: #fff;
+    opacity: 1;
+}
+*::-moz-placeholder {
+    /* FF 19+ */
+    color: #fff;
+    opacity: 1;
+}
+*:-ms-input-placeholder {
+    /* IE 10+ */
+    color: #fff;
+}
+*::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: #fff;
+}
+*::placeholder {
+    /* modern browser */
+    color: #fff;
 }
 body {
     background-color: var(--main-bg-color);

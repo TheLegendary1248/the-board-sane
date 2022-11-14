@@ -14,3 +14,71 @@
     transform: translate(-50%, -50%);
     font-size: 30px;
 }
+#bannerImg {
+    width: 200px;
+    height: 200px;
+}
+#R_home footer {
+    background-color: #002;
+    display: flex;
+    justify-content: space-around;
+    height: 200px;
+    flex-wrap: wrap;
+    padding: 30px;
+}
+#R_home footer p {
+    width: 250px;
+    height: 10px;
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+}
+#R_home .ptBlock {
+    position: relative;
+    height: 400px;
+    padding: 50px;
+}
+.ptBlock > div 
+{ 
+    width: 50%;
+    height: 100%;
+    display: block;
+    position: absolute;
+}
+.ptBlock > div:nth-child(1) {
+    left: 0px;
+    top: 0px;
+    margin:0px;
+}
+.ptBlock > div:nth-child(2) {
+    left:50%;
+    top:0px;
+    margin: 0px;;
+}
+.ptText {
+    margin: 0px;
+    padding: 6vw;
+    font-size: 20px;
+}
+.pretendImg {
+    position: absolute;
+    border: 10px solid #444;
+    width: 200px;
+    height: 200px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    background-color: #777;
+    content: "Placeholder";
+    color: white;
+}
+#R_home h3{
+    font-size: 30px;
+}
+#thirdAlterText {
+    position: absolute;
+    transform:  translate(-30px, -20px) rotate(-15deg)scale(0.8);
+    text-decoration: line-through;
+    z-index: -20;
+    color: #faa9;
+}
