@@ -54,7 +54,7 @@ function Board() {
     }
     //Defaults to adding a note
     function AddDefault(t) { setItems(items.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
-    function RemoveItems(){
+    function RemoveItem(){
 
     }
     function Click(event) {

@@ -15,10 +15,23 @@ export default function DragWrapper(data){
         offsetX = getX(event) - event.target.offsetLeft
         offsetY = getY(event) - event.target.offsetTop
     }
+    function DeleteClick(event) {
+        event.currentTarget.classList.add("activate")
+    }
+    function DeleteCancel(event) {
+        event.currentTarget.classList.remove("activate")
+    }
     return(
     <div className="dragwrapper" draggable="true" onDragStart={Pickup} onDragEnd={Drop}>
         {data.children}
-        <div className='deleteItem'></div>
+        <div className='deleteItem' draggable="true" onDragStart={(e)=>{DeleteCancel(e); e.preventDefault(); e.stopPropagation();}} onMouseDown={DeleteClick} onMouseUp={DeleteCancel}>
+            <div className='textbox' tabIndex={0} >
+                <div>
+                   <span className='hyperbole'>DELETE!!!</span> 
+                </div>
+                <span>Delete Item</span>
+            </div>
+        </div>
     </div>
     )
 }

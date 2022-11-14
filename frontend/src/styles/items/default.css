@@ -11,15 +11,7 @@
     background-color: var(--item-bg);
     border: 2px solid #0003;
 }
-.deleteItem{
-    position: absolute;
-    top: -8px;
-    right: -8px;
-    border-radius: 50%;
-    border: 10px double #aa2222;
-    width: 20px;
-    height: 20px;
-}
+
 .item:hover{
     outline-width: 5px;
     outline-color: #fff3;
@@ -33,4 +25,70 @@
     outline: none;
     font-size: 14px;
     background-color: transparent;
+}
+/* Delete button styling*/
+.deleteItem{
+    transition: scale 0.25s;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    border-radius: 50%;
+    border: 10px double #aa2222;
+    width: 20px;
+    height: 20px;
+    scale: 0;
+    z-index: 0;
+    outline: none;
+}
+.dragwrapper:hover .deleteItem, .deleteItem:focus-within{
+    scale: 1;
+}
+.deleteItem .textbox {
+    transition: width 0.25s;
+    width: 0px;
+    position: absolute;
+    top: -7.5px;
+    left: 7px;
+    height: 15px;
+    font-size: 12px;
+    overflow: hidden;
+}
+.deleteItem:hover .textbox, .deleteItem:focus-within .textbox{
+    width: 70px;
+}
+.deleteItem .textbox span {
+    position: absolute;
+    width: 70px;
+    padding-left: 5px;
+    color:#f33;
+    z-index: -20;
+}
+.deleteItem .textbox div span{
+    background-color: red;
+    text-shadow: 2px 2px 0px#000f;
+    color: white;
+    z-index: -10;
+    font-weight: 800;
+    animation: deleteTextShake 0.1s linear infinite;
+}
+.deleteItem .textbox div {
+    display: none;
+    width: 0%;
+    height: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+.deleteItem.activate .textbox div {
+    display: block;
+    animation: deleteActivate 0.5s linear forwards;
+}
+@keyframes deleteTextShake {
+    0%{left:1px; top: 1px;}
+    50%{left:-1px}
+    80%{top:-1px;}
+    100%{left:1px}    
+}
+@keyframes deleteActivate {
+    0%{width: 0%;}
+    100%{width: 100%;}
 }

@@ -74,6 +74,7 @@
     font-family: monospace;
 }
 #focusLevel{
+    display: none;
     position: fixed;
     font-family: monospace;
     left: 0px;
