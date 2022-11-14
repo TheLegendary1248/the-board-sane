@@ -44,7 +44,7 @@
     scale: 1;
 }
 .deleteItem .textbox {
-    transition: width 0.25s;
+    transition: width 0.35s;
     width: 0px;
     position: absolute;
     top: -7.5px;
@@ -54,16 +54,16 @@
     overflow: hidden;
 }
 .deleteItem:hover .textbox, .deleteItem:focus-within .textbox{
-    width: 70px;
+    width: 80px;
 }
 .deleteItem .textbox span {
     position: absolute;
-    width: 70px;
     padding-left: 5px;
     color:#f33;
     z-index: -20;
 }
 .deleteItem .textbox div span{
+    width: 80px;
     background-color: red;
     text-shadow: 2px 2px 0px#000f;
     color: white;
@@ -77,15 +77,17 @@
     height: 100%;
     position: absolute;
     overflow: hidden;
+    top: -1px;
+    width: 80px;
 }
 .deleteItem.activate .textbox div {
     display: block;
-    animation: deleteActivate 0.5s linear forwards;
+    animation: deleteActivate 0.75s linear forwards;
 }
 @keyframes deleteTextShake {
-    0%{left:1px; top: 1px;}
+    0%{left:1px; top: -1px;}
     50%{left:-1px}
-    80%{top:-1px;}
+    80%{top:-3px;}
     100%{left:1px}    
 }
 @keyframes deleteActivate {

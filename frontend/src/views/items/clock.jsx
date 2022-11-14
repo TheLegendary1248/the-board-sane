@@ -18,7 +18,7 @@ export default function Clock() {
                     ;
                     <input className='second' placeholder='00' maxLength={2}></input>
                 </div>
-                <div class="meter-gauge">
+                <div className="meter-gauge">
                     <span style={{ width: "20%" }}></span>
                 </div>
 
