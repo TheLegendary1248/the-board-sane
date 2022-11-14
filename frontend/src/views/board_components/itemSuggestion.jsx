@@ -5,7 +5,7 @@ import { OnSubmit } from "../../utils"
 export default function Suggestion(param)
 {
     function Select(e){
-        console.warn("Select function of content suggestion not implemented")
+        param.addItem(param.shorthand)
     }
     return(
         <div onClick={Select} onKeyUp={e => OnSubmit(e, Select)} tabIndex="0">

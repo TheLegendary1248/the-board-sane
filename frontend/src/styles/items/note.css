@@ -1,6 +1,7 @@
 .i_note {
-    border-width: 0px;
     padding: 8px;
     height: 150px;
     width: 150px;
+    min-width: 100px;
+    min-height: 37px;
 }

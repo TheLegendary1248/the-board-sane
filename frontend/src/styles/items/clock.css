@@ -1,0 +1,40 @@
+.i_clock{
+    width: 200px;
+    height: 70px;
+}
+.i_clock .selection{
+    position: absolute;
+    top: 5px;
+    left: 15px;
+}
+.i_clock .selection span {
+    margin: 0px 5px;
+}
+.i_clock .counter{
+    position: absolute;
+    top: 2px;
+    left: 15px;
+    font-size: 50px;
+    height: 50px;
+    width: 180px;
+}
+
+.i_clock .counter input {
+    display: inline;
+    font-size:40px;
+    width: 50px;
+}
+
+.i_clock .meter-gauge {
+    position: absolute;
+    bottom: 5px;
+    left: 10px;
+    width: 180px;
+    height: 2px;
+    background-color: #0003;
+}
+.i_clock .meter-gauge span {
+    background-color: lime;
+    position: absolute;
+    height: 100%;
+}

@@ -9,9 +9,9 @@ export default function Page(data) {
         <DragWrapper>
             <div className="item i_page">
                 <label>
-                    <textarea className="title" placeholder='Title' rows='1' wrap='off' value={data.title}/>
+                    <textarea spellCheck="false" className="title" placeholder='Title' rows='1' wrap='off' value={data.title}/>
                 </label>
-                <textarea className="body" placeholder='Type anything here!' value={data.text}/>
+                <textarea spellCheck="false" className="body" placeholder='Type anything here!' value={data.text}/>
             </div>
         </DragWrapper>
     )

@@ -1,4 +1,4 @@
-//The popup for the board view which suggests the items. Grammar 100
+//The popup view for item suggestions while typing
 import { useEffect, useState, useRef } from "react";
 import itemTable from "../items";
 import Suggestion from "./itemSuggestion";
@@ -29,7 +29,7 @@ export default function SuggestionPopup(data) {
             input = input.trimEnd()
             let i = arr.indexOf(input)
             if(i !== -1) data.addItem(arr[i])
-            else data.addDefault(input)
+            else data.addDefault(e.target.value)
             setHidden(true)
             return
         }
@@ -40,6 +40,10 @@ export default function SuggestionPopup(data) {
         //Set previous input value
         previousInput = input
         setInputValue(input)
+    }
+    function handleSelection(type) {
+        data.addItem(type)
+        setHidden(true)
     }
     function getFocus(text){ setHidden(false); inputField.current.value = text; }
     useEffect(()=> {
@@ -57,7 +61,7 @@ export default function SuggestionPopup(data) {
             arr.map((key) => 
             {
                 let item = itemTable[key];
-                return <Suggestion key={key} shorthand={key} desc={item?.desc ?? "A guide to using the website"} ishelp/> 
+                return <Suggestion key={key} shorthand={key} desc={item?.desc ?? "A guide to using the website"} addItem={handleSelection} ishelp/> 
             })
         }
         </div>

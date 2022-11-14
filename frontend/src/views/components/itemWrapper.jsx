@@ -18,6 +18,7 @@ export default function DragWrapper(data){
     return(
     <div className="dragwrapper" draggable="true" onDragStart={Pickup} onDragEnd={Drop}>
         {data.children}
+        <div className='deleteItem'></div>
     </div>
     )
 }
