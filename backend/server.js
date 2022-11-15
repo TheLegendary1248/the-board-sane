@@ -17,7 +17,8 @@ mongoose.connect(process.env.MONGO, {
 }, () => {console.log('Connected to mongo')})
 
 //TODO Access control
-app.use((_, res, next) => {
+app.use((req, res, next) => {
+  //console.log("Ip address of request", req.ip)
   //res.header("Access-Control-Allow-Origin", `http://localhost:${process.env.PORT}`);
   //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();

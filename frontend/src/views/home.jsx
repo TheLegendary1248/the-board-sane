@@ -16,7 +16,7 @@ function Home() {
         </div>
         <div className='ptBlock'>
             <div>
-                <div className='pretendImg'></div>
+                <div className='pretendImg'>Placeholder Image</div>
             </div>
             <div className='ptText'>
                 <h3>Convenience with Control</h3>
@@ -31,12 +31,12 @@ function Home() {
                 <p>You can view the <a href='https://github.com/TheLegendary1248/the-board-sane'>source code right here!</a></p>
             </div>
             <div>
-                <div className='pretendImg'></div>
+                <div className='pretendImg'>Placeholder Image</div>
             </div>
         </div>
         <div className='ptBlock'>
             <div>
-                <div className='pretendImg'></div>
+                <div className='pretendImg'>Placeholder Image</div>
             </div>
             <div className='ptText'>
                 <h3><span id='thirdAlterText'>mostly</span>Free to Use</h3>

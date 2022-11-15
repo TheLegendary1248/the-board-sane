@@ -2,11 +2,11 @@
 const mongoose = require('mongoose')
 
 //The note should contain the text it has, formattin
-const itemNote_s = new mongoose.Schema({
-    //The containing text of the note
-    text: {type:String}, 
+const itemSwatch_s = new mongoose.Schema({
+    //The title of the note
+    color: {type: String}, 
     //The board the note belongs to
     board:{type: mongoose.Schema.Types.ObjectId, ref:'Board'},
 })
 
-module.exports = mongoose.model("item_Note", itemNote_s)
+module.exports = mongoose.model("item_Swatch", itemSwatch_s)

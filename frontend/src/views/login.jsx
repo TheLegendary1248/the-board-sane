@@ -51,9 +51,7 @@ function Login(data) {
         //Stop request
         event.preventDefault()
         //Check with server
-        //return;
-        let req = 
-        await fetch("/api/login" + (isLogin ? "" : "/new"),{
+        let req = await fetch("/api/login" + (isLogin ? "" : "/new"),{
         method: 'POST',
         headers: {
             //Note: FormData is .json, lovely aint it?
@@ -61,10 +59,6 @@ function Login(data) {
         },
         body: JSON.stringify(Object.fromEntries(new FormData(event.target).entries()))
         })
-        console.log(Object.fromEntries(new FormData(event.target).entries()))
-        console.log(JSON.stringify(Object.fromEntries(new FormData(event.target).entries())))
-        console.log({Hello:"Deokdaoe", djaeijd:4})
-        console.log(JSON.stringify({Hello:"Deokdaoe", djaeijd:4}))
         let get = await req.json()
         console.log(get)
         if(get) navigate("/board")
@@ -74,13 +68,13 @@ function Login(data) {
         <main id="R_login">
             <title>Login into the Board</title>
             <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
-            <form id="form" method="POST" onSubmit={(e) => HandleSubmit(e)} action={"http://localhost:8000/api/login"+ (isLogin ? "" : "/new")}>
+            <form id="form" method="POST" onSubmit={HandleSubmit} action={"http://localhost:8000/api/login"+ (isLogin ? "" : "/new")}>
                 <p hidden={error == ""}>{error}</p>
                 <div id="usernameSection">
                     <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
                     <label htmlFor="username" >Username</label>
                     <br />
-                    <input onChange={(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
+                    <input onChange={/*This code runs a small delay before checking the username*/(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
                 </div>
                 <div id="passwordSection">
                     <div id="user_pass_warn" hidden={isLogin || (passWarn === "")}>

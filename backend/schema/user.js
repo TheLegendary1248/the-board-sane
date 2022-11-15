@@ -9,6 +9,8 @@ const user_s = new mongoose.Schema({
     pass:{type:String},
     //The email of the user
     email:{type:String, unique: true},
+    //If the email has been validated
+    validated: {type:Boolean},
     //Time of account creation
     creationDate:{type:Date},
 }, {toJSON: {virtuals: true}})
@@ -20,4 +22,8 @@ user_s.virtual('Board',
 localField:'_id',
 foreignField: 'user'})
 
+user_s.virtual('Token', 
+{ref: 'Token', 
+localField:'_id',
+foreignField: 'user'})
 module.exports = mongoose.model('User',user_s)

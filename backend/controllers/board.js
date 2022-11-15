@@ -7,7 +7,6 @@ const TokenAuth = require("./token")
 
 //Retrieve all boards a user has access to
 router.get('/', async (req, res) => {
-
     //Get user associated with token
     let token = await TokenAuth.CheckToken(req)
     //TODO Allow user to access their boards without login required
@@ -24,8 +23,27 @@ router.get('/', async (req, res) => {
 })
 
 //Add a board, primarily giving access to the user
-router.post('/', (req, res) =>
-{}
+router.post('/', async (req, res) =>{
+    console.log("hello!", req.body)
+    //If the content type header is plain text, accept it as the creation of a single new board
+    //Using the text as the board name, assuming it's within limits
+    if(req.headers["content-type"] === "text/plain") 
+    {
+        console.log("Hello world")
+        TokenAuth.CheckToken(req)
+        res.send(true)
+        res.end()
+    }
+    //Else, assuming it's a normal json, pretend it's a pre-existing offline board with items. Implement later
+    else if (false) {}
+    else {
+        res.status(400).end()
+    }
+    return;
+    
+    //Create a new board under the user's account
+    let board = await Board.create({})
+}
 )
 
 //Retrieve a certain board

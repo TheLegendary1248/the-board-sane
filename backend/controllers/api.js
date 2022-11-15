@@ -16,11 +16,14 @@ router.get("/checkUser/:name", async (req,res)=> {
     res.send(dupe !== null)
 })
 //Checks if username is available
-router.get("/checkEmail/email", async (req,res)=> {
-    let dupe = await User.exists({email: req.params.email}).lean().exec()
+router.get("/checkEmail/:email", async (req,res)=> {
+    let dupe = await User.exists({email: req.params.email}).lean().exec() 
     res.send(dupe !== null)
 })
 //Login path
 router.use('/login', require('./login'))
+
+//Board path
+router.use('/board', require('./board'))
 
 module.exports = router
