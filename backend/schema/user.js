@@ -4,11 +4,11 @@ const Board = require("./board")
 
 const user_s = new mongoose.Schema({
     //The username of the user
-    name:{type:String, unique: true},
+    name:{type:String, required:true, unique: true},
     //The password of the user
     pass:{type:String},
     //The email of the user
-    email:{type:String, unique: true},
+    email:{type:String, required:true, unique: true},
     //If the email has been validated
     validated: {type:Boolean},
     //Time of account creation

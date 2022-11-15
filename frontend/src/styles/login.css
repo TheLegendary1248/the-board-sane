@@ -7,7 +7,7 @@
 #R_login input {
     transition: all 0.5s;
     background-color:  #555;
-    box-shadow: 5px 5px 2px black;
+    box-shadow: 5px 5px 0px #0004;
     border: 0px solid white;
     padding: 10px;
     font-size: 15px;
@@ -29,6 +29,40 @@
     box-shadow: 5px 5px 0px #300;
     background-color: #600;
 }
+#R_login #forgot_pass {
+    width: min(250px,37.5%);
+}
 #R_login #user_availability {
     
+}
+#R_login #show_pass {
+    position: relative;
+    transition: border 0.5s;
+    border: 2px solid #a20;
+    border-radius: 5px;
+    padding: 7px;
+    top: 2px;
+    user-select: none;
+    font-weight: 700;
+    text-shadow: 3px 3px 0px #000;
+}
+#R_login #show_pass.shown {
+    border: 2px dashed #07ab;
+    border-spacing: 10px;
+}
+#R_login #message {
+    transition: border 0.5s, background-color 0.5s;
+    background-color: #15a;
+    width: min(500px, 75%);
+    padding: 15px;
+    border: 3px solid #27a;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 5px 5px 0px #0004;
+    margin: 10px 0px;
+}
+
+#R_login #message.warn {
+    background-color: #600;
+    border: 3px solid #a20;
 }

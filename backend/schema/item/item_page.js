@@ -7,6 +7,8 @@ const itemPage_s = new mongoose.Schema({
     title: {type:String},
     //The containing text of the note
     text: {type:String}, 
+    //Version of the item
+    version: {type: Number, validate: {validator : Number.isInteger, message: '{VALUE} is not an integer value'}},
     //The board the note belongs to
     board:{type: mongoose.Schema.Types.ObjectId, ref:'Board'},
 })

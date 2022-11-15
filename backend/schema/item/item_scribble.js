@@ -6,6 +6,8 @@ const mongoose = require("mongoose")
 const itemScribble_s = new mongoose.Schema({
     //The SVG path of the scribble
     path: {},
+    //Version of the item
+    version: {type: Number, validate: {validator : Number.isInteger, message: '{VALUE} is not an integer value'}},
     //The board it scribble belongs to
     board:{type: mongoose.Schema.Types.ObjectId},
 })

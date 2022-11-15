@@ -50,21 +50,6 @@ root.render(
   </React.StrictMode>
 );
 
-let temp = <div>
-  <Routes>
-    <Route path="/" element={<Nav />}>
-      <Route path="/" element={<Home />} />
-      <Route path="about" element={<About />} />
-      <Route path="login" element={<Login />} />
-      <Route path="board" element={<BoardSelect />} />
-    </Route>
-    <Route path="*" />
-  </Routes>
-  <Routes>
-    <Route path="board/:boardId" element={<Board />} />
-    <Route path="*" />
-  </Routes>
-</div>
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

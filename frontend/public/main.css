@@ -14,32 +14,32 @@
 }
 *::-webkit-input-placeholder {
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 *:-moz-placeholder {
     /* FF 4-18 */
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 *::-moz-placeholder {
     /* FF 19+ */
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 *:-ms-input-placeholder {
     /* IE 10+ */
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 *::-ms-input-placeholder {
     /* Microsoft Edge */
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 *::placeholder {
     /* modern browser */
     color: #fff;
-    opacity: 0.2;
+    opacity: 0.4;
 }
 body {
     background-color: var(--main-bg-color);

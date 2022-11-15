@@ -1,5 +1,5 @@
 //The login/signup page of app. Ill make it dual-purpose
-import {React, useState} from 'react'
+import {React, useState, useRef} from 'react'
 import { useNavigate } from 'react-router-dom'
 //TODO Add pattern matching
 //TODO Add "forgot password"
@@ -9,18 +9,25 @@ function Login(data) {
     const navigate = useNavigate();
     //STATES
     //Error message should request fail for any reason
-    const [error, setError] = useState("")
+    const [message, setMessage] = useState("")
+    //Message type for css reasons
+    const [msgType, setMsgType] = useState("warn")
     //If a username can be used
     const [userAvailable, setUserAvailability] = useState(0)
     //If the username field is empty
     const [isEmpty, setEmpty] = useState(true)
     //If the email field is empty
-    const [isLogin, setLogin] = useState(true)
+    const [isLogin, setIsLogin] = useState(true)
     //Self Explanatory - Password visibility
-    const [showPass, setVisible] = useState(false)
+    const [showPass, setPassVisible] = useState(false)
+    //Show forgot password button
+    const [showForgot, setForgotVisible] = useState(false)
     //Password warning - string contains said warning
     const [passWarn, setWarn] = useState("")
+    const emailField = useRef(null)
+    const userField = useRef(null)
     let delayCheckUser = 0;
+    //Check if the username is available or not
     async function OnUserInputChange(event)
     {
         console.log(event)
@@ -38,6 +45,7 @@ function Login(data) {
             setUserAvailability(!res)
         }   
     }
+    //Warn of a weak pass when registering
     function OnPassChange(event)
     {
         let text = event.currentTarget.value
@@ -62,19 +70,46 @@ function Login(data) {
         let get = await req.json()
         console.log(get)
         if(get) navigate("/board")
-        else setError(isLogin ? "Invalid credentials" : "An error has ocurred")
+        else 
+        {
+            if(isLogin) setForgotVisible(true)
+            setMessage(isLogin ? "Invalid credentials" : "An error has ocurred")
+            setMsgType("warn")
+        }
+    }
+    function IdentityCrisis()
+    {
+        let recepient;
+        let isEmailEmpty = (emailField.current.value === "")
+        if(isEmailEmpty) recepient = userField.current.value;
+        else recepient = emailField.current.value
+        let url = "/api/forgot/" + (isEmailEmpty ? "user" : "email")
+        HandleForgotCheck(url)
+        setMessage(`We've sent an email to reset your password ${isEmailEmpty ? "to" : "at"} "${recepient}"`)
+        setMsgType("")
+    }
+    async function HandleForgotCheck(url) {
+        let req = await fetch(url)
+        let res = await req.json()
+        if(!res) setMessage("This account does not exist. Please double check your spelling")
     }
     return (
         <main id="R_login">
             <title>Login into the Board</title>
             <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
             <form id="form" method="POST" onSubmit={HandleSubmit} action={"http://localhost:8000/api/login"+ (isLogin ? "" : "/new")}>
-                <p hidden={error == ""}>{error}</p>
+                <p id="message" className={msgType} hidden={message == ""}>{message}</p>
+                <div id="emailSection">
+                    <label htmlFor="email">Email</label>
+                    <br />
+                    <input ref={emailField} onChange={e => setIsLogin(e.currentTarget.value === "")} id="email" name={isLogin ? "" : "email" } type="email" placeholder="Ex: hello@example.com - only required to register" />
+                </div>
+                <br />
                 <div id="usernameSection">
                     <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
                     <label htmlFor="username" >Username</label>
                     <br />
-                    <input onChange={/*This code runs a small delay before checking the username*/(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
+                    <input ref={userField} onChange={/*This code runs a small delay before checking the username*/(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
                 </div>
                 <div id="passwordSection">
                     <div id="user_pass_warn" hidden={isLogin || (passWarn === "")}>
@@ -86,17 +121,13 @@ function Login(data) {
                     <input 
                         id="password" name="pass" placeholder="Make sure it's a strong password"
                         onChange={OnPassChange} type={showPass ? "text" : "password" }  required />
-                    <span id="show_pass" onClick={() => setVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
+                    <span id="show_pass" className={showPass ? "shown" : ""} onClick={() => setPassVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
                 </div>
                 <br />
-                <div id="emailSection">
-                    <label htmlFor="email">Email</label>
-                    <br />
-                    <input onChange={e => setLogin(e.currentTarget.value === "")} id="email" name={isLogin ? "" : "email" } type="email" placeholder="Ex: hello@example.com - only required to register" />
-                </div>
-                <br />
-                <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} disabled={!userAvailable && !isLogin}/>
+                
+                <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} disabled={!userAvailable && !isLogin}/>    
             </form>
+            <input id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>
         </main>
     )
 }

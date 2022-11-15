@@ -9,6 +9,8 @@ const itemPath_s = new mongoose.Schema({
     //The type of path it is
     //In this concept, is it a ray, line, segment, etc?
     type:{type:Number},
+    //Version of the item
+    version: {type: Number, validate: {validator : Number.isInteger, message: '{VALUE} is not an integer value'}},
     //The board the path belongs to
     board:{type: mongoose.Schema.Types.ObjectId},
 })

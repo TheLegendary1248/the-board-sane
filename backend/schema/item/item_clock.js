@@ -7,6 +7,8 @@ const itemClock_s = new mongoose.Schema({
     enabled: {type: Boolean},
     //The time the timer or stopwatch is set for. Will instead be an time offset when not enabled
     time: {type: Date}, 
+    //Version of the item
+    version: {type: Number, required: true, validate: {validator : Number.isInteger, message: '{VALUE} is not an integer value'}},
     //The board the note belongs to
     board:{type: mongoose.Schema.Types.ObjectId, ref:'Board'},
 })
