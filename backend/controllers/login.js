@@ -95,10 +95,12 @@ router.post("/", async (req, res) => {
 //Path for LOGGING IN BY EMAIL LINK. Multipurpose, email verification and password forgotten (but the user doesn't need to know that)
 router.post("/verify", async (req, res) => {
     let body = req.body
+    res.set('Content-Type','text/plain')
+    if(body.useFakeResponse) 
+            return res.send(body.fakeResponse ? "John Doe" : "")
     if (body.userID === undefined || body.token === undefined) {
-        console.log("/verify : Bad request. Body:", req.body)
-        res.set('Content-Type','text/plain')
-        res.status(400).send("Request does not contain the fields required")
+        console.log("/verify : Bad request. Body:", req.body)    
+        res.status(400).end()
     }
     else CheckVerifyToken(req, res)
 })

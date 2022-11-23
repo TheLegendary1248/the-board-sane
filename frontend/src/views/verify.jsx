@@ -7,22 +7,33 @@ export default function Verify(data)
     const [name, setName] = useState("Unknown");
     const [verified, verify] = useState(null)
     const [timeSinceRequest, setTimeSince] = useState(0)
-    let cancelInterval
     useEffect(()=>{
-        CheckVerification()
-        
+        let abortCtrl = new AbortController()        
+        CheckVerification(abortCtrl)
+        return () => {
+            abortCtrl.abort("Verification page was navigated off before request completed")
+        }
     }, [])
-    useEffect(()=>{}, [timeSinceRequest])
-    async function CheckVerification() {
-        cancelInterval = setInterval(() => {setTimeSince(prevCount => prevCount + 1); console.log("Hello?")},1000)
-        let req = await fetch("/api/login/verify", {method: "POST", 
-        body: JSON.stringify({userID, token, 
-            //serverOptions: {delay: 10500}
-        }), headers: {'Content-Type': 'application/json'}})
-        let res = await req.json()
-        verify(!!res)
-        setName(res)
-        localStorage.setItem("Username",res)
+    async function CheckVerification(abort) {
+        //Set interval to get show time passed
+        let cancelInterval = setInterval(() => setTimeSince(prevCount => prevCount + 1),1000)
+        //Catch any errors related to request, including abortion
+        try {
+            let req = await fetch("/api/login/verify", {method: "POST", signal: abort.signal, 
+            body: JSON.stringify({userID, token, 
+            serverOptions: {delay: 2500}
+            }), headers: {'Content-Type': 'application/json'}})
+            //The response should be text
+            let res = await req.text()
+            console.log("Response",res)
+            //Set values accordingly. The response should be the user's name
+            verify(!!res)
+            setName(res)
+            if(!!res) localStorage.setItem("Username",res)
+        } catch (error) {
+            console.warn(error)
+        }
+        //Clear timer function
         clearInterval(cancelInterval)
     }
     return(
@@ -33,7 +44,7 @@ export default function Verify(data)
                 <p>Request sent {timeSinceRequest} seconds ago</p>
             </div>
             <div id="verify_succeed" hidden={!(verified === true)}>
-                <h2><span class="border_underline">Welcome <span id="name">{name}</span></span></h2>
+                <h2><span className="border_underline">Welcome <span id="name">{name}</span></span></h2>
                 <p>Your email has been verified, you're good to go!</p>
                 <p><Link to="/board">Go To Boards</Link></p>
             </div>

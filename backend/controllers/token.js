@@ -91,17 +91,18 @@ async function CheckVerifyToken(req, res) {
                 console.log("Verification: Succeeded")
                 CreateAuthToken(res)
                 res.send(doc_user.name)
+                doc_user.verified = true
             }
             else {
                 console.log("Verification: Token hash does not match")
-                res.send(false);
+                res.send("");
             }
             //Delete verification token regardless of outcome
             db_verifyToken.findByIdAndDelete(doc_verifyToken._id)
         }
-        else { console.log("Verification: Token does not exist"); res.status(400).send(false); return false;}
+        else { console.log("Verification: Token does not exist"); res.status(400).send("")}
     }
-    else { console.log("Verification: Account does not exist"); res.status(404).send(false); return false;}
+    else { console.log("Verification: Account does not exist"); res.status(404).send("")}
 }
 //FIXME I dont think this fully works
 async function DeleteToken(res) {
