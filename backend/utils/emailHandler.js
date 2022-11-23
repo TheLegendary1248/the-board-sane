@@ -55,7 +55,7 @@ async function SendMail(recipient, subject, html) {
             to: recipient,
         }
         let transporter = await GetTransport();
-        transporter.sendMail(options);
+        return await transporter.sendMail(options);
     } catch (error) {
         console.log(error);
         return null;

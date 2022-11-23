@@ -1,0 +1,51 @@
+#R_changelogin {
+    padding: 30px;
+}
+#R_changelogin {
+    text-align: center;
+}
+#R_changelogin input, #R_changelogin label{
+    display: block;
+}
+#R_changelogin input {
+    width: calc(100% - 30px);
+}
+#R_changelogin #tiltedText {
+    background-color: #a004;
+text-decoration: line-through;
+position: relative;
+display: inline-block;
+transform: rotate(2deg);
+color: #a22;
+}
+#R_changelogin h1 > span {
+    border-bottom: 3px solid #0a0;
+    padding-bottom: 2px;
+}
+#R_changelogin h1 {
+    padding-bottom: 20px;
+}
+#R_changelogin p {
+    margin: 20px 0px;
+}
+#R_changelogin #warn_token {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    padding: 80px;
+    background-color: #333;
+    border: 5px solid #a22;
+    z-index: 10;
+    text-shadow: 3px 3px 0px #000a;
+    font-weight: 600;
+    font-size: 20px;
+    font-family: monospace;
+}
+#R_changelogin #block {
+    position: relative;
+}
+#R_changelogin .blur {
+    filter: blur(5px);
+}

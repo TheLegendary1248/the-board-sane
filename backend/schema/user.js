@@ -6,13 +6,13 @@ const user_s = new mongoose.Schema({
     //The username of the user
     name:{type:String, required:true, unique: true},
     //The password of the user
-    pass:{type:String},
+    pass:{type:String, required:true},
     //The email of the user
     email:{type:String, required:true, unique: true},
-    //If the email has been validated
-    validated: {type:Boolean},
+    //If the email has been verified. If not, the account is to not be considered existent
+    verified: {type:Boolean, required: true, default: false},
     //Time of account creation
-    creationDate:{type:Date},
+    creationDate:{type:Date, required: true},
 }, {toJSON: {virtuals: true}})
 
 

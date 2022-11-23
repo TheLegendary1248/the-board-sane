@@ -1,0 +1,33 @@
+#R_verify {
+    text-align: center;
+    font-size: 20px;
+}
+#R_verify #name{
+    color: #69e
+}
+#R_verify h2 {
+    margin: 20px;
+    font-size: 40px;
+    text-shadow: 3px 3px 0px #fff2;
+}
+#R_verify .border_underline{
+    border-bottom: 3px solid #2d0;
+}
+#R_verify a {
+    transition: background-color 0.5s, border-color 0.5s;
+    display: inline-block;
+    position: relative;
+    padding: 10px 50px;
+    margin: 20px;
+    background-color: #1a4;
+    border-radius: 4px;
+    border: 3px outset #1a4;
+    box-shadow: 5px 5px 2px #0007;
+    text-decoration: none;
+    font-weight: 600;
+    font-family: Calibri;
+}
+#R_verify a:hover {
+    background-color: #172;
+    border-color: #172;
+}

@@ -16,20 +16,41 @@ mongoose.connect(process.env.MONGO, {
   useUnifiedTopology: true
 }, () => {console.log('Connected to mongo')})
 
-//TODO Access control
-app.use((req, res, next) => {
-  //console.log("Ip address of request", req.ip)
-  //res.header("Access-Control-Allow-Origin", `http://localhost:${process.env.PORT}`);
-  //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-}); 
-
+//Setup external library middleware
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+//TODO Access control
+//Setup our middleware
+app.use((req, res, next) => {
+  //console.log("Ip address of request", req.ip)
+  //res.header("Access-Control-Allow-Origin", `http://localhost:${process.env.PORT}`);
+  //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  //Server options
+  if(!!req.body.serverOptions){
+    if(req.body.serverOptions.fakeResponse !== null) //Ask for a fake response. True to return a fake success, false to return a fake fail
+    {
+      console.log("Request asked to be fake. Success?", req.body.serverOptions.fakeResponse)
+      req.body.useFakeResponse = true;
+      req.body.fakeResponse = req.body.serverOptions.fakeResponse;
+    }
+    if(!!req.body.serverOptions.delay) //Server delay to respond to request to test how the client handles long-pending requests to api
+    {
+      console.log("Request delayed by", req.body.serverOptions.delay, "milliseconds")
+      setTimeout(next, req.body.serverOptions.delay)
+      return;
+    }
+  }
+  next();
+}); 
+
 //API route for most requests
 app.use('/api', require('./controllers/api'))
+
+//Refusal to serve coffee
+app.get('/coffee', 
+(_, res) => res.status(418).send("Nope"))
 
 //Main route, if someone manages to get the Cloud Run URL
 app.get('/', (_, res) => res.sendFile("hi.html", { root: __dirname }) )

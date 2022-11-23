@@ -32,9 +32,6 @@
 #R_login #forgot_pass {
     width: min(250px,37.5%);
 }
-#R_login #user_availability {
-    
-}
 #R_login #show_pass {
     position: relative;
     transition: border 0.5s;
@@ -61,8 +58,78 @@
     box-shadow: 5px 5px 0px #0004;
     margin: 10px 0px;
 }
-
 #R_login #message.warn {
     background-color: #600;
     border: 3px solid #a20;
+}
+#R_login .warn {
+    color: #f31;
+    font-weight: 600;
+}
+#R_login #container {
+    position: relative;
+    overflow: hidden;
+    box-sizing: border-box;
+    height: 500px;
+    width: 80%;
+    border-top: 2px solid #fff;
+}
+#R_login #form_block, #R_login #correction_block{
+    position: absolute;
+    width: 100%;
+    margin-top: 20px;
+    margin-left: 5px;
+}
+#R_login .up {
+    animation: MoveForm 1s ease-in-out forwards;
+}
+#R_login .down {
+    animation: MoveCorrection 1s ease-in-out forwards;
+}
+#R_login #header {
+    font-size: 40px;
+    padding-bottom: 10px;
+    width: 80%;
+}
+#R_login #inform_await {
+    margin: 20px 0px;
+}
+#R_login #progress_bar {
+    height: 4px;
+    margin: 10px 0px;
+    background-color: #fff;
+    width: 40%;
+    overflow: hidden;
+}
+#R_login #progress_bar_fill {
+    position: relative;
+    background-color: #0d0;
+    width: 50%;
+    height: 100%;
+    animation: ProgressBar 1s ease-in-out infinite;
+}
+@keyframes ProgressBar {
+    from {
+        left: -50%;
+    }
+    to {
+        left: 100%
+    }
+}
+@keyframes MoveForm {
+    from {
+        top: 0px;
+    }
+    to{
+        top: -500px;
+        display: none;
+    }
+}
+@keyframes MoveCorrection {
+    from {
+        top: -500px;
+    }
+    to{
+        top: 0px;
+    }
 }

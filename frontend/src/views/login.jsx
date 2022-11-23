@@ -1,8 +1,17 @@
 //The login/signup page of app. Ill make it dual-purpose
-import {React, useState, useRef} from 'react'
+import { React, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import common from '../common_passwords/passwords.json'
+const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 //TODO Add pattern matching
 //TODO Add "forgot password"
+//Saved as the "setTimeout" return value
+let availabilityCheckTimeout = 0;
+//'Snapshots' of the before values for testing input changes
+let prevUser = "";
+let prevEmail = "";
+//Aborter for the credentials check, incase previous fetches have not been made before input changes
+let checkAborter = new AbortController();
 function Login(data) {
     import('../styles/login.css')
     //Navigate hook
@@ -12,10 +21,6 @@ function Login(data) {
     const [message, setMessage] = useState("")
     //Message type for css reasons
     const [msgType, setMsgType] = useState("warn")
-    //If a username can be used
-    const [userAvailable, setUserAvailability] = useState(0)
-    //If the username field is empty
-    const [isEmpty, setEmpty] = useState(true)
     //If the email field is empty
     const [isLogin, setIsLogin] = useState(true)
     //Self Explanatory - Password visibility
@@ -24,110 +29,183 @@ function Login(data) {
     const [showForgot, setForgotVisible] = useState(false)
     //Password warning - string contains said warning
     const [passWarn, setWarn] = useState("")
+    //Email input field reference
     const emailField = useRef(null)
+    //Username input field reference
     const userField = useRef(null)
-    let delayCheckUser = 0;
-    //Check if the username is available or not
-    async function OnUserInputChange(event)
-    {
-        console.log(event)
-        delayCheckUser = null;
-        //If the field is empty, remove the message box
-        if(event.target.value === "") {setEmpty(true)} /*this.ok.stlye = this.warn.style = "display: none";*/
-        //Otherwise, tell if the username is available
-        else
-        {
-            setEmpty(false)
-            let get = await fetch("/api/checkUser/" + event.target.value);
-            let res = await get.json()
-            console.log(res)
-            //TODO Combine warn and ok, they both start with "That username is..."
-            setUserAvailability(!res)
-        }   
+    //Flag that determines moving onto the verification state
+    const [enteredVerify, SetVerify] = useState(false)
+    //Availability of email
+    const [emailIsValid, setEmailValidity] = useState(null)
+    //Availability of username
+    const [nameIsValid, setNameValidity] = useState(null)
+    //If the request checking username and email has been made
+    const [credsChecked, setCredsCheck] = useState(false)
+    //If the request to login/sign up is pending
+    const [awaitingFetch, setAwaitingFetch] = useState(false)
+    //Email correction input reference
+    const correctEmailRef = useRef(null)
+
+    //Check if the username and email are available, if they changed
+    async function OnUserInputChange() {
+        //Cancel any concurrent fetches if any
+        checkAborter.abort();
+        checkAborter = new AbortController();
+        availabilityCheckTimeout = null;
+        //Username check
+        if (userField.current.value !== prevUser) {
+            setNameValidity(null)
+            //If the field was left empty, do not check
+            if (userField.current.value !== "") {
+                console.log("User checked")
+                let get = await fetch("/api/checkUser/" + userField.current.value, { signal: checkAborter.signal })
+                get.json().then(res => { setNameValidity(!res); prevUser = userField.current.value; })
+            }
+        }
+        //Email check 
+        if (emailField.current.value !== prevEmail) {
+            console.log("Email checked")
+            setEmailValidity(null)
+            //If email is a valid email address - yes the Regex was pulled off the internet, it's very confusing
+            if (emailField.current.value.match(emailRegex)) {
+                let get = await fetch("/api/checkEmail/" + emailField.current.value, { signal: checkAborter.signal });
+                get.json().then(res => { setEmailValidity(!res); prevEmail = emailField.current.value; })
+            }
+        }
+        setCredsCheck(true)
     }
-    //Warn of a weak pass when registering
-    function OnPassChange(event)
-    {
+    //Warn of a weak password when registering
+    function OnPassChange(event) {
         let text = event.currentTarget.value
-        if(text.length == 0) setWarn("")
-        else if(text.length <= 8) setWarn("Your password is shorter than 8 characters")
-        else if(false) setWarn("Your password has no special characters")
+        const hasLower = /^(?=.*[a-z])$/
+        const hasHigher = /^(?=.*[A-Z])$/
+        const hasSpecial = /^/
+        //TODO Insult the user if their password is on the 100 most common passwords list
+        if (text.length == 0) setWarn("")
+        else if(common[text]) setWarn(common[text])
+        else if (text.length <= 8) setWarn("Your password is shorter than 8 characters")
+        else if (false) setWarn("Your password has no special characters")
         else setWarn("")
     }
-    async function HandleSubmit(event)
-    {
-        //Stop request
-        event.preventDefault()
-        //Check with server
-        let req = await fetch("/api/login" + (isLogin ? "" : "/new"),{
-        method: 'POST',
-        headers: {
-            //Note: FormData is .json, lovely aint it?
-            'Content-Type':"application/json"
-        },
-        body: JSON.stringify(Object.fromEntries(new FormData(event.target).entries()))
-        })
-        let get = await req.json()
-        console.log(get)
-        if(get) navigate("/board")
-        else 
-        {
-            if(isLogin) setForgotVisible(true)
-            setMessage(isLogin ? "Invalid credentials" : "An error has ocurred")
-            setMsgType("warn")
-        }
+    //Set credentials check on a timeout
+    function DelayCheck() {
+        setCredsCheck(false)
+        clearTimeout(availabilityCheckTimeout);
+        availabilityCheckTimeout = setTimeout(OnUserInputChange, 650);
     }
-    function IdentityCrisis()
-    {
-        let recepient;
+    //Handle the login form request
+    async function HandleSubmit(event) {
+        //Handle request programmatically
+        event.preventDefault()
+        setAwaitingFetch(true)
+        let body = Object.fromEntries(new FormData(event.target).entries())
+        //body.serverOptions = { fakeResponse : true, delay: 10000}
+        let req = await fetch("/api/login" + (isLogin ? "" : "/new"), {
+            method: 'POST',
+            headers: {
+                //Note: FormData is .json, lovely aint it?
+                'Content-Type': "application/json"
+            },
+            body: JSON.stringify(body),
+        })
+        //If it is login, handle showing forgot password, else navigation to the app
+        if (isLogin) {
+            //Await request 
+            let get = await req.json()
+            console.log(get)
+            if (get) navigate("/board")
+            else {
+                if (isLogin) setForgotVisible(true)
+                setMessage(isLogin ? "Invalid credentials" : "An error has ocurred")
+                setMsgType("warn")
+            }
+        }
+        //Warn email may be wrong if the server had an error sending the email
+        else {
+            correctEmailRef.current.value = emailField.current.value;
+            SetVerify(true)
+        }
+        setAwaitingFetch(false)
+    }
+    async function HandleCorrection(event) {
+
+    }
+    //Handles the forgot password function
+    function IdentityCrisis() {
+        let recepient; //Value to be sent
+        //Send an email to the given email address, or username if the email address is empty
         let isEmailEmpty = (emailField.current.value === "")
-        if(isEmailEmpty) recepient = userField.current.value;
+        if (isEmailEmpty) recepient = userField.current.value;
         else recepient = emailField.current.value
-        let url = "/api/forgot/" + (isEmailEmpty ? "user" : "email")
+        let url = "/api/user/forgot/" + (isEmailEmpty ? "name/" : "email/") + recepient
         HandleForgotCheck(url)
         setMessage(`We've sent an email to reset your password ${isEmailEmpty ? "to" : "at"} "${recepient}"`)
         setMsgType("")
     }
+    //Handles the response AFTER IdentityCrisis runs. If the server returns false, then the account username or email is wrong
     async function HandleForgotCheck(url) {
         let req = await fetch(url)
         let res = await req.json()
-        if(!res) setMessage("This account does not exist. Please double check your spelling")
+        if (!res) { setMessage("This account does not exist. Please double check your spelling"); setMsgType("warn") }
     }
     return (
         <main id="R_login">
             <title>Login into the Board</title>
-            <h2 id="header">{isLogin ? "Login" : "Sign up"}</h2><span id="userShow"></span>
-            <form id="form" method="POST" onSubmit={HandleSubmit} action={"http://localhost:8000/api/login"+ (isLogin ? "" : "/new")}>
-                <p id="message" className={msgType} hidden={message == ""}>{message}</p>
-                <div id="emailSection">
-                    <label htmlFor="email">Email</label>
-                    <br />
-                    <input ref={emailField} onChange={e => setIsLogin(e.currentTarget.value === "")} id="email" name={isLogin ? "" : "email" } type="email" placeholder="Ex: hello@example.com - only required to register" />
-                </div>
-                <br />
-                <div id="usernameSection">
-                    <p id="user_availability" className='' hidden={isEmpty}>That username is {userAvailable ? "available" : "taken"}</p>
-                    <label htmlFor="username" >Username</label>
-                    <br />
-                    <input ref={userField} onChange={/*This code runs a small delay before checking the username*/(param) => {clearTimeout(delayCheckUser); delayCheckUser = setTimeout(() => OnUserInputChange(param), 450)}} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
-                </div>
-                <div id="passwordSection">
-                    <div id="user_pass_warn" hidden={isLogin || (passWarn === "")}>
-                        <p id="warn_message">{passWarn}</p>
-                        <p id="warn_notice">We'll let you use that password, but that's on you</p>
+            <h2 id="header">{enteredVerify ? "Verify" : (isLogin ? "Login" : "Sign up")}</h2><span id="userShow"></span>
+            <div id="container">
+                <section id="form_block" className={enteredVerify ? 'up' : ''} hidden={false}>
+                    <form id="form" method="POST" onSubmit={HandleSubmit}>
+                        <p id="message" className={msgType} hidden={message == ""}>{message}</p>
+                        <div id="emailSection">
+                            <label htmlFor="email">Email - only required to register</label>
+                            <br />
+                            <input ref={emailField} onChange={e => { setIsLogin(e.currentTarget.value === ""); DelayCheck(); }} id="email" name={isLogin ? "" : "email"} type="email" placeholder="Ex: hello@example.com - only required to register" />
+                            <p id="email_availability" className='warn' hidden={isLogin ? true : emailIsValid ?? true}>That email is already in use!</p>
+                        </div>
+                        <br />
+                        <div id="usernameSection">
+                            <label htmlFor="username" >Username</label>
+                            <br />
+                            <input ref={userField} onChange={DelayCheck} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
+                            <p id="user_availability" className='warn' hidden={isLogin ? true : nameIsValid ?? true}>That username is already taken. Sorry :(</p>
+                        </div>
+                        <div id="passwordSection">
+
+                            <label htmlFor="password" >Password</label>
+                            <br />
+                            <input
+                                id="password" name="pass" placeholder="Make sure it's a strong password"
+                                onChange={OnPassChange} type={showPass ? "text" : "password"} required />
+                            <span id="show_pass" className={showPass ? "shown" : ""} onClick={() => setPassVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
+                            <div id="user_pass_warn" hidden={isLogin || (passWarn === "")}>
+                                <p className="warn" id="warn_message">{passWarn}</p>
+                                <p className="warn" id="warn_notice">We'll let you use that password, but you should try better</p>
+                            </div>
+                        </div>
+                        <br />
+                        <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} 
+                        disabled={
+                            //Disable if awaiting fetch request
+                            awaitingFetch ? //Disable if creds have not been checked
+                            true : credsChecked ? //Disable if creds are not available (while it is a login)
+                                (!(nameIsValid && emailIsValid) && !isLogin) : true} />
+                        
+                    </form>
+                    <input id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>
+                    <div id="inform_await" hidden={!awaitingFetch}>
+                        <p>Awaiting request from server</p>
+                        <div id="progress_bar"><div id="progress_bar_fill"></div></div>
                     </div>
-                    <label htmlFor="password" >Password</label>
-                    <br />
-                    <input 
-                        id="password" name="pass" placeholder="Make sure it's a strong password"
-                        onChange={OnPassChange} type={showPass ? "text" : "password" }  required />
-                    <span id="show_pass" className={showPass ? "shown" : ""} onClick={() => setPassVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
-                </div>
-                <br />
-                
-                <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} disabled={!userAvailable && !isLogin}/>    
-            </form>
-            <input id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>
+                </section>
+                <section id="correction_block" hidden={!enteredVerify} className="down">
+                    <h2>We've sent a verification email to <a href={"https://gmail.com"} target="_blank">test@gmail.com</a></h2>
+                    <p>If you've mispelled your email, you can correct it below and try again</p>
+                    <form>
+                        <input placeholder="Did you mispell your email that badly?" type="email" ref={correctEmailRef}></input>
+                        <input type="submit" value="Fix email"></input>
+                    </form>
+                </section>
+            </div>
         </main>
     )
 }

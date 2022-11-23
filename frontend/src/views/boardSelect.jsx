@@ -55,7 +55,8 @@ function BoardSelect(data) {
                     <form method="POST" action="/api/board" onSubmit={CreateNewBoard}>
                         <label htmlFor="new_title" hidden={true}>New title of board</label>
                         <input ref={inputElement} name="name" id="new_title" type="text" placeholder="Board Title" />
-                        <label htmlFor="new_isOffline">Offline</label>
+                        <br/>
+                        <label id="offline_label" htmlFor="new_isOffline">Offline</label>
                         <input id="new_isOffline" type="checkbox" />
                         <input id="create_new" type="submit" value="Create" />
                     </form>

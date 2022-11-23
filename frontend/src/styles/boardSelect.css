@@ -26,8 +26,8 @@
 #addBoard #offHover {
     transition: all 1s;
     font-size: 75px;
-    right: 10px;
-    bottom: -10px;
+    right: 7px;
+    bottom: -7px;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -48,20 +48,19 @@
     height: 150px;
     margin: 10px;
     overflow: clip;
-    white-space: nowrap;
 }
 #addBoard:focus-within #onHover, #addBoard:hover #onHover {
     opacity: 1;
 }
-
 #R_select input {
     background-color: #0000;
 }
-
+#new_isOffline, #offline_label{
+    display: inline;
+}
 #new_title {
     border: #000 none 0px;
 }
-
 #addHeader {
     margin: 0px;
 }

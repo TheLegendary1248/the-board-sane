@@ -51,6 +51,21 @@ router.get('/:id', (req, res) => {
     res.render("board")
 })
 
+//Post an item
+router.post('/:id/item', (req, res) => {
+    res.status(404).end()
+})
+
+//Patch an item
+router.patch('/:id/item', (req, res) => {
+    res.status(404).end()
+})
+
+//Delete an item
+router.delete('/:id/item/:itemid', (req, res) => {
+    res.status(404).end()
+})
+
 //TODO Mark board for deletion incase of accidents, instead of straight up deleting it
 //Delete a board
 router.delete('/:id', (req, res) => {

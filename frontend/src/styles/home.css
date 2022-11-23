@@ -19,6 +19,7 @@
     height: 200px;
 }
 #R_home footer {
+    position: relative;
     background-color: #002;
     display: flex;
     justify-content: space-around;
@@ -26,16 +27,30 @@
     flex-wrap: wrap;
     padding: 30px;
 }
-#R_home footer p {
+#R_home footer p{
     width: 250px;
-    height: 10px;
+    height: 18px;
     font-size: 18px;
     padding: 10px;
     text-align: center;
 }
+#R_home footer p a {
+    font-family: monospace;
+}
+#R_home footer div {
+    position: absolute;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: monospace;
+    font-size: 15px;
+    top: 6px;
+    color: #aaa;
+    border-bottom: 2px solid #aaa;
+    width: 90%;
+}
 #R_home .ptBlock {
     position: relative;
-    height: 400px;
+    height: 350px;
     padding: 50px;
 }
 .ptBlock > div 
@@ -53,11 +68,12 @@
 .ptBlock > div:nth-child(2) {
     left:50%;
     top:0px;
-    margin: 0px;;
+    margin: 0px;
 }
 .ptText {
     margin: 0px;
     padding: 6vw;
+    padding-top: 100px;
     font-size: 20px;
 }
 .pretendImg {
@@ -70,7 +86,7 @@
     transform: translate(-50%,-50%);
     background-color: #777;
     text-align: center;
-    padding: 8% 0%;
+    padding: 50px 0px;
     color: #afe;
     font-size: 30px;
     box-sizing: border-box;

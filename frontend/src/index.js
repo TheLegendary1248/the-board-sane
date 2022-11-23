@@ -1,5 +1,5 @@
 //React modules
-import React from 'react';
+import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 //Homebrewed modules
 import Nav from './views/components/nav';
@@ -8,6 +8,8 @@ import About from './views/about'
 import Login from './views/login'
 import BoardSelect from './views/boardSelect'
 import Board from './views/board'
+import ChangeLogin from './views/changeLogin'
+import Verify from './views/verify';
 import reportWebVitals from './reportWebVitals';
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 //Import CSS
@@ -16,7 +18,6 @@ import './default.css'
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "firebase/app";
-import { createContext } from 'react';
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -44,6 +45,9 @@ root.render(
           <Route path="login" element={<Login />} />
           <Route path="board" element={<BoardSelect />} />
           <Route path="board/:boardId" element={<Board />} />
+          <Route path="changeLogin/:userID/:token" element={<ChangeLogin forgot/>} />
+          <Route path="changeLogin" element={<ChangeLogin/>} />
+          <Route path="verify/:userID/:token" element={<Verify/>} />
         </Routes>
       </BrowserRouter>
     </isboardView.Provider>
