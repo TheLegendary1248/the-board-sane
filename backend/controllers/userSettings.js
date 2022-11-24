@@ -2,15 +2,14 @@
 const router = require('express').Router()
 const DB_user = require('../schema/user')
 const {CreateNewToken} = require('./token')
+const {SendMail} = require('../utils/emailHandler')
+const {GetHtmlFile} = require('../utils/htmlReader')
 
 //Forgot endpoint
-router.get("/forgot/:type/:value", async (req, res)=> {
+router.post("/forgot/:type/:value", async (req, res)=> {
     //Check the type
     if(req.params.type === "email" | req.params.type === "name") {
         //Find the doc
-        console.log("Type:", req.params.type,"; Value:", req.params.value)
-        console.log("Object:", {[req.params.type]: req.params.value})
-        DB_user.findOne()
         let doc = await DB_user.findOne({[req.params.type]: req.params.value}).lean().exec()
         console.log("Retrieved doc:", await doc)
         //If not found, fail
@@ -22,10 +21,10 @@ router.get("/forgot/:type/:value", async (req, res)=> {
             res.send(true)
             let emailHTML = await GetHtmlFile(path.join(__dirname,"../emailPresets/forgotCreds.html"))
             let token = await CreateNewToken( res, doc, "forgot")
-            //Send the token hex-fied because the URL comes out wierd otherwise
-            let url = `http://localhost:1248/forgot/${hexToken}`
+            //Send the token hex-fied because the URL comes out weird otherwise
+            let url =  process.env.SITE_URL = `/forgot/${hexToken}`
             emailHTML.inserts.url = url
-            //SendMail(doc.email, "Forgot your password?", emailHTML.Join())
+            SendMail(doc.email, "Forgot your password?", emailHTML.Join())
         }
     }
     //Bad request

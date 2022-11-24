@@ -11,6 +11,7 @@ const authClient = new google.auth.OAuth2(
     process.env.REDIRECT_URI
 );
 authClient.setCredentials({ refresh_token: process.env.MAIL_REFRESH_TOKEN });
+
 //Auth used for sending mail
 const auth = {
     type: 'OAuth2',
@@ -19,12 +20,14 @@ const auth = {
     clientSecret: process.env.MAIL_CLIENT_SECRET,
     refreshToken: process.env.MAIL_REFRESH_TOKEN,
 }
+
 //Create a global transporter object, refreshed every minute for a new access token
 const transport = {
     value: null,
     creationTime: null,
 }
-//Function to get token 
+
+//Function to refresh token and transport as needed per minute
 async function GetTransport() {
     //Create a new transport if it's been longer than a minute
     if (!transport.creationTime ? true : (new Date() - transport.creationTime > 60000)) {
@@ -44,22 +47,36 @@ async function GetTransport() {
     else return transport.value;
 };
 
-//Exported functions
+/**
+ * Sends mail to the recipient with the given subject and html. 
+ * Environment variable SENDMAIL determines if this function runs it's logic.
+ * @param {String} recipient The recipient's email
+ * @param {String} subject The subject of the email
+ * @param {String} html The HTML file sent as the email body
+ * @returns {Promise<SMTPTransport.SentMessageInfo>} Nodemailer sent message info
+ */
 async function SendMail(recipient, subject, html) {
-    console.log("Sending mail")
-    try {
-        const options = {
-            from: "The Board",
-            subject,
-            html,
-            to: recipient,
+    if(process.env.SENDMAIL)
+    {
+        console.log("Email Handler / Sending Email to:", recipient)
+        try {
+            const options = {
+                from: "The Board",
+                subject,
+                html,
+                to: recipient,
+            }
+            let transporter = await GetTransport();
+            return await transporter.sendMail(options);
+        } catch (error) {
+            console.log("Email Handler / Error Sending Email:", error);
+            return null;
         }
-        let transporter = await GetTransport();
-        return await transporter.sendMail(options);
-    } catch (error) {
-        console.log(error);
-        return null;
     }
+    else {
+        console.log("Email Handler / NOT Sending Email to:", recipient)
+    }
+    
 }
 
 module.exports = { SendMail };

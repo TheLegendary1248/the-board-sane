@@ -2,20 +2,26 @@
 const fs = require("fs/promises")
 //Variable that holds already read files
 var readFiles = {}
+
+/**
+ * Gets HTML file at path
+ * @param {String} path 
+ * @returns {HTMLObject}
+ */
 async function GetHtmlFile(path){
     if ( readFiles[path] != null)
     {
         let file = readFiles[path]
-        let m = new HtmlRep(file);
+        let m = new HTMLObject(file);
         return m;
     }
     else {
         let file = await fs.readFile(path, {encoding: 'utf-8'})
         readFiles[path] = await file; 
-        return new HtmlRep(file);
+        return new HTMLObject(file);
     }
 }
-class HtmlRep {
+class HTMLObject {
     constructor(html){
         //Separate the html by %
         let strs = html.split("%%")

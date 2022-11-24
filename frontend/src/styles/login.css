@@ -62,9 +62,21 @@
     background-color: #600;
     border: 3px solid #a20;
 }
-#R_login .warn {
+#R_login .warn:not([hidden=""]) {
+    overflow: hidden;
     color: #f31;
+    background-color: #0005;
     font-weight: 600;
+    bottom: 0px;
+    width: 75%;
+    padding: 5px 10px;
+    position: relative;
+    display: block;
+    animation: SlideIn 0.5s ease-in-out forwards;
+}
+@keyframes SlideIn {
+    from {height: 0px; padding: 0px 10px;}
+    to {height: 30px;}
 }
 #R_login #container {
     position: relative;

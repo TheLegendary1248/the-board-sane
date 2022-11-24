@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   //Server options
   if(!!req.body.serverOptions){
-    if(req.body.serverOptions.fakeResponse !== null) //Ask for a fake response. True to return a fake success, false to return a fake fail
+    if(req.body.serverOptions.fakeResponse !== undefined) //Ask for a fake response. True to return a fake success, false to return a fake fail
     {
       console.log("Request asked to be fake. Success?", req.body.serverOptions.fakeResponse)
       req.body.useFakeResponse = true;

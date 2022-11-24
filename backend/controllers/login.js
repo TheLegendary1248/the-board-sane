@@ -12,8 +12,6 @@ const salt = 12
 router.post("/new", async (req, res) => {
     try {
         let body = req.body
-        if(body.useFakeResponse) 
-            return res.send(body.fakeResponse ? true : false)
         //General function for sending the verification email(and setting the document password hash)
         async function SendVerification(doc_user) {
             //NOTE: I am intentially using the document's fields over the request body to avoid misalignment of request and document values. Don't like it? Too bad, it ensures equality
@@ -35,6 +33,9 @@ router.post("/new", async (req, res) => {
             res.status(400).send(false)
             return;
         }
+        //Fake response option
+        if(body.useFakeResponse)
+            return res.send(body.fakeResponse ? true : false)
         //Get any duplicates
         let doc_userDupe = await db_user.findOne({ name: body.name }, 'name email verified _id').exec()
         let doc_emailDupe = await db_user.findOne({ email: body.email }, 'verified _id').exec()
@@ -55,7 +56,10 @@ router.post("/new", async (req, res) => {
         else if (!doc_userDupe?.verified && !doc_emailDupe?.verified) {
             console.log("Registering a new user")
             //Remove the unverified email duplicate
-            if(doc_emailDupe) db_user.findByIdAndDelete(doc_emailDupe._id)
+            if(doc_emailDupe) { 
+                db_user.findByIdAndDelete(doc_emailDupe._id).exec()
+                console.log("Email duplicate deleted")
+            }
             //Use user duplicate if existent
             let doc_user = doc_userDupe ?? new db_user({creationDate: new Date(), name: body.name})
             doc_user.email = body.email
@@ -80,6 +84,14 @@ router.post("/", async (req, res) => {
         res.status(400).send("Request does not contain the fields required")
         return;
     }
+    //Fake response option
+    if(body.useFakeResponse) 
+        if(body.fakeResponse) {
+            CreateNewToken(res)
+        }
+        else {
+
+        }
     let userDoc_lean = await db_user.findOne(body).lean().exec()
     //If document does not exist, fail
     if (userDoc_lean === null) { console.log("Account does not exist"); res.status(404).send(false); }

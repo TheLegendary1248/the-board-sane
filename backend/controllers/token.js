@@ -20,14 +20,17 @@ const { v4: uuidv4 } = require('uuid');
 
 //Function that creates new authentication tokens
 async function CreateAuthToken(res, doc_user) {
+    console.log("Before cookies are set")
     let token = uuidv4();
     let hash = await bcrypt.hash(token, salt)
     //TODO Check for all authentication tokens. Allow a limit of 8 sign ins, or defined by the user
     //Create a new authentication token to expire in 30 days
     db_token.create({ token: hash, expires: new Date(Date.now() + 2_592_000_000), user: doc_user._id })
     //Set the session cookies
+    console.log("Just before cookies are set")
     res.cookie("Session", token)
     res.cookie("UserID", doc_user._id)
+    console.log("Just after cookies are set")
 }
 //TODO Add return for token expiration, aka log out user after set time
 //Checks the authentication token that SHOULD be set as part of the cookies
@@ -48,7 +51,7 @@ async function CheckAuthToken(req) {
         //Check token matches the session token
         else if (tokenDoc.token != req.cookies.Session) {
             //If the type is the forgot password token, delete on fail
-            if (type === "forgot") { console.log("Forgot Password token deleted"); db_token.deleteOne({ token: req.cookies.Session }); }
+            if (type === "forgot") { console.log("Forgot Password token deleted"); db_token.deleteOne({ token: req.cookies.Session }).exec(); }
             return null;
         }
     }
@@ -75,30 +78,48 @@ async function CreateVerifyToken(doc_user) {
     //The token is not required to be unique so we can always return it without needing a check
     return token;
 }
-//Checks the verification token. The token gets deleted in the process if it exists, and the user is given an authentication token
+/**
+ * Checks the verification token. The token gets deleted in the process if it exists, and the user is given an authentication token. \n
+ * NOTE that this function already sends a response
+ * @param {Express.Request} req 
+ * @param {Express.Response} res 
+ */
 async function CheckVerifyToken(req, res) {
     console.log("Verification: ( UserID:'", req.body.userID, "'; Token:'", req.body.token, "')")
-    let doc_user = await db_user.findById(req.userID, "_id name").exec()
+    let doc_user = await db_user.findById(req.body.userID, "_id name").exec()
+    console.log(doc_user)
     //If document exists
     if (doc_user) 
     {   
         let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
         //If an associated verification token exists
         if(doc_verifyToken) {
+            console.log("Body token:", req.body.token, "Verify token:", doc_verifyToken.token)
             let isCorrect = await bcrypt.compare(req.body.token, doc_verifyToken.token)
             //If token matches
             if(isCorrect) {
-                console.log("Verification: Succeeded")
-                CreateAuthToken(res)
-                res.send(doc_user.name)
-                doc_user.verified = true
+                //If token is still valid
+                if((Date.now() - doc_verifyToken.expires.getTime()) < 0)
+                {
+                    console.log("Verification: Succeeded")
+                    CreateAuthToken(res, doc_user)
+                    console.log("Just before response is sent")
+                    res.send(doc_user.name)
+                    console.log("Just after response is sents")
+                    doc_user.verified = true
+                    doc_user.save()
+                }
+                else{
+                    console.log("Verification: Token has expired")
+                    res.send("")
+                }
             }
             else {
                 console.log("Verification: Token hash does not match")
                 res.send("");
             }
             //Delete verification token regardless of outcome
-            db_verifyToken.findByIdAndDelete(doc_verifyToken._id)
+            db_verifyToken.findByIdAndDelete(doc_verifyToken._id).exec()
         }
         else { console.log("Verification: Token does not exist"); res.status(400).send("")}
     }
@@ -111,7 +132,8 @@ async function DeleteToken(res) {
     res.clearCookie("UserID")
     db_token.deleteOne({ token: cookie }).exec()
 }
-//
+//TODO Define implementation
+//Method for signing out of all devices
 async function DeleteAllAssociatedTokens(res) {
     throw "Method not Implemented"
 }
