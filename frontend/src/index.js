@@ -1,5 +1,5 @@
 //React modules
-import React, { createContext } from 'react';
+import React, { createContext, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 //Homebrewed modules
 import Nav from './views/components/nav';
@@ -18,6 +18,7 @@ import './default.css'
 // Import the functions you need from the SDKs you need
 
 import { initializeApp } from "firebase/app";
+import Default from "./views/default"
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 // Your web app's Firebase configuration
@@ -31,29 +32,28 @@ const firebaseConfig = {
 };
 // Initialize Firebase
 const firebase = initializeApp(firebaseConfig);
-const isboardView = createContext(null)
+
 //Render
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <isboardView.Provider value={true}>
+    <Default>
       <BrowserRouter>
-        {<Nav />}
+          <Nav />
         <Routes>
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="login" element={<Login />} />
           <Route path="board" element={<BoardSelect />} />
           <Route path="board/:boardId" element={<Board />} />
-          <Route path="changeLogin/:userID/:token" element={<ChangeLogin forgot/>} />
-          <Route path="changeLogin" element={<ChangeLogin/>} />
-          <Route path="verify/:userID/:token" element={<Verify/>} />
+          <Route path="changeLogin/:userID/:token" element={<ChangeLogin forgot />} />
+          <Route path="changeLogin" element={<ChangeLogin />} />
+          <Route path="verify/:userID/:token" element={<Verify />} />
         </Routes>
       </BrowserRouter>
-    </isboardView.Provider>
+    </Default>
   </React.StrictMode>
 );
-
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
 // or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals

@@ -20,7 +20,7 @@ function BoardSelect(data) {
     async function GetBoards() {
         let req = await fetch("/api/board")
         let res = await req.json()
-        console.log(res)
+        //console.log(res)
     }
     async function CreateNewBoard(event) {
         //Stop normal form submition

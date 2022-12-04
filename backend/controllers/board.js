@@ -1,14 +1,14 @@
 //Controls routing for accessing boards
 const router = require("express").Router()
 const Board = require("../schema/board")
-const TokenAuth = require("./token")
+const {CheckAuthToken} = require("./token")
 
 //Make sure to authenticate usage
 
 //Retrieve all boards a user has access to
 router.get('/', async (req, res) => {
     //Get user associated with token
-    let token = await TokenAuth.CheckToken(req)
+    let token = await CheckAuthToken(req)
     //TODO Allow user to access their boards without login required
     if(token === null) res.status(301).redirect("/login") 
     else

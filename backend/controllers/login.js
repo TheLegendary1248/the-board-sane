@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const db_user = require('../schema/user')
 const router = require('express').Router()
-const { CreateNewToken, DeleteToken, CheckToken, CheckVerifyToken, CreateVerifyToken} = require("./token")
+const { CreateAuthToken, DeleteToken, CheckAuthToken, CheckVerifyToken, CreateVerifyToken} = require("./token")
 const { SendMail } = require('../utils/emailHandler.js')
 const { GetHtmlFile } = require('../utils/htmlReader.js')
 const path = require('path');
@@ -61,7 +61,7 @@ router.post("/new", async (req, res) => {
                 console.log("Email duplicate deleted")
             }
             //Use user duplicate if existent
-            let doc_user = doc_userDupe ?? new db_user({creationDate: new Date(), name: body.name})
+            let doc_user = doc_userDupe ?? new db_user({creationDate: new Date(), lastModified: new Date(), name: body.name})
             doc_user.email = body.email
             console.log("User document:", doc_user)
             SendVerification(doc_user)
@@ -79,48 +79,74 @@ router.post("/new", async (req, res) => {
 router.post("/", async (req, res) => {
     //Check that request can be processed
     let body = req.body
-    console.log("Attempt to log in with creds ( Login:'", req.body.name, "'; Pass:'", req.body.pass, "')")
-    if (body.name === undefined || body.pass === undefined) {
+    console.log(`Login attempt with ( User: ${body.name}, Pass: ${body.pass})`)
+    //Ensure the request has the correct fields
+    if ((typeof body.name !== 'string') || (typeof body.pass !== 'string')) {
+        console.log("Request does not contain the fields required".yellow)
         res.status(400).send("Request does not contain the fields required")
         return;
     }
     //Fake response option
     if(body.useFakeResponse) 
+    {
+        console.log("Fake Login Attempt".cyan)
         if(body.fakeResponse) {
-            CreateNewToken(res)
+            res.send(true)
         }
         else {
-
-        }
-    let userDoc_lean = await db_user.findOne(body).lean().exec()
-    //If document does not exist, fail
-    if (userDoc_lean === null) { console.log("Account does not exist"); res.status(404).send(false); }
-    //Else create a new token and send back true
-    else {
-        //Create token id, and id of user
-        CreateNewToken(res, userDoc_lean)
-        //TODO Use a delay to slow down brute force attacks
+            res.send(false)
+        }   
+        return;
+    }
+    //Get the user's document, with only the _id and pass field
+    let doc_user = await db_user.findOne({name: body.name},"_id pass").exec()
+    //Check that the user document actually exists. If not send 'Not Found'
+    //If this is a security concern to you, usernames can be checked with '/checkUsername/:user' anyways, so that's out the window
+    if (doc_user === null) { console.log("Account does not exist".yellow); res.status(404).send(false); }
+    else if (isCorrect = await bcrypt.compare(body.pass, doc_user.pass))
+    {   //If the password is correct
+        console.log("Account does exist, credentials match".green)
+        await CreateAuthToken(res, doc_user)
         res.send(true)
     }
-})
-
+    else 
+    {   //If password is not correct
+        console.log("Account does exist, credentials do NOT match".red)
+        res.send(false)
+}   })
+    
 //Path for LOGGING IN BY EMAIL LINK. Multipurpose, email verification and password forgotten (but the user doesn't need to know that)
 router.post("/verify", async (req, res) => {
     let body = req.body
     res.set('Content-Type','text/plain')
     if(body.useFakeResponse) 
-            return res.send(body.fakeResponse ? "John Doe" : "")
+        return res.send(body.fakeResponse ? "John Doe" : "")
     if (body.userID === undefined || body.token === undefined) {
         console.log("/verify : Bad request. Body:", req.body)    
         res.status(400).end()
     }
     else CheckVerifyToken(req, res)
 })
+
+//Path for CHECKING CREDENTIALS set in cookies
+router.get("/", async (req, res) => {
+    let userID = req.cookies.UserID
+    let session = req.cookies.Session
+    let lastModif = new Date(req.get('If-Modified-Since'))
+    if((typeof userID !== 'string') || (typeof session !== 'string'))
+    {
+        console.log(__filename, ': GET / : Bad Cookies'.red)
+        res.status(400).send(false)
+    }
+    else{
+        CheckAuthToken(req)
+    }
+})
 //FIXME This is incomplete
 //Path for LOGGING OUT
 router.delete("/", async (req, res) => {
     //Check session cookie
-    let check = await CheckToken(req)
+    let check = await CheckAuthToken(req)
     if (check === false) {
 
     }

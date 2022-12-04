@@ -2,7 +2,8 @@
 import { React, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import common from '../common_passwords/passwords.json'
-const emailRegex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+//Ty so much Mozilla https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
+const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 //TODO Add pattern matching
 //TODO Add "forgot password"
 //Saved as the "setTimeout" return value
@@ -76,6 +77,7 @@ function Login(data) {
                 let get = await fetch("/api/checkEmail/" + emailRef.current.value, { signal: checkAborter.signal });
                 get.json().then(res => { setEmailValidity(!res); prevEmail = emailRef.current.value; })
             }
+            else console.warn("Email does not match expression")
         }
         setCredsCheck(true)
     }
@@ -105,7 +107,7 @@ function Login(data) {
         event.preventDefault()
         setAwaitingFetch(true)
         let body = Object.fromEntries(new FormData(event.target).entries())
-        body.serverOptions = { fakeResponse : true, delay: 2000}
+        //body.serverOptions = { fakeResponse : true, delay: 2000}
         originalFetchBody = body;
         let req = await fetch("/api/login" + (isLogin ? "" : "/new"), {
             method: 'POST',
@@ -115,16 +117,23 @@ function Login(data) {
             body: JSON.stringify(body),
         })
         //If it is login, handle showing forgot password, else navigation to the app
-        if (isLogin) {
-            //Await request 
-            let get = await req.json()
-            console.log(get)
-            if (get) navigate("/board")
-            else {
-                if (isLogin) setForgotVisible(true)
-                setMessage(isLogin ? "Invalid credentials" : "An error has ocurred")
-                setMsgType("warn")
+        if (isLogin) { 
+            if(req.ok || req.status === 404)
+            {   //Ensure the request is ok, or simply not found (Account non-existent)
+                let get = await req.json()
+                //If login succeeds
+                if (get) navigate("/board")
+                else
+                {
+                    setForgotVisible(true)
+                    setMessage(req.status === 404 ? "Account under this username does not exist" : "Invalid credentials")
+                }
             }
+            else 
+            {   //TODO Use global element to warn of bad programming
+                setMessage("An error has ocurred")
+            }
+            setMsgType('warn')
         }
         //Warn email may be wrong if the server had an error sending the email
         else {
@@ -140,7 +149,7 @@ function Login(data) {
         let body = {...originalFetchBody}
         let formData = new FormData(event.target)
         body.email = formData.get('email')
-        body.serverOptions = {fakeResponse: true, delay: 2500}
+        //body.serverOptions = {fakeResponse: true, delay: 2500}
         setAwaitingFetch(true)
         let req = await fetch("/api/login/new", {
             method:'POST',
@@ -209,10 +218,14 @@ function Login(data) {
                         <br />
                         <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} 
                         disabled={
+                            //Keep enabled if it's a login
+                            isLogin ? false : 
                             //Disable if awaiting fetch request
-                            awaitingFetch ? //Disable if creds have not been checked
-                            true : credsChecked ? //Disable if creds are not available (while it is a login)
-                                (!(nameIsValid && emailIsValid) && !isLogin) : true} />
+                            awaitingFetch ? 
+                            //Disable if creds have not been checked
+                            true : credsChecked ? 
+                            //Disable if creds are not available (while it is a login)
+                                !(nameIsValid && emailIsValid) : true} />
                         
                     </form>
                     <input id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>

@@ -10,4 +10,4 @@ const token_s = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'} 
 })
 
-module.exports = mongoose.model('Token', token_s)
+module.exports = mongoose.model('AuthToken', token_s)

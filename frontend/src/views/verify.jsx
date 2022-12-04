@@ -21,11 +21,10 @@ export default function Verify(data)
         try {
             let req = await fetch("/api/login/verify", {method: "POST", signal: abort.signal, 
             body: JSON.stringify({userID, token, 
-            serverOptions: {delay: 2500}
+            //serverOptions: {delay: 2500}
             }), headers: {'Content-Type': 'application/json'}})
             //The response should be text
             let res = await req.text()
-            console.log("Response",res)
             //Set values accordingly. The response should be the user's name
             verify(!!res)
             setName(res)

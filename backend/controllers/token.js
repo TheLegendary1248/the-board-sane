@@ -1,11 +1,11 @@
 //TODO DO COOKIE RESEARCH IN GENERAL
-const db_token = require('../schema/token')
+const db_authToken = require('../schema/authenticationToken')
 const db_verifyToken = require('../schema/verificationToken')
 const db_user = require('../schema/user')
 const bcrypt = require('bcrypt')
 const salt = 9;
-const { v4: uuidv4 } = require('uuid');
-
+const uuid = require('uuid');
+const { Mongoose, default: mongoose } = require('mongoose');
 //NOTE OF CODE
 //There are two kinds of tokens, Authentication tokens and Verification Tokens
 //Authentication Tokens
@@ -18,40 +18,83 @@ const { v4: uuidv4 } = require('uuid');
 // - For the reason stated above, only one can exist per user. For security, any failure to match the token deletes it immediately
 //TODO Flag users that have multiple failed login attempts via tokens
 
-//Function that creates new authentication tokens
+/**
+ * Creates an Authentication token
+ * @param {Express.Response} res The response object to the request. Used in setting cookies Session and UserID, therefore headers must not be sent prior
+ * @param {mongoose.Document} doc_user The User's Document's ID
+ * @returns {Promise<Boolean>} Returns true if successful in creating the token
+ */
 async function CreateAuthToken(res, doc_user) {
-    console.log("Before cookies are set")
-    let token = uuidv4();
-    let hash = await bcrypt.hash(token, salt)
-    //TODO Check for all authentication tokens. Allow a limit of 8 sign ins, or defined by the user
-    //Create a new authentication token to expire in 30 days
-    db_token.create({ token: hash, expires: new Date(Date.now() + 2_592_000_000), user: doc_user._id })
-    //Set the session cookies
-    console.log("Just before cookies are set")
-    res.cookie("Session", token)
-    res.cookie("UserID", doc_user._id)
-    console.log("Just after cookies are set")
+    if(res.headersSent)
+    {   //If headers are already sent, return false and log it
+        console.error(__filename, "CreateAuthToken: Cannot send cookies because headers were already sent".yellow)
+        return false;
+    }
+    try {
+        if(res.useFakeResponse) 
+        {   //Set placeholder cookies if response expected to be faked
+            res.cookie("UserID", "1248")
+            res.cookie("Session", "NULL")
+            return true
+        }
+        else 
+        {   //Create token and hash it
+            let token = uuid.v4();
+            let hash = await bcrypt.hash(token, salt);
+            //TODO Check for all authentication tokens. Allow a limit of 8 sign ins, or defined by the user
+            //Create a new authentication token to expire in 30 days
+            let doc_authToken = new db_authToken({ token: hash, expires: new Date(Date.now() + 2_592_000_000), user: doc_user })
+            //Set cookies
+            res.cookie("Session", token)
+            res.cookie("UserID", doc_user.id)
+            doc_authToken.save()
+            return true;
+        }
+    }
+    catch(error)
+    {
+        console.error("CreateAuthToken: Error caught while creating Authentication Token : ".red, error)
+        return false;
+    }
 }
+
+/** Checks the authentication token sent as 'UserID' and 'Session' cookies
+ * @param {Express.Request} req The request object
+ * @returns {Boolean} Whether the authentication token could be successfully created and set as cookies
+ */
 //TODO Add return for token expiration, aka log out user after set time
 //Checks the authentication token that SHOULD be set as part of the cookies
 async function CheckAuthToken(req) {
-    //Check if the user exists
-    if (req.cookies.UserID === undefined) { console.log("User ID cookie does not exist"); return null; }
-    //Check for the token
-    if (req.cookies.Session === undefined) { console.log("Session cookie does not exist"); return null; }
+    let userID = req.cookies.UserID
+    let session = req.cookies.Session
+    if(req.useFakeResponse)
+    {
+        if(req.fakeResponse)
+        {
+
+        }
+        else{
+
+        }
+    }
+    //Check if the user id cookies exists
+    if (!mongoose.isValidObjectId(userID)) { console.warn(__filename, `: CheckAuthToken: UserID cookie(${userID}) is not valid`.yellow); return null; }
+    //Check if the session cookie exists
+    if (!uuid.validate(session)) { console.warn(__filename, `: CheckAuthToken: Session cookie(${session}) is not valid`.yellow); return null; }
+    console.log(`Checking Auth Token ( UserID: ${userID}, Session: ${session})`)
     //Check user document existence
-    let userDoc = await db_user.findById(req.cookies.UserID).lean().exec()
-    if (userDoc === null) return null;
+    let doc_token = await db_user.findById(req.cookies.UserID).lean().exec()
+    if (doc_token === null) { console.warn(__filename, ": CheckAuthToken: Token does not exist".yellow); return null; }
     else {
         //Check token document existence
-        let tokenDoc = await db_token.findOne({ token: await bcrypt.hash(req.cookies.Session) }).lean().exec()
-        if (tokenDoc === null) return null;
+        let doc_token = await db_authToken.findOne({ token: await bcrypt.hash(session, salt) }).lean().exec()
+        if (doc_token === null) return null;
         //Check token matches the user
-        if (tokenDoc.user != userDoc._id) { console.log("User ID cookie does not match"); return null; }
+        if (doc_token.user != doc_token._id) { console.log("User ID cookie does not match"); return null; }
         //Check token matches the session token
-        else if (tokenDoc.token != req.cookies.Session) {
+        else if (doc_token.token != session) {
             //If the type is the forgot password token, delete on fail
-            if (type === "forgot") { console.log("Forgot Password token deleted"); db_token.deleteOne({ token: req.cookies.Session }).exec(); }
+            if (type === "forgot") { console.log("Forgot Password token deleted"); db_authToken.deleteOne({ token: session }).exec(); }
             return null;
         }
     }
@@ -59,7 +102,7 @@ async function CheckAuthToken(req) {
 
 //Function for creating a "verification" token. Used in verification of email or when password is forgotten
 async function CreateVerifyToken(doc_user) {
-    let token = uuidv4();
+    let token = uuid.v4();
     let hash = await bcrypt.hash(token, salt)
     console.log("Creating new verification token:", token);
     //Check for a previous token, probably from a resubmit
@@ -102,10 +145,8 @@ async function CheckVerifyToken(req, res) {
                 if((Date.now() - doc_verifyToken.expires.getTime()) < 0)
                 {
                     console.log("Verification: Succeeded")
-                    CreateAuthToken(res, doc_user)
-                    console.log("Just before response is sent")
+                    await CreateAuthToken(res, doc_user)
                     res.send(doc_user.name)
-                    console.log("Just after response is sents")
                     doc_user.verified = true
                     doc_user.save()
                 }
@@ -130,13 +171,17 @@ async function DeleteToken(res) {
     let cookie = res.cookie.Session
     res.clearCookie("Session")
     res.clearCookie("UserID")
-    db_token.deleteOne({ token: cookie }).exec()
+    db_authToken.deleteOne({ token: cookie }).exec()
 }
 //TODO Define implementation
-//Method for signing out of all devices
+/** NOT IMPLEMENTED YET
+ * Deletes all authentication tokens associated with an account, essentially signing them out of all other devices.
+ * Should not delete the token used to invoke this request
+ * @param {Express.Response} res 
+ */
 async function DeleteAllAssociatedTokens(res) {
     throw "Method not Implemented"
 }
 
 
-module.exports = { CreateNewToken: CreateAuthToken, CheckVerifyToken, CreateVerifyToken, CheckToken: CheckAuthToken, DeleteToken };
+module.exports = { CreateAuthToken, CheckVerifyToken, CreateVerifyToken, CheckAuthToken, DeleteToken };
