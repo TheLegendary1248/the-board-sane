@@ -34,7 +34,8 @@ async function CreateAuthToken(res, doc_user) {
         if(res.useFakeResponse) 
         {   //Set placeholder cookies if response expected to be faked
             res.cookie("UserID", "1248")
-            res.cookie("Session", "NULL")
+            res.cookie("SessionVal", "NULL")
+            res.cookie("SessionID", "0000")
             return true
         }
         else 
@@ -45,7 +46,8 @@ async function CreateAuthToken(res, doc_user) {
             //Create a new authentication token to expire in 30 days
             let doc_authToken = new db_authToken({ token: hash, expires: new Date(Date.now() + 2_592_000_000), user: doc_user })
             //Set cookies
-            res.cookie("Session", token)
+            res.cookie("SessionVal", token)
+            res.cookie("SessionID", doc_authToken.id)
             res.cookie("UserID", doc_user.id)
             doc_authToken.save()
             return true;
@@ -60,41 +62,38 @@ async function CreateAuthToken(res, doc_user) {
 
 /** Checks the authentication token sent as 'UserID' and 'Session' cookies
  * @param {Express.Request} req The request object
- * @returns {Boolean} Whether the authentication token could be successfully created and set as cookies
+ * @returns {Promise<mongoose.Document>} The User document associated with the token
  */
 //TODO Add return for token expiration, aka log out user after set time
 //Checks the authentication token that SHOULD be set as part of the cookies
 async function CheckAuthToken(req) {
     let userID = req.cookies.UserID
-    let session = req.cookies.Session
-    if(req.useFakeResponse)
-    {
-        if(req.fakeResponse)
-        {
-
-        }
-        else{
-
-        }
-    }
+    let sessionVal = req.cookies.SessionVal
+    let sessionID = req.cookies.SessionID
     //Check if the user id cookies exists
     if (!mongoose.isValidObjectId(userID)) { console.warn(__filename, `: CheckAuthToken: UserID cookie(${userID}) is not valid`.yellow); return null; }
     //Check if the session cookie exists
-    if (!uuid.validate(session)) { console.warn(__filename, `: CheckAuthToken: Session cookie(${session}) is not valid`.yellow); return null; }
-    console.log(`Checking Auth Token ( UserID: ${userID}, Session: ${session})`)
+    if (!uuid.validate(sessionVal)) { console.warn(__filename, `: CheckAuthToken: Session cookie(${sessionVal}) is not valid`.yellow); return null; }
+    console.log(`Checking Auth Token ( UserID: ${userID}, Session: ${sessionVal})`)
     //Check user document existence
-    let doc_token = await db_user.findById(req.cookies.UserID).lean().exec()
-    if (doc_token === null) { console.warn(__filename, ": CheckAuthToken: Token does not exist".yellow); return null; }
-    else {
-        //Check token document existence
-        let doc_token = await db_authToken.findOne({ token: await bcrypt.hash(session, salt) }).lean().exec()
-        if (doc_token === null) return null;
-        //Check token matches the user
-        if (doc_token.user != doc_token._id) { console.log("User ID cookie does not match"); return null; }
-        //Check token matches the session token
-        else if (doc_token.token != session) {
-            //If the type is the forgot password token, delete on fail
-            if (type === "forgot") { console.log("Forgot Password token deleted"); db_authToken.deleteOne({ token: session }).exec(); }
+    let doc_user = await db_user.findById(req.cookies.UserID).lean().exec()
+    if (doc_user === null) { console.warn(__filename, ": CheckAuthToken: User does not exist".yellow); return null; }
+    else 
+    {   //Check the given ID of the session token
+        let doc_token = await db_authToken.findById(sessionID).lean().exec()
+        if (doc_token === null) 
+        {   //If the token does not exist
+            console.log(__filename, ": CheckAuthToken: Session token does not exist".yellow); return null; }
+        else if (!doc_token.user.equals(doc_user._id)) 
+        {   //If the belonging user of the token does not match
+            console.log(__filename, ": CheckAuthToken: User ID cookie does not match".yellow); return null; }
+        else if (await bcrypt.compare(sessionVal, doc_token.token))
+        {   //If the token is valid
+            console.log(__filename, ": CheckAuthToken: Token is valid".green)
+            return doc_user;}
+        else 
+        {   //I think you get the gist
+            console.log(__filename, ": CheckAuthToken: Session token is not correct".yellow)
             return null;
         }
     }

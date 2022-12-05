@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     //Get user associated with token
     let token = await CheckAuthToken(req)
     //TODO Allow user to access their boards without login required
-    if(token === null) res.status(301).redirect("/login") 
+    if(token === null) res.status(401).end() 
     else
     {
         //Virtual Testing. Not working yet

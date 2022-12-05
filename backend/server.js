@@ -33,6 +33,10 @@ app.use((req, res, next) => {
   {
 
   }
+  if(req.get('X-Enable-Logging') !== undefined) 
+  { //Enables logging of user's actions saved as a mongodb document. FORCE ENABLE on more serious actions
+
+  }
   if(!!req.body.serverOptions){
     if(req.body.serverOptions.fakeResponse !== undefined) 
     { //Ask for a fake response. True to return a fake success, false to return a fake fail. 

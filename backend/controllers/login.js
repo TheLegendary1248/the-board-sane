@@ -140,6 +140,7 @@ router.get("/", async (req, res) => {
     }
     else{
         CheckAuthToken(req)
+        res.send(true)
     }
 })
 //FIXME This is incomplete
