@@ -1,5 +1,6 @@
 //The board selection of the application
 import React, { useEffect, useRef } from 'react'
+import { useState } from 'react'
 import Card from './components/boardCard.jsx'
 
 //Container for boards.
@@ -8,7 +9,7 @@ let boardCont = <p>Getting boards...</p>
 //TODO Allow this page to be accessed without signing up. Use cookies to save board info for unregistered users
 function BoardSelect(data) {
     import('../styles/boardSelect.css')
-    let boards = [<Card />, <Card />]
+    let [boards, setBoards] = useState((<p>Loading boards, please give us a moment</p>))
     const inputElement = useRef(null);
     /*
     //let get = await fetch("https://localhost:8000/board")
@@ -17,9 +18,23 @@ function BoardSelect(data) {
             <Card board={board}></Card>
         )
     })*/
-    async function GetBoards() {
-        let req = await fetch("/api/board")
+    async function GetBoards(abortCtrl) {
+        //Fetch request
+        let req = await fetch("/api/board",  {signal: abortCtrl.signal})
         let res = await req.json()
+        if(req.ok)
+        {   //If the request succeeds
+            try{
+                setBoards(Object.keys(res).length === 0 ? (<p>You currently have no boards</p>) : boards.map(board => (<Card board={board}></Card>)))
+            }
+            catch (error)
+            {   //Error caught while displaying the boards. Not a server error
+                setBoards(<p>An error occurred while displaying boards<br/>This is not a server error, please message the developer about this error<br/>{error.toString()}</p>)
+            }
+        }
+        else if(req.status === 403){
+            setBoards(<p>You are not signed in</p>)
+        }
         console.log(res)
     }
     async function CreateNewBoard(event) {
@@ -38,7 +53,9 @@ function BoardSelect(data) {
         console.log("response:",await res)
     }
     useEffect(() => {
-        GetBoards()
+        //Abort controller for cancelling the request if the page is left early
+        let abortCtrl = new AbortController()
+        GetBoards(abortCtrl)
     }, [])
     if (boards.length == 0) boards = <h3>You currently have no boards</h3>
     return (

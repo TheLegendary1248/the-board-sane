@@ -224,7 +224,7 @@ function Login(data) {
                             awaitingFetch ? 
                             //Disable if creds have not been checked
                             true : credsChecked ? 
-                            //Disable if creds are not available (while it is a login)
+                            //Disable if creds are not valid
                                 !(nameIsValid && emailIsValid) : true} />
                         
                     </form>
