@@ -4,7 +4,7 @@ import LocalStore from 'scripts/localStore'
 //User prefs, cloud synced if logged in, local if not
 const userPrefsContext = createContext(null)
 //Details of the user object in cloud
-const userContext = createContext({ name: "John Doe", id: "000000" })
+const userContext = createContext(null)
 
 export default function Default(data) {
     const [userState, setUserState] = useState(null)
@@ -20,20 +20,22 @@ export default function Default(data) {
     async function CheckCredentials(abortCtrl) 
     {   //Set up headers
         let options = { signal: abortCtrl.signal, headers: { } }
-        Object.assign(options, {'If-Modified-Since': LocalStore.userprofileUpdateTime})
+        Object.assign(options, /*{'If-Modified-Since': LocalStore.userprofileUpdateTime}*/)
         //Check with server about login
         let req = await fetch("/api/login/", options)
-        if (req.ok) 
-        {   //User credentials match, show we're logged in
-            let res = req.json()
-            setUserState(res)
-            LocalStore.userprofile = res
-        }
-        else if(req.status === 304)
+        console.log(req)
+        if (req.status === 304) 
         {   //User credentials match, and the user's profile has not changed
             setUserState({name: LocalStore.username})
         }
-        else {
+        else if(req.ok)
+        {   //User credentials match, show we're logged in
+            let res = await req.text()
+            setUserState({name: res})
+            LocalStore.userprofile = res
+        }
+        else
+        {   //All else has failed
             setUserState(null)
         }
     }

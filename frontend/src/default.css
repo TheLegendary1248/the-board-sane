@@ -1,9 +1,5 @@
 /* Default CSS to apply to all pages */
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -11,7 +7,104 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-input:not([type="checkbox"]) {
+/*Navbar styling*/
+nav {
+  background-color: var(--other-color);
+  position: sticky;
+  top:0px;
+  width:calc(100%);
+  margin:0px;
+  padding:0px 5px;
+  padding-top: 5px;
+  border-bottom: white solid 0px;
+  padding-right: 150px; /*Space for the user modal*/
+}
+nav img {vertical-align:super; display:inline-block; width: 40px; height: 40px}
+nav a {
+  vertical-align:super;
+  display: inline-block;
+  padding: 0px 10px;
+  font-size: x-large; 
+  text-decoration: none;
+  position: relative;
+  bottom: 8px;
+}
+nav span {margin: 0px 10px; }
+#userModal {
+  float: right;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #495F;
+  width: 200px;
+  height: calc(100% + 1px);
+  padding: 5px;
+  z-index: 10;
+  /* border-left: 2px solid white; /**/
+  z-index: 10;
+  box-shadow: 0px 2px 5px black;
+}
+#user_name {
+  position: absolute;
+  font-size: 25px;
+  bottom: 5%;
+}
+#pfp {
+  position: absolute;
+  top: 5px;
+  right: 25px;
+}
+#user_settings{
+  position: absolute;
+  bottom: 0px;
+  top: 100%;
+  left: 0px;
+  right: 0px 
+}
+#user_settings_inner{
+  transition-duration: 1s;
+  transition-property: background-color height;
+  height: 15px;
+  border-bottom-left-radius: 10px;
+  /* border: 2px solid white; /**/
+  border-right: 0px solid white;/* Hides right side border*/
+  border-top: 0px;
+  overflow: hidden;
+  box-shadow: 10px 10px 0px #0006;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  background-color: #495F;
+  z-index: 0;
+}
+#userModal:hover #user_settings_inner{
+  height: 50vh;    
+  /* background-color: #537594; */
+  /* border-top: 1px solid; /**/
+}
+#foldout_icon {
+  transition: text-shadow 0.8s, transform 0.8s, top 0.8s;
+  position: absolute;
+  text-align: center;
+  left: 50%;
+  transform: rotateX(180deg) scaleX(2);
+  top: -10px; 
+  font-weight: 500;
+  font-size: 25px;
+}
+#userModal:hover #foldout_icon{
+  top: calc(50vh);
+  transform: rotateX(180deg) scaleX(2) scale(3);
+}
+#quick_options {
+  transition: all 1s;
+  opacity: 0;
+
+}
+#userModal:hover #quick_options{
+  opacity: 100;
+}
+/*'Default' CSS. Since it can break some things, CSS is not automatically applied without the class name*/
+input.default {
   position: relative;
   background-color: #555;
   border: 0px solid #000;

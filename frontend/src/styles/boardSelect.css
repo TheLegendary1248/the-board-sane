@@ -19,7 +19,7 @@
 #addBoard:focus-within, #addBoard:hover {
     border-radius: 10px;
     border-width: 2px;
-    width: 500px;
+    width: min(500px, 94%);
     height: 150px;
     
 }
@@ -45,8 +45,9 @@
     transition: all 1s;
     opacity: 0;
     position: absolute;
-    height: 150px;
-    margin: 10px;
+    width: max(300px, calc(100% - 120px));
+    margin: 0px 5px;
+    padding: 5px;
     overflow: clip;
 }
 #addBoard:focus-within #onHover, #addBoard:hover #onHover {
@@ -60,6 +61,9 @@
 }
 #new_title {
     border: #000 none 0px;
+    height: 20px;
+    font-size: 18px;
+    margin: 4px 0px;
 }
 #addHeader {
     margin: 0px;

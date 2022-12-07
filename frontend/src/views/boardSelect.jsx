@@ -1,6 +1,8 @@
 //The board selection of the application
 import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
+import { redirect } from 'react-router-dom'
+import { ResponseDefault } from 'utils.js'
 import Card from './components/boardCard.jsx'
 
 //Container for boards.
@@ -39,21 +41,28 @@ function BoardSelect(data) {
     }
     async function CreateNewBoard(event) {
         //Stop normal form submition
-        event.preventDefault();
+        event.preventDefault()
         console.log(new FormData(event.target).get("name"))
+        //Since we want it to be just a new board and we don't have special settings, create as is
         let req = await fetch("/api/board", {
             method: 'POST',
             headers: {
-                //Note: FormData is .json, lovely aint it?
                 'Content-Type': "text/plain"
             },
             body: new FormData(event.target).get("name")
         })
+        if(!ResponseDefault(req)) return;
         let res = await req.json()
         console.log("response:",await res)
+        if(res.ok)
+        {
+            redirect("/board/" + await req.text())
+        }
+        //TODO Fail condition for creating a new board
+        else return;
     }
-    useEffect(() => {
-        //Abort controller for cancelling the request if the page is left early
+    useEffect(() => 
+    {   //Abort controller for cancelling the request if the page is left early
         let abortCtrl = new AbortController()
         GetBoards(abortCtrl)
     }, [])

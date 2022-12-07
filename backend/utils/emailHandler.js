@@ -24,10 +24,13 @@ const auth = {
 //Create a global transporter object, refreshed every minute for a new access token
 const transport = {
     value: null,
-    creationTime: null,
+    creationTime: new Date(0),
 }
 
-//Function to refresh token and transport as needed per minute
+/**
+ * Gets a transport, whether an old one or a fresh one as needed
+ * @returns {nodemailer.Transporter<SMTPTransport.SentMessageInfo>} The transporter object
+ */
 async function GetTransport() {
     //Create a new transport if it's been longer than a minute
     if (!transport.creationTime ? true : (new Date() - transport.creationTime > 60000)) {
@@ -50,9 +53,9 @@ async function GetTransport() {
 /**
  * Sends mail to the recipient with the given subject and html. 
  * Environment variable SENDMAIL determines if this function runs it's logic.
- * @param {String} recipient The recipient's email
- * @param {String} subject The subject of the email
- * @param {String} html The HTML file sent as the email body
+ * @param {string} recipient The recipient's email
+ * @param {string} subject The subject of the email
+ * @param {string} html The HTML file sent as the email body
  * @returns {Promise<SMTPTransport.SentMessageInfo>} Nodemailer sent message info
  */
 async function SendMail(recipient, subject, html) {

@@ -1,10 +1,9 @@
 //Controls routing for accessing boards
 const router = require("express").Router()
 const Board = require("../schema/board")
-const {CheckAuthToken} = require("./token")
+const {CheckAuthToken, CheckAuthTokenCatchInvalid} = require("./token")
 
-//Make sure to authenticate usage
-
+//TODO Make sure to authenticate usage
 //Retrieve all boards a user has access to
 router.get('/', async (req, res) => {
     //Get user associated with token
@@ -24,25 +23,23 @@ router.get('/', async (req, res) => {
 
 //Add a board, primarily giving access to the user
 router.post('/', async (req, res) =>{
-    console.log("hello!", req.body)
+    let doc_user = CheckAuthTokenCatchInvalid(req)
+    if(!doc_user) return;
     //If the content type header is plain text, accept it as the creation of a single new board
     //Using the text as the board name, assuming it's within limits
-    if(req.headers["content-type"] === "text/plain") 
+    else if(req.headers["content-type"] === "text/plain") 
     {
-        console.log("Hello world")
-        TokenAuth.CheckToken(req)
-        res.send(true)
-        res.end()
+        console.log("Creating board with just name")
+        let board = await Board.create({user: doc_user._id})
+        res.status(200).send(board.id)
+        return;
     }
     //Else, assuming it's a normal json, pretend it's a pre-existing offline board with items. Implement later
     else if (false) {}
-    else {
+    else 
+    {   //Bad request 
         res.status(400).end()
     }
-    return;
-    
-    //Create a new board under the user's account
-    let board = await Board.create({})
 }
 )
 

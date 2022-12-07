@@ -5,7 +5,8 @@ const board_s = new mongoose.Schema({
     //The title/name of the board
     name:{type:String},
     //The user the board belongs to
-    user: {type: mongoose.Schema.Types.ObjectId, ref:'User'}
+    user: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+    
     
 })
 

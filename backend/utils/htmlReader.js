@@ -5,7 +5,7 @@ var readFiles = {}
 
 /**
  * Gets HTML file at path
- * @param {String} path 
+ * @param {string} path 
  * @returns {HTMLObject}
  */
 async function GetHtmlFile(path){
@@ -22,6 +22,10 @@ async function GetHtmlFile(path){
     }
 }
 class HTMLObject {
+    /**
+     * Constructs a simple HTML representation object from the given string
+     * @param {string} html 
+     */
     constructor(html){
         //Separate the html by %
         let strs = html.split("%%")

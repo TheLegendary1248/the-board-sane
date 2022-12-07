@@ -130,18 +130,14 @@ router.post("/verify", async (req, res) => {
 
 //Path for CHECKING CREDENTIALS set in cookies
 router.get("/", async (req, res) => {
-    let userID = req.cookies.UserID
-    let session = req.cookies.Session
-    let lastModif = new Date(req.get('If-Modified-Since'))
-    if((typeof userID !== 'string') || (typeof session !== 'string'))
-    {
-        console.log(__filename, ': GET / : Bad Cookies'.red)
-        res.status(400).send(false)
-    }
-    else{
-        CheckAuthToken(req)
-        res.send(true)
-    }
+    let user
+    if(user = await CheckAuthToken(req))
+    {   //Success to authenticate. Send name to update on frontend
+        res.setHeader('Content-Type','text/plain')
+        res.status(304).send(user.name)}
+    else
+    {   //Failed to authenticate
+        res.status(400).send(false)}
 })
 //FIXME This is incomplete
 //Path for LOGGING OUT

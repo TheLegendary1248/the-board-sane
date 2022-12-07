@@ -81,6 +81,7 @@ app.listen(process.env.PORT, err => {
 
 module.exports = app
 
+//FIXME Alias all mongoose Schemas
 //TODO Enforce time between requests
 //TODO Force failure if not everything is setup properly
 //TODO Add dumb easter eggs when i've presented
