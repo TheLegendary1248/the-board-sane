@@ -127,13 +127,12 @@ async function CreateVerifyToken(doc_user) {
     let previousToken = await db_verifyToken.findOne({ user: doc_user._id }).exec()
     //If it doesn't exist, create a new one that expires in five minutes 
     if (!previousToken) {
-        db_verifyToken.create({ token: hash, expires: new Date(Date.now() + 360_000), user: doc_user._id })
+        db_verifyToken.create({ token: hash, user: doc_user._id })
     }
     //Otherwise, overwrite it, with a new one that expires in five minutes
     else {
         console.log("Verification token already exists:", previousToken)
         previousToken.token = hash
-        previousToken.expires = new Date(Date.now() + 360_000)
         previousToken.save()
     }
     //The token is not required to be unique so we can always return it without needing a check
@@ -150,6 +149,7 @@ async function CheckVerifyToken(req, res) {
     let doc_user = await db_user.findById(req.body.userID, "_id name").exec()
     console.log(doc_user)
     //If document exists
+    //TODO DeNest this
     if (doc_user) 
     {   
         let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
@@ -160,7 +160,7 @@ async function CheckVerifyToken(req, res) {
             //If token matches
             if(isCorrect) {
                 //If token is still valid
-                if((Date.now() - doc_verifyToken.expires.getTime()) < 0)
+                if(!doc_verifyToken.expired)
                 {
                     console.log("Verification: Succeeded")
                     await CreateAuthToken(res, doc_user)

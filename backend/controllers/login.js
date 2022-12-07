@@ -39,7 +39,6 @@ router.post("/new", async (req, res) => {
         //Get any duplicates
         let doc_userDupe = await db_user.findOne({ name: body.name }, 'name email verified _id').exec()
         let doc_emailDupe = await db_user.findOne({ email: body.email }, 'verified _id').exec()
-        body.creationDate = new Date();
         //If they happen to be the same, repeat the request if not verified, whilst using the new body password (as if the request was somehow repeated)
         console.log("Document null check:", (doc_userDupe && doc_emailDupe))
         console.log("Id match check:", doc_userDupe?.equals(doc_emailDupe))
@@ -61,7 +60,7 @@ router.post("/new", async (req, res) => {
                 console.log("Email duplicate deleted")
             }
             //Use user duplicate if existent
-            let doc_user = doc_userDupe ?? new db_user({creationDate: new Date(), lastModified: new Date(), name: body.name})
+            let doc_user = doc_userDupe ?? new db_user({lastModified: new Date(), name: body.name})
             doc_user.email = body.email
             console.log("User document:", doc_user)
             SendVerification(doc_user)

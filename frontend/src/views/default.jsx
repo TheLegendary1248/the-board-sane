@@ -20,7 +20,7 @@ export default function Default(data) {
     async function CheckCredentials(abortCtrl) 
     {   //Set up headers
         let options = { signal: abortCtrl.signal, headers: { } }
-        Object.assign(options, /*{'If-Modified-Since': LocalStore.userprofileUpdateTime}*/)
+        Object.assign(options, {'If-Modified-Since': LocalStore.userprofileUpdateTime})
         //Check with server about login
         let req = await fetch("/api/login/", options)
         console.log(req)

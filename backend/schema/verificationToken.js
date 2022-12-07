@@ -10,4 +10,12 @@ const verifyToken_s = new mongoose.Schema({
     user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', unique: true} 
 })
 
+verifyToken_s.virtual('expired').get(
+    /**
+     * Gets the expiration date of this token
+     * @returns {Boolean}
+     */
+    function GetExpiration(){
+    return (Date.now() - this._id.getTimestamp()) > 360_000
+})
 module.exports = mongoose.model('VerifyToken', verifyToken_s)

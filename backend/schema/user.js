@@ -11,8 +11,6 @@ const user_s = new mongoose.Schema({
     email:{type:String, required:true, unique: true},
     //If the email has been verified. If not, the account is to not be considered existent
     verified: {type:Boolean, required: true, default: false},
-    /** Time of account creation */
-    creationDate:{type:Date, required: true},
     /** When this user's profile was last updated */
     lastModified: {type:Date}
 }, {toJSON: {virtuals: true}})
