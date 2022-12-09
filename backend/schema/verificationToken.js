@@ -3,11 +3,9 @@ const mongoose = require("mongoose")
 
 const verifyToken_s = new mongoose.Schema({
     //The token of the user
-    token: {type: String},
-    //Expiration date of the token
-    expires: {type: Date},
+    token: {type: String, required:true},
     //User the token is for
-    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', unique: true} 
+    user: {type: mongoose.Schema.Types.ObjectId, ref: 'User', unique: true, required:true} 
 })
 
 verifyToken_s.virtual('expired').get(

@@ -3,9 +3,9 @@ const mongoose = require("mongoose")
 
 const board_s = new mongoose.Schema({
     //The title/name of the board
-    name:{type:String},
+    name:{type:String, required:true},
     //The user the board belongs to
-    user: {type: mongoose.Schema.Types.ObjectId, ref:'User'},
+    user: {type: mongoose.Schema.Types.ObjectId, ref:'User', required:true},
     
     
 })

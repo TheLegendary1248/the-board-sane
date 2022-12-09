@@ -5,6 +5,8 @@ import LocalStore from 'scripts/localStore'
 const userPrefsContext = createContext(null)
 //Details of the user object in cloud
 const userContext = createContext(null)
+//If the user is on mobile or not
+const isMobile = createContext(null)
 
 export default function Default(data) {
     const [userState, setUserState] = useState(null)

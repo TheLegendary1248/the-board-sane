@@ -7,6 +7,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+object svg{
+  fill: #fff;
+}
 /*Navbar styling*/
 nav {
   background-color: var(--other-color);
@@ -15,29 +18,31 @@ nav {
   width:calc(100%);
   margin:0px;
   padding:0px 5px;
-  padding-top: 5px;
   border-bottom: white solid 0px;
   padding-right: 150px; /*Space for the user modal*/
 }
-nav img {vertical-align:super; display:inline-block; width: 40px; height: 40px}
+nav img { display:inline-block; width: 1em; height: 1em}
 nav a {
-  vertical-align:super;
   display: inline-block;
+  margin: 10px 0px;
   padding: 0px 10px;
-  font-size: x-large; 
+  font-size: 18px; 
+  font-weight: 550;
   text-decoration: none;
   position: relative;
   bottom: 8px;
+  height: 1em;
 }
 nav span {margin: 0px 10px; }
 #userModal {
+  display: none;
   float: right;
   position: absolute;
   top: 0px;
   right: 0px;
   background-color: #495F;
   width: 200px;
-  height: calc(100% + 1px);
+  height: 10%;
   padding: 5px;
   z-index: 10;
   /* border-left: 2px solid white; /**/

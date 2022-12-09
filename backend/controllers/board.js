@@ -1,36 +1,39 @@
 //Controls routing for accessing boards
 const router = require("express").Router()
-const Board = require("../schema/board")
+const db_board = require("../schema/board")
 const {CheckAuthToken, CheckAuthTokenCatchInvalid} = require("./token")
 
 //TODO Make sure to authenticate usage
 //Retrieve all boards a user has access to
 router.get('/', async (req, res) => {
     //Get user associated with token
-    let token = await CheckAuthToken(req)
+    let doc_user = await CheckAuthToken(req)
     //TODO Allow user to access their boards without login required
-    if(token === null) res.status(401).end() 
+    if(doc_user === null) res.status(401).end() 
     else
     {
         //Virtual Testing. Not working yet
         //let t = (await token.populate('user')).user
         //let b = await t.populate('Board')
         //console.log(b)
-        let boards = await Board.find({user: token.user}).lean().exec()
+        let boards = await db_board.find({user: doc_user._id}).lean().exec()
         res.send(boards)
     } 
 })
 
 //Add a board, primarily giving access to the user
 router.post('/', async (req, res) =>{
-    let doc_user = CheckAuthTokenCatchInvalid(req)
+    //Authenticate
+    let doc_user = await CheckAuthTokenCatchInvalid(req)
+    console.log("User document:", doc_user)
     if(!doc_user) return;
     //If the content type header is plain text, accept it as the creation of a single new board
     //Using the text as the board name, assuming it's within limits
     else if(req.headers["content-type"] === "text/plain") 
     {
         console.log("Creating board with just name")
-        let board = await Board.create({user: doc_user._id})
+        let board = await db_board.create({user: doc_user._id, name:req.body})
+        res.setHeader('Content-Type','text/plain')
         res.status(200).send(board.id)
         return;
     }

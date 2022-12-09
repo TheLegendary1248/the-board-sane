@@ -37,6 +37,7 @@ function Board() {
         //TODO Make zoom focus on mouse location
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
+    //General function for panning
     function Pan(event) {
     }
     function PanStart(event) 

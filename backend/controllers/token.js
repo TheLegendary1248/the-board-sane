@@ -145,44 +145,43 @@ async function CreateVerifyToken(doc_user) {
  * @param {express.Response} res 
  */
 async function CheckVerifyToken(req, res) {
-    console.log("Verification: ( UserID:'", req.body.userID, "'; Token:'", req.body.token, "')")
+    
+    let userID = req.body.userID
+    let token = req.body.token
+    if(!mongoose.isValidObjectId(userID)) 
+    {   //Validate given userID
+        console.warn(__filename, `: User ID (${userID}) is not valid`.yellow); res.status(400).end(); return}
+    if(!uuid.validate(req.body.token))
+    {   //Validate token
+        console.warn(__filename, `: Token (${token}) is not valid`.yellow); res.status(400).end(); return}
+    console.log(`Verifying with UserID(${userID}) Token(${token})`)
     let doc_user = await db_user.findById(req.body.userID, "_id name").exec()
-    console.log(doc_user)
     //If document exists
-    //TODO DeNest this
-    if (doc_user) 
-    {   
-        let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
-        //If an associated verification token exists
-        if(doc_verifyToken) {
-            console.log("Body token:", req.body.token, "Verify token:", doc_verifyToken.token)
-            let isCorrect = await bcrypt.compare(req.body.token, doc_verifyToken.token)
-            //If token matches
-            if(isCorrect) {
-                //If token is still valid
-                if(!doc_verifyToken.expired)
-                {
-                    console.log("Verification: Succeeded")
-                    await CreateAuthToken(res, doc_user)
-                    res.send(doc_user.name)
-                    doc_user.verified = true
-                    doc_user.save()
-                }
-                else{
-                    console.log("Verification: Token has expired")
-                    res.send("")
-                }
-            }
-            else {
-                console.log("Verification: Token hash does not match")
-                res.send("");
-            }
-            //Delete verification token regardless of outcome
-            db_verifyToken.findByIdAndDelete(doc_verifyToken._id).exec()
-        }
-        else { console.log("Verification: Token does not exist"); res.status(400).send("")}
-    }
-    else { console.log("Verification: Account does not exist"); res.status(404).send("")}
+    if(!doc_user) 
+    {   //User document is null
+        console.log("Verification: Account does not exist"); 
+        res.status(404).send("Verification / Bad request. Body 'userID' key is not valid"); return}
+    if(!doc_verifyToken)
+    {   //Verify Token document is null
+        console.log("Verification: Token does not exist"); 
+        res.status(400).send("Verification / Bad request. Body 'token' key is not valid"); return}
+    let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
+    if(!await bcrypt.compare(req.body.token, doc_verifyToken.token)) 
+    {   //If token fails to match hash
+        console.log("Verification: Token hash does not match")
+        res.status(403).send("Verification failed"); return}
+    //Delete verification token regardless of outcome
+    db_verifyToken.findByIdAndDelete(doc_verifyToken._id).exec()  
+    if(doc_verifyToken.expired)
+    {   //Token expired
+        console.log("Verification: Token has expired".yellow); res.status(403).send("Verifcation failed"); return }
+    //Token IS NOT expired
+    console.log("Verification: Succeeded".green)
+    await CreateAuthToken(res, doc_user)
+    res.status(201).send(doc_user.name)
+    doc_user.verified = true
+    doc_user.save()
+      
 }
 //FIXME I dont think this fully works
 async function DeleteToken(res) {

@@ -8,7 +8,7 @@ export function OnSubmit(event, callback){
 }
 
 /**
- * Default actions to requests
+ * Default actions to server responses
  * @param {Response} response 
  * @returns {Boolean} Whether or not the consuming code should continue with the request. Ex: Unauthorized, redirected to login page
  */
@@ -27,3 +27,9 @@ export function ResponseDefault(response){
     }
     return true;
 }
+/**
+ * Gets the timestamp from a mongoDB object ID
+ * @param {string} objectID A mongoose ObjectID
+ * @returns {Date} The timestamp from the ID
+ */
+export function GetTimestampFromID(objectID) { return new Date(1000 * parseInt(objectID.slice(0,8), 16))} 

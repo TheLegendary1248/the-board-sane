@@ -1,7 +1,7 @@
 //The board selection of the application
 import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
-import { redirect } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { ResponseDefault } from 'utils.js'
 import Card from './components/boardCard.jsx'
 
@@ -11,6 +11,7 @@ let boardCont = <p>Getting boards...</p>
 //TODO Allow this page to be accessed without signing up. Use cookies to save board info for unregistered users
 function BoardSelect(data) {
     import('../styles/boardSelect.css')
+    let navigate = useNavigate()
     let [boards, setBoards] = useState((<p>Loading boards, please give us a moment</p>))
     const inputElement = useRef(null);
     /*
@@ -27,7 +28,7 @@ function BoardSelect(data) {
         if(req.ok)
         {   //If the request succeeds
             try{
-                setBoards(Object.keys(res).length === 0 ? (<p>You currently have no boards</p>) : boards.map(board => (<Card board={board}></Card>)))
+                setBoards(Object.keys(res).length === 0 ? (<p>You currently have no boards</p>) : res.map(board => (<Card board={board}></Card>)))
             }
             catch (error)
             {   //Error caught while displaying the boards. Not a server error
@@ -44,19 +45,17 @@ function BoardSelect(data) {
         event.preventDefault()
         console.log(new FormData(event.target).get("name"))
         //Since we want it to be just a new board and we don't have special settings, create as is
-        let req = await fetch("/api/board", {
+        let res = await fetch("/api/board", {
             method: 'POST',
             headers: {
                 'Content-Type': "text/plain"
             },
             body: new FormData(event.target).get("name")
         })
-        if(!ResponseDefault(req)) return;
-        let res = await req.json()
-        console.log("response:",await res)
+        if(!ResponseDefault(res)) return;
         if(res.ok)
         {
-            redirect("/board/" + await req.text())
+            navigate(("/board/" + await res.text()))
         }
         //TODO Fail condition for creating a new board
         else return;

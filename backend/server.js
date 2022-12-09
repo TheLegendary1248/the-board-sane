@@ -17,9 +17,12 @@ mongoose.connect(process.env.MONGO, {
   useUnifiedTopology: true
 }, () => {console.log('Connected to mongo')})
 
-//Setup external library middleware
+////Setup external library middleware
+//Parse request cookies
 app.use(cookieParser())
+//Handle both 'Content-Type's of json and plain text
 app.use(express.json())
+app.use(express.text())
 app.use(express.urlencoded({ extended: true }))
 
 //TODO Access control

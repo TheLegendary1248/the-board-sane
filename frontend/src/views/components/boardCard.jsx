@@ -1,19 +1,32 @@
 //A view card for the boards in board view
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { GetTimestampFromID } from 'utils'
 
-export default function BoardCard(board)
-{
-    //Ok react, this is beyond stupid
-
-    if(board=={}) return( 
+export default function BoardCard(data)
+{   
+    console.log("Render Card",data)
+    if(typeof data === 'object') return(
+    <Link to={data.board._id}>
         <div className="boardCard">
-            <h3><a href={board.board.id}>{board.board.title}</a></h3>
-            <p style={{position:"relative",width:"80%", height:"80%"}}>
-                I would give you some hint of whats here, but the app can't do that just yet
+            <h3><span>{data.board.name}</span></h3>
+            <p style={{'font-size': '12px'}}>Created on {GetTimestampFromID(data.board._id).toDateString()}</p>
+            <p hidden style={{position:"relative",width:"80%", height:"80%"}}>
+                App doesn't show previews of boards yet
             </p>
+            <div className='cardAttr'>
+                <object data='icons/cloud.svg' type="image/svg+xml" height="30px" width="30px" ></object>
+            </div>
         </div>
+    </Link> 
     )
     else return(
-        <div>ERROR GETTING BOARD</div>
+        <div className='boardCard'>
+            <h3>ERROR GETTING BOARD</h3>
+        </div>
     )
+}
+function BoardAttrIcon(data)
+{
+    
 }
