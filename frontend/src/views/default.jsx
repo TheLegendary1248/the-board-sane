@@ -55,6 +55,7 @@ export default function Default(data) {
         <Fragment>
             <userPrefsContext.Provider value={true}>
                 <userContext.Provider value={userState}>
+                    
                     {data.children}
                 </userContext.Provider>
             </userPrefsContext.Provider>

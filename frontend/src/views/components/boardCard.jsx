@@ -15,7 +15,10 @@ export default function BoardCard(data)
                 App doesn't show previews of boards yet
             </p>
             <div className='cardAttr'>
-                <object data='icons/cloud.svg' type="image/svg+xml" height="30px" width="30px" ></object>
+                <svg>
+                    <use xlinkHref='icons/cloud.svg' style={{fill: "#fff"}}></use>
+                </svg>
+                <object className='svg' data='icons/cloud.svg' type="image/svg+xml" height="30px" width="30px" ></object>
             </div>
         </div>
     </Link> 
