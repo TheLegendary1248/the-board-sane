@@ -1,0 +1,73 @@
+#edit_profile {
+    transition-duration: 0.5s;
+    transition-property: opacity top;
+    transition-timing-function: ease-out;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    right: 0px !important;
+    overflow-y: scroll;
+    padding: 50px;
+    pointer-events: none;
+    top: -200px;
+    opacity: 0;
+}
+#edit_profile.show {
+    top: 0px;
+    opacity: 1;
+}
+#edit_profile #scrollable {
+    padding: 40px 20px;
+    position:relative;
+    background-color: #224;
+    min-height: 100%;
+    border-radius: 30px;
+    pointer-events: all;
+}
+#edit_profile #exit {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    height: 40px;
+    width: 40px;
+    background-color: #f22;
+}
+/*Defaults of the profile editor*/
+#scrollable * {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: 'Segoe UI';
+}
+#edit_profile  h3 {
+    text-align: left;
+}
+#edit_profile h3 span {
+    font-weight: 100;
+}
+/*Dropdown styling*/
+#edit_profile .dropdown {
+    position: relative;
+    background-color: #0004;
+    height: 100%;
+}
+#edit_profile .dropdown div {
+    position: relative;
+}
+/*Collaspeables. Just because CSS is very no bueno in this field*/
+#edit_profile .dropdown .content > *{
+    position: relative;
+    transition: all 0.2s;
+    height: 0;
+    overflow: hidden
+    
+}
+#edit_profile .dropdown .content.open  > *{
+    height: 35px;
+} 
+
+#edit_profile .dropdown .button {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+}

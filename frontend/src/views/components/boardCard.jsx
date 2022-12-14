@@ -5,7 +5,7 @@ import { GetTimestampFromID } from 'utils'
 
 export default function BoardCard(data)
 {   
-    console.log("Render Card",data)
+    //console.log("Render Card",data)
     if(typeof data === 'object') return(
     <Link to={data.board._id}>
         <div className="boardCard">

@@ -4,7 +4,6 @@ import { Link, Outlet } from 'react-router-dom'
 import UserModal from './userModal'
 import { userContext } from '../default'
 
-
 //TODO Make a hamburger menu for mobile
 function Nav() {
     let userContextValue = useContext(userContext)
@@ -15,7 +14,7 @@ function Nav() {
                     <Link to={"/about"}>About</Link>
                     {userContextValue ? <Link to={"/board"}>Board</Link> : <Link to={"/login"}>Login</Link>}
                 </div>
-                <UserModal />
+                <UserModal/>
             </nav>
     )
 }
