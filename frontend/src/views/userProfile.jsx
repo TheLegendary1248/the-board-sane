@@ -8,12 +8,15 @@ export default function UserProfile(data) {
 
     import('../styles/profile.css')
     let user = useContext(userContext)
+    useEffect(() => console.log("Rendered with val:", data.shown))
     return (
         <div id="edit_profile" className={data.shown ? "show" : ""}>
             <div id="scrollable">
                 <div id="exit"/>
                 <h2>{user?.name}</h2>
                 <Dropdown label="User" desc="Things about you">
+                    <Input label="Display Name"></Input>
+                    <Input label="About Me"></Input>
                     <Input label="Display Name"></Input>
                 </Dropdown>
                 <Dropdown label="Settings" desc="Control over the app behaviour"></Dropdown>
@@ -35,12 +38,11 @@ function Dropdown(data) {
     })
     return (
         <div className="dropdown">
-            <div>
+            <div className="bar">
                 <h3>{data.label ?? "unlabeled"}
                 <span> - {data.desc ?? "undescribed"}</span></h3>
                 <div className="button" onClick={() => unfold(!isUnfolded)}>Hello</div>
             </div>
-            
             <div className={"content " + (isUnfolded ? "open" : "")}>
                 {data.children}
             </div>

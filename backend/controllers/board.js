@@ -31,6 +31,7 @@ router.post('/', async (req, res) =>{
     //Using the text as the board name, assuming it's within limits
     else if(req.headers["content-type"] === "text/plain") 
     {
+        if(req.body === "") {console.warn("Request body is empty".red); res.status(400).end(); return;}
         console.log("Creating board with just name")
         let board = await db_board.create({user: doc_user._id, name:req.body})
         res.setHeader('Content-Type','text/plain')

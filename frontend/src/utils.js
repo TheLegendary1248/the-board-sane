@@ -15,7 +15,7 @@ export function OnSubmit(event, callback){
 export function ResponseDefault(response){
     switch (response.status) {
         case 400:
-            console.log("Client error on request")
+            console.error("Client error on request")
             break;
         case 401: //Unauthorized, send to login page
             redirect('/login')

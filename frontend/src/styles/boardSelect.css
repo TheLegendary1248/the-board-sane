@@ -72,7 +72,9 @@
     font-size: 30px;
     border-bottom: 2px solid white;
 }
+#R_select { counter-reset: index;}
 #R_select .boardCard {
+    counter-increment: index;
     transition: all 0.25s ease-out;
     position: relative;
     background-image: #832;
@@ -86,6 +88,27 @@
     border-radius: 5px;
     border: 2px outset #f77;
     box-shadow: 3px 4px 0px #0003;
+    opacity: 0;
+}
+/*
+#R_select a:nth-child(1) .boardCard { animation-delay: 0s;}
+#R_select a:nth-child(2) .boardCard { animation-delay: .1s;}
+#R_select a:nth-child(3) .boardCard { animation-delay: .2s;}
+#R_select a:nth-child(4) .boardCard { animation-delay: .3s;}
+#R_select a:nth-child(5) .boardCard { animation-delay: .4s;}
+#R_select a:nth-child(6) .boardCard { animation-delay: .5s;}
+#R_select a:nth-child(7) .boardCard { animation-delay: .6s;}
+#R_select a:nth-child(8) .boardCard { animation-delay: .7s;}
+#R_select a:nth-child(9) .boardCard { animation-delay: .8s;}
+#R_select a:nth-child(10) .boardCard { animation-delay: .9s;}
+#R_select a:nth-child(11) .boardCard { animation-delay: 1s;}
+#R_select a:nth-child(12) .boardCard { animation-delay: 1.1s;}
+#R_select a:nth-child(13) .boardCard { animation-delay: 1.2s;}
+#R_select a:nth-child(14) .boardCard { animation-delay: 1.3s;}*/
+
+@keyframes cardAnim {
+    to{transform: scale(1);opacity: 1; }
+    from{transform: translate(0px, 200px);opacity: 0;}
 }
 #R_select .boardCard:hover {
     transform: scale(1.1);
@@ -121,4 +144,23 @@
 #header {
     text-align: center;
     font-weight: 200;
+}
+#header #sort{
+    font-size: 20px;
+    margin: 0px 10px;
+}
+#header #sort select{
+    background-color: #fff0;
+    border: none;
+    margin: 0px 10px;
+    font-size: 18px;
+}
+#header #sort option{
+    background-color: #fff0;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+}
+#header #sort select:hover {
+    color: #f62;
 }
