@@ -11,7 +11,7 @@ export default function BoardCard(data)
         <div
         className="boardCard" 
         style={{animation:`cardAnim 1s forwards ${(data.index ?? 1) / 15}s`}} 
-        onAnimationEnd={e => e.target.style = `opacity:1; z-index:${999999 - data.index}`}>
+        onAnimationEnd={e => e.target.style = `opacity:1; z-index:${99998 - data.index}`}>
             <h3><span>{data.board.name}</span></h3>
             <p>Created on {GetTimestampFromID(data.board._id).toDateString()}</p>
             <p hidden style={{position:"relative",width:"80%", height:"80%"}}>

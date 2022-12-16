@@ -16,7 +16,7 @@ function BoardSelect(data) {
     import('../styles/boardSelect.css')
     let navigate = useNavigate()
     //The unchanged board list //TODO Load boards from local DB
-    
+
     //The list to be rendered
     let [renderList, setRenderList] = useState(null)
 
@@ -35,10 +35,10 @@ function BoardSelect(data) {
         let arr = [...Array(boardList.length).keys()]
         switch (sortMethod) {
             case "name": //Name
-                arr.sort((a,b) => boardList[a].name.localeCompare(boardList[b].name));
+                arr.sort((a, b) => boardList[a].name.localeCompare(boardList[b].name));
                 break;
             case "date": //Date from timestamp in given mongoDB timestamp
-                arr.sort((a,b) => boardList[a].creationDate > boardList[b].creationDate ? -1 : 1)
+                arr.sort((a, b) => boardList[a].creationDate > boardList[b].creationDate ? -1 : 1)
                 break;
             case "last modified": //Last modification date of board
                 throw "wtf"
@@ -50,29 +50,27 @@ function BoardSelect(data) {
                 throw `RenderList sort method "${sortMethod} is not valid"`
         }
         //We provide the index as well to properly set styling for animation
-        let elements = arr.map((e,i)=><Card key={e} board={boardList[e]} index={i}></Card>)
+        let elements = arr.map((e, i) => <Card key={e} board={boardList[e]} index={i}></Card>)
         setRenderList(elements)
     }
     //Called on mount to retrieve boards //TODO Send locally cached board ID's
     async function GetBoards(abortCtrl) {
         //Fetch request
-        let res = await fetch("/api/board",  {signal: abortCtrl.signal})
+        let res = await fetch("/api/board", { signal: abortCtrl.signal })
         let body = await res.json()
         //Precalculate creation dates on client side from ID
-        body.forEach((board, index, arr)=>{arr[index].creationDate = GetTimestampFromID(board._id)})
+        body.forEach((board, index, arr) => { arr[index].creationDate = GetTimestampFromID(board._id) })
         boardList = body
-        if(res.ok)
-        {   //If the request succeeds
-            try{
+        if (res.ok) {   //If the request succeeds
+            try {
                 RenderList("name")
             }
-            catch (error)
-            {   //Error caught while displaying the boards. Not a server error
+            catch (error) {   //Error caught while displaying the boards. Not a server error
                 console.error(error)
-                setRenderList(<p>An error occurred while displaying boards<br/>This is not a server error, please message the developer about this error<br/>{error.toString()}</p>)
+                setRenderList(<p>An error occurred while displaying boards<br />This is not a server error, please message the developer about this error<br />{error.toString()}</p>)
             }
         }
-        else if(res.status === 403){
+        else if (res.status === 403) {
             setRenderList(<p>You are not signed in</p>)
         }
     }
@@ -88,16 +86,14 @@ function BoardSelect(data) {
             },
             body: new FormData(event.target).get("name")
         })
-        if(!ResponseDefault(res)) return;
-        if(res.ok)
-        {
+        if (!ResponseDefault(res)) return;
+        if (res.ok) {
             navigate(("/board/" + await res.text()))
         }
         //TODO Fail condition for creating a new board
         else return;
     }
-    useEffect(() => 
-    {   //Abort controller for cancelling the request if the page is left early
+    useEffect(() => {   //Abort controller for cancelling the request if the page is left early
         let abortCtrl = new AbortController()
         GetBoards(abortCtrl)
     }, [])
@@ -116,10 +112,6 @@ function BoardSelect(data) {
                     </select>
                 </span>
             </h1>
-            <div id="boardSelect">
-                {renderList}
-            </div>
-            
             {/**Add two 'absolute' divs here, one to disappear on hover via css and vice versa*/}
             <div id="addBoard">
                 <div id="onHover">
@@ -127,7 +119,7 @@ function BoardSelect(data) {
                     <form method="POST" action="/api/board" onSubmit={CreateNewBoard}>
                         <label htmlFor="new_title" hidden={true}>New title of board</label>
                         <input ref={inputElement} name="name" id="new_title" type="text" placeholder="Board Title" />
-                        <br/>
+                        <br />
                         <label id="offline_label" htmlFor="new_isOffline">Offline</label>
                         <input id="new_isOffline" type="checkbox" />
                         <input id="create_new" type="submit" value="Create" />
@@ -135,6 +127,10 @@ function BoardSelect(data) {
                 </div>
                 <div id="offHover" onClick={() => inputElement.current.focus()}>+</div>
             </div>
+            <div id="boardSelect">
+                {renderList}
+            </div>
+            
         </main>
     )
 }

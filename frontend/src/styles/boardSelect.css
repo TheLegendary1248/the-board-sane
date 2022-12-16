@@ -1,7 +1,8 @@
 /* Root name: R_select*/
 /* ---Bottom right button for adding a new board---*/
 #addBoard {
-    transition: all 1s;
+    transition-property: border-radius, border-width, width, height, border-color;
+    transition-duration: 1s;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -13,7 +14,7 @@
     border-width: 4px;
     border-style: solid;
     overflow: clip;
-
+    z-index: 99999;
     box-shadow: 6px 6px 0px #0003; 
 }
 #addBoard:focus-within, #addBoard:hover {
@@ -24,7 +25,8 @@
     border-color: #fff5;
 }
 #addBoard #offHover {
-    transition: all 1s;
+    transition-property: font-size, color, opacity, text-shadow;
+    transition-duration: 1s;
     font-size: 75px;
     right: 7px;
     bottom: -7px;
@@ -42,7 +44,7 @@
     text-shadow: 5px 5px 3px #0005;
 }
 #addBoard #onHover{
-    transition: all 1s;
+    transition: opacity 1s;
     opacity: 0;
     position: absolute;
     width: max(300px, calc(100% - 120px));
@@ -89,6 +91,7 @@
     border: 2px outset #f77;
     box-shadow: 3px 4px 0px #0003;
     opacity: 0;
+    font-size: 13px;
 }
 /*
 #R_select a:nth-child(1) .boardCard { animation-delay: 0s;}
@@ -130,6 +133,7 @@
     white-space: nowrap;
     overflow: clip;
     text-overflow: ellipsis;
+    font-size: 17px;
 }
 #R_select .boardCard h3 span {
     position: relative;
@@ -150,8 +154,8 @@
     margin: 0px 4px;
 }
 #R_select .cardAttr object {
-    height: 30px;
-    width: 30px;
+    height: 20px;
+    width: 20px;
 }
 #R_select .cardAttr .desc {
     transition: all 0.5s;
