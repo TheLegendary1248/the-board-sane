@@ -23,30 +23,42 @@
     background-color: #002;
     display: flex;
     justify-content: space-around;
-    height: 200px;
     flex-wrap: wrap;
     padding: 30px;
+    padding-top: 10px;
+    min-height: 200px;
 }
 #R_home footer p{
     width: 250px;
     height: 18px;
     font-size: 18px;
     padding: 10px;
+    margin: 5px 0px;
     text-align: center;
 }
 #R_home footer p a {
     font-family: monospace;
 }
 #R_home footer div {
-    position: absolute;
+    transition-property: color letter-spacing font-weight border-color text-shadow;
+    transition-duration: 0.35s;
+    position:relative;
     text-align: center;
     text-transform: uppercase;
+    top: 7px;
     font-family: monospace;
     font-size: 15px;
-    top: 6px;
     color: #aaa;
     border-bottom: 2px solid #aaa;
     width: 90%;
+}
+#R_home footer:hover div {
+    color: #2af;
+    font-weight: 600;
+    font-style: italic;
+    letter-spacing: 2px;
+    border-color: #2af;
+    text-shadow: 1.5px 1.5px 1px #2af8;
 }
 #R_home .ptBlock {
     position: relative;

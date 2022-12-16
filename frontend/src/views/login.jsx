@@ -5,7 +5,6 @@ import common from '../common_passwords/passwords.json'
 //Ty so much Mozilla https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#basic_validation
 const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/
 //TODO Add pattern matching
-//TODO Add "forgot password"
 //Saved as the "setTimeout" return value
 let availabilityCheckTimeout = 0;
 //'Snapshots' of the before values for testing input changes

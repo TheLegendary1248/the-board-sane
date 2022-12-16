@@ -5,15 +5,15 @@ import note from './items/note'
 import '../styles/boardView.css'
 import '../styles/items/default.css'
 import itemTable from './items'
+//Panning
 let offsetX = 0;
 let offsetY = 0;
 const getX = (event) => (event.clientX - window.innerWidth / 2)
 const getY = (event) => (event.clientY - window.innerHeight / 2)
+//Experimental for now
 let zoom = 1;
-///// The React view for the board page
-let itemImports = {
-    'note': itemTable.note.import() 
-};
+//Dictionary for importing react components for React
+let itemImports = {};
 let counter = 0;
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
@@ -32,7 +32,6 @@ function Board() {
     function eventHandler() {
 
     }
-    //document.addEventListener("keypress", () => console.log("Hello!"))
     function Zoom(event) {
         //TODO Make zoom focus on mouse location
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`

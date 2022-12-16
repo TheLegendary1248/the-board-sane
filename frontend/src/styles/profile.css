@@ -23,6 +23,7 @@
     background-color: #224;
     min-height: 100%;
     border-radius: 30px;
+    z-index: 99999999999999999999;
 }
 #edit_profile #exit {
     position: absolute;

@@ -44,7 +44,7 @@ function Home() {
             </div>
         </div>
         <footer>
-            <div>Pointless Links</div>
+            <div>Pointless Links Because Every Professional Webpage Has A Footer</div>
             <p><a>Pointless Link 1</a></p>
             <p><a>Pointless Link 2</a></p>
             <p><a>Pointless Link 3</a></p>

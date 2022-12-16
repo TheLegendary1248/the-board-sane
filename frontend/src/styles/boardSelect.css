@@ -126,6 +126,11 @@
     box-shadow: 3px 3px 10px #0004;
     outline: 4px solid #3335;
     outline-offset: -4px;
+    
+}
+#R_select {
+    position: relative;
+    z-index: 0;
 }
 #R_select .boardCard h3 {
     position: relative;
