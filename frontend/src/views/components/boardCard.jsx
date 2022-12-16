@@ -8,20 +8,18 @@ export default function BoardCard(data)
     //console.log("Render Card",data)
     if(typeof data === 'object') return(
     <Link to={data.board._id}>
-        <div 
+        <div
         className="boardCard" 
-        style={{animation: `cardAnim 1s forwards ${(data.index ?? 1) / 15}s`}} 
-        onAnimationEnd={e => e.target.style = "opacity:1"}>
+        style={{animation:`cardAnim 1s forwards ${(data.index ?? 1) / 15}s`}} 
+        onAnimationEnd={e => e.target.style = `opacity:1;`}>
             <h3><span>{data.board.name}</span></h3>
             <p>Created on {GetTimestampFromID(data.board._id).toDateString()}</p>
             <p hidden style={{position:"relative",width:"80%", height:"80%"}}>
                 App doesn't show previews of boards yet
             </p>
+            <div>Delete</div>
             <div className='cardAttr'>
-                <svg>
-                    <use xlinkHref='icons/cloud.svg' style={{fill: "#fff"}}></use>
-                </svg>
-                <object className='svg' data='icons/cloud.svg' type="image/svg+xml" height="30px" width="30px" ></object>
+                <BoardAttrIcon icon="icons/database.svg" desc="This board is saved on the cloud"></BoardAttrIcon>
             </div>
         </div>
     </Link> 
@@ -34,5 +32,11 @@ export default function BoardCard(data)
 }
 function BoardAttrIcon(data)
 {
-    
+    return(
+        <div className='tooltip'>
+            <div className='desc'>{data.desc}</div>
+            <object className='svg' data={data.icon} type="image/svg+xml"/>
+        </div>
+        
+    )
 }

@@ -13,7 +13,7 @@
     border-width: 4px;
     border-style: solid;
     overflow: clip;
-    z-index: 0;
+
     box-shadow: 6px 6px 0px #0003; 
 }
 #addBoard:focus-within, #addBoard:hover {
@@ -72,9 +72,7 @@
     font-size: 30px;
     border-bottom: 2px solid white;
 }
-#R_select { counter-reset: index;}
 #R_select .boardCard {
-    counter-increment: index;
     transition: all 0.25s ease-out;
     position: relative;
     background-image: #832;
@@ -84,7 +82,6 @@
     height: 200px;
     display: inline-block;
     box-sizing: border-box;
-    overflow: hidden;
     border-radius: 5px;
     border: 2px outset #f77;
     box-shadow: 3px 4px 0px #0003;
@@ -128,6 +125,7 @@
 #R_select .boardCard h3 {
     font-weight: 600;
     white-space: nowrap;
+    z-index: -1000;
 }
 #R_select .boardCard h3 span {
     position: relative;
@@ -140,6 +138,27 @@
     right: 0px;
     bottom: 0px;
     padding-right: 10px;
+}
+#R_select .cardAttr object {
+    height: 30px;
+    width: 30px;
+}
+#R_select .cardAttr .desc {
+    background-color: #333;
+    font-weight: 600;
+    position: absolute;
+    opacity: 0;
+    
+    width: 120px;
+    left: -40px;
+    top: 40px;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+#R_select .cardAttr:hover .desc {
+    opacity: 1;
+    transform: translate(0px, 0px);
 }
 #header {
     text-align: center;
