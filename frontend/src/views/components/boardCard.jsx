@@ -19,7 +19,8 @@ export default function BoardCard(data)
             </p>
             <div>Delete</div>
             <div className='cardAttr'>
-                <BoardAttrIcon icon="icons/database.svg" desc="This board is saved on the cloud"></BoardAttrIcon>
+                <BoardAttrIcon icon="icons/cloud.svg" desc={"This board is saved on the cloud"}></BoardAttrIcon>
+                <BoardAttrIcon icon="icons/database.svg" desc={"This board is saved locally"}></BoardAttrIcon>
             </div>
         </div>
     </Link> 
