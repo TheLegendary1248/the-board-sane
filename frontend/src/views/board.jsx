@@ -1,10 +1,12 @@
 import React, { Suspense, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import { useEffect, useRef } from 'react'
 import SuggestionPopup from './board_components/suggestionPopup'
 import note from './items/note'
 import '../styles/boardView.css'
 import '../styles/items/default.css'
 import itemTable from './items'
+import { ResponseDefault } from 'utils'
 //Panning
 let offsetX = 0;
 let offsetY = 0;
@@ -21,10 +23,12 @@ let getKey = () => counter++;
 let itemsList = {}
 //Empty object that contains pointers to items that have been 'removed'
 let removedItems = {}
+//Contains the last visited board ID in this session since these variables are not removed when switching
+let lastVisitedID = null
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
-
+    let params = useParams()
     const container = useRef(null)
     const selection = useRef(null)
     const [renderItems, RenderItems] = useState([])
@@ -32,9 +36,29 @@ function Board() {
     ////The element in focus
     ////document.activeElement
     useEffect(() => {
+        lastVisitedID = params.boardId
         //TODO Load Board items here
-        
+        return () => {}
+        let abortCtrl = new AbortController
+        GetBoardItems(abortCtrl)
     }, [])
+    async function GetBoardItems(abortCtrl)
+    {
+        //TODO Use local cache and check if any items need updating
+        //TODO Finish this is general
+        let res = fetch("/api/board", {signal: abortCtrl.signal}) //FIXME Endpoint
+        let body = await res.json()
+        let itemsArr = body.itemsArr
+        //Load cloud items
+        for (let i = 0; i < itemsArr.length; i++) {
+            const item = itemsArr[i];
+        }
+        //Load cached items 
+        let cachedItemsArr = []
+        for (let i = 0; i < cachedItemsArr.length; i++) {
+            const item = cachedItemsArr[i];
+        }
+    }
     //Modularize this, because it's gonna get heavy
     function eventHandler() {
 
@@ -58,13 +82,17 @@ function Board() {
         }
         let Item = itemImports[name]
         let key = getKey()
-        renderItems[key] = <Suspense key={++counter}><Item/></Suspense>
+        let item = <Suspense key={key}><Item/></Suspense>
+        itemsList[key] = item
+        RenderItems(Object.values(itemsList))
+        return //Old code
         RenderItems(renderItems.concat(<Suspense key={++counter}><Item/></Suspense>))
     }
-    //Defaults to adding a note
-    function AddDefault(t) { RenderItems(renderItems.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
+    function AddDefault(t) 
+    {   //Defaults to adding a note
+        RenderItems(renderItems.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
     function RemoveItem(){
-
+        
     }
     function Click(event) {
 
