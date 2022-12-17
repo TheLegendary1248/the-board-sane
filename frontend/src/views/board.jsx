@@ -14,18 +14,25 @@ const getY = (event) => (event.clientY - window.innerHeight / 2)
 let zoom = 1;
 //Dictionary for importing react components for React
 let itemImports = {};
+//Counter to serve as a key generator
 let counter = 0;
+let getKey = () => counter++;
+//Empty object that holds each item
+let itemsList = {}
+//Empty object that contains pointers to items that have been 'removed'
+let removedItems = {}
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
 
     const container = useRef(null)
     const selection = useRef(null)
-    const [items, setItems] = useState([])
+    const [renderItems, RenderItems] = useState([])
     //REMINDERS
     ////The element in focus
     ////document.activeElement
     useEffect(() => {
+        //TODO Load Board items here
         
     }, [])
     //Modularize this, because it's gonna get heavy
@@ -50,10 +57,12 @@ function Board() {
             itemImports[name] = itemTable[name].import()
         }
         let Item = itemImports[name]
-        setItems(items.concat(<Suspense key={++counter}><Item/></Suspense>))
+        let key = getKey()
+        renderItems[key] = <Suspense key={++counter}><Item/></Suspense>
+        RenderItems(renderItems.concat(<Suspense key={++counter}><Item/></Suspense>))
     }
     //Defaults to adding a note
-    function AddDefault(t) { setItems(items.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
+    function AddDefault(t) { RenderItems(renderItems.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
     function RemoveItem(){
 
     }
@@ -79,7 +88,7 @@ function Board() {
             <div id="center">
                 <textarea id="fullscreen" draggable="true" onWheel={Zoom} onDragStart={PanStart} onDrag={Pan} onClick={Click} onChange={KeyDown}></textarea>
                 <div id="itemContainer" ref={container} tabIndex={0} >
-                    {items}
+                    {renderItems}
                 </div>
             </div>
             <SuggestionPopup setInput={SetChildInput} addItem={AddItem} addDefault={AddDefault}/>

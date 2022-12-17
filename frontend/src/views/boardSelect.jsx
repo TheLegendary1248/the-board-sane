@@ -22,13 +22,6 @@ function BoardSelect(data) {
 
     let [boards, setBoards] = useState((<p>Loading boards, please give us a moment</p>))
     const inputElement = useRef(null);
-    /*
-    //let get = await fetch("https://localhost:8000/board")
-    let boards = data.boards.map(board => {
-        return (
-            <Card board={board}></Card>
-        )
-    })*/
     //Sorts the boardList into the RenderList State
     function RenderList(sortMethod) {
         //Create an array of numbers that serve as pointers to the boardList
