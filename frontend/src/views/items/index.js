@@ -3,16 +3,13 @@ import React from 'react'
 //Refers to all items
 let itemTable = {
     note : {
-        desc: "A standard note",
-        import: () => React.lazy(() => import('./note'))
+        desc: "A standard note"
     },
     page : {
-        desc: "Just like a note, but with a title",
-        import: () => React.lazy(() => import('./page'))
+        desc: "Just like a note, but with a title"
     },
     clock : {
-        desc: "A thing that measures time",
-        import: () => React.lazy(() => import('./clock'))
+        desc: "A thing that measures time"
     },
     grid: {
         desc: "This differs from a table in some way"
@@ -27,8 +24,7 @@ let itemTable = {
         desc: "Connects two items"
     },
     swatch: {
-        desc: "Color me confused",
-        import: () => React.lazy(() => import('./swatch'))
+        desc: "Color me confused"
     },
     webclip: {
         desc: "This sounds like too much work to make happen"
@@ -46,5 +42,11 @@ let itemTable = {
         desc: "Everybody has something to do"
     }
 }
+
+//Automate adding imports
+Object.entries(itemTable)
+    .forEach(
+        (item, _, __) => itemTable[item[0]].import 
+            = () => React.lazy(() => import('./' + item[0])))
 
 export default itemTable
