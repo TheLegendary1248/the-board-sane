@@ -33,3 +33,20 @@ export function ResponseDefault(response){
  * @returns {Date} The timestamp from the ID
  */
 export function GetTimestampFromID(objectID) { return new Date(1000 * parseInt(objectID.slice(0,8), 16))} 
+//TODO Find out type of document events and replace this
+/**
+ * Properly detects if an event is a left mouse click due to un standardization of mouse events
+ * @param {*} event 
+ * @returns {Boolean}
+ */
+export function detectLeftMouseButton(event) {
+    if (event.metaKey || event.ctrlKey || event.altKey || event.shiftKey) {
+        return false;
+    } else if ('buttons' in event) {
+        return event.buttons === 1;
+    } else if ('which' in event) {
+        return event.which === 1;
+    } else {
+        return (event.button == 1 || event.type == 'click');
+    }
+}

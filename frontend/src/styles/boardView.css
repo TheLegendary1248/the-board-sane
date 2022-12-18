@@ -118,3 +118,32 @@
 #fullscreen:hover {
     opacity: 1;
 }
+/*Styling for failure to load an item*/
+.error_load_item {
+    background-image: linear-gradient(to bottom right, #555, #333);
+    border-radius: 5px;
+    padding: 10px 10px;
+    width: 250px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    animation: ErrorAnimShow 0.5s 1 forwards, ErrorAnimHide 0.5s forwards 2s;
+}
+@keyframes ErrorAnimShow {
+    from {
+        width: 0px;
+        padding: 10px 0px;
+    }
+    to{
+
+    }
+}
+@keyframes ErrorAnimHide {
+    from {
+
+    }
+    to {
+        width: 0px;
+        padding: 10px 0px;
+    }
+}

@@ -1,12 +1,13 @@
 import React, { Suspense, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useContext } from 'react'
 import SuggestionPopup from './board_components/suggestionPopup'
 import note from './items/note'
 import '../styles/boardView.css'
 import '../styles/items/default.css'
 import itemTable from './items'
 import { ResponseDefault } from 'utils'
+import ErrorLoadingItem from './board_components/errorItem'
 //Panning
 let offsetX = 0;
 let offsetY = 0;
@@ -19,10 +20,21 @@ let itemImports = {};
 //Counter to serve as a key generator
 let counter = 0;
 let getKey = () => counter++;
+/*
+On a more serious note, making these variables exist outside of components is beneficial to the fact
+that they survive unmounting and will be scripted to avoid spending resources on useless re-rendering
+*/
 //Empty object that holds each item
-let itemsList = {}
+let itemsList = {
+    
+}
 //Empty object that contains pointers to items that have been 'removed'
-let removedItems = {}
+let removedItems = {
+        //Array the points to the removed items of this list
+        undoQueue: [],
+}
+//Each item's content. Am i ignoring the React flow? Yes, i fucking am, i am so done rn about over thinking about my approach
+export let itemStates = {}
 //Contains the last visited board ID in this session since these variables are not removed when switching
 let lastVisitedID = null
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
@@ -76,23 +88,26 @@ function Board() {
         // event.dataTransfer.setDragImage({}, 0,0)
     }
     function AddItem(name) {
+        //TODO Warn client that item is not available
         if(itemImports[name] === undefined)
         {
             itemImports[name] = itemTable[name].import()
         }
         let Item = itemImports[name]
         let key = getKey()
-        let item = <Suspense key={key}><Item/></Suspense>
+        let item = <WrapItem key={key}><Item removeSelf={() => RemoveItem(key)}/></WrapItem>
         itemsList[key] = item
         RenderItems(Object.values(itemsList))
-        return //Old code
-        RenderItems(renderItems.concat(<Suspense key={++counter}><Item/></Suspense>))
     }
     function AddDefault(t) 
     {   //Defaults to adding a note
         RenderItems(renderItems.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
-    function RemoveItem(){
-        
+    function RemoveItem(key){
+        let deleted = itemsList[key]
+        removedItems[key] = itemsList[key]
+        console.log("Removed Item:", itemsList[key])
+        delete itemsList[key]
+        RenderItems(Object.values(itemsList))
     }
     function Click(event) {
 
@@ -123,5 +138,12 @@ function Board() {
         </div>
     )
 }
-
+function WrapItem(data){
+    return (
+    <ErrorLoadingItem>
+        <Suspense>
+            {data.children}
+        </Suspense>
+    </ErrorLoadingItem>)
+}
 export default Board

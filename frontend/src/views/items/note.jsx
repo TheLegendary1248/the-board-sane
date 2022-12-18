@@ -13,7 +13,7 @@ export default function Note(data) {
         textRef.current.setSelectionRange(pt,pt)
     },[])
     return (
-        <DragWrapper>
+        <DragWrapper removeItem={data.removeSelf}>
             <textarea ref={textRef} spellCheck="false" className='item i_note' placeholder='Type anything here!' defaultValue={data.text} autoFocus>
             </textarea>
         </DragWrapper>
