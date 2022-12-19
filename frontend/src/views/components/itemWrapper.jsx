@@ -3,8 +3,8 @@ import { useRef, useState, useEffect } from 'react';
 import { detectLeftMouseButton } from 'utils';
 let offsetX = 0;
 let offsetY = 0;
-const getX = (event) => (event.clientX - window.innerWidth / 2)
-const getY = (event) => (event.clientY - window.innerHeight / 2)
+const getX = (event) => (event.pageX - window.innerWidth / 2)
+const getY = (event) => (event.pageY - window.innerHeight / 2)
 
 //Wrapper for items
 //TODO Isolate Drag behaviour as it's own component possibly
@@ -20,6 +20,8 @@ export default function ItemWrapper(data){
     },[])
     //TODO Make undraggable when in focus
     function Drop(event){
+        //console.log(event)
+        console.log(`Event x and y are equal to ${event.movementX}, ${event.movementY}`)
         event.target.style.left = getX(event) - offsetX + "px"
         event.target.style.top = getY(event) - offsetY + "px"
     }
@@ -45,7 +47,8 @@ export default function ItemWrapper(data){
     if(ignoreWrapper) return data.children
     else {
         return(
-            <div className="dragwrapper" draggable={isDraggable} /*onFocus={()=>setTimeout(() => setDraggable(false),200)} onBlur={()=>setDraggable(true)}*/ onDragStart={Pickup} onDragEnd={Drop}>
+            <div className="dragwrapper" draggable={isDraggable} /*onFocus={()=>setTimeout(() => setDraggable(false),200)} onBlur={()=>setDraggable(true)}*/ 
+            onDragStart={Pickup} onDrag={Drop} onDragEnd={Drop}>
                 {data.children}
                 <div className='deleteItem' draggable="true" onDragStart={StopDrag} onMouseDown={DeleteClick} onMouseUp={DeleteCancel} onMouseLeave={DeleteCancel}>
                     <div className='textbox' tabIndex={0} >

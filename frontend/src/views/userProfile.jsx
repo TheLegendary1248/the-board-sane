@@ -3,6 +3,14 @@
 //It is also not it's own 
 import { userContext } from "views/default"
 import React, { useContext, useState, useEffect, useRef} from "react"
+
+export const userOptions = {
+    dragSetting: {
+        type: "distance",
+        value: "100"
+    },
+}
+
 export default function UserProfile(data) {
 
     import('../styles/profile.css')
@@ -15,11 +23,11 @@ export default function UserProfile(data) {
                 <Dropdown label="User" desc="Things about you">
                     <Input label="Display Name"></Input>
                     <Input label="About Me"></Input>
-                    <Input label="Display Name"></Input>
                 </Dropdown>
                 <Dropdown label="Settings" desc="Control over the app behaviour">
-                    <Input label="Deletion Time"/>
+                    <Input label="Time to delete an item" inputattr={{type:"number",min:0,step:0.05}}/>
                     <SelectInput
+                        label={"Enter drag by "}
                         options={{
                             "Distance":(<div>distance</div>),
                             "Time":(<div>time</div>),
@@ -28,6 +36,11 @@ export default function UserProfile(data) {
                 </Dropdown>
                 <Dropdown label="Theme" desc="Make it look how you want it to look">
                     {/**This shows off the theme the user has chosen*/}
+                    <Input label="Primary Color" inputattr={{type:"color"}}></Input>
+                    <Input label="Secondary Color" inputattr={{type:"color"}}></Input>
+                    <Input label="Highlight Color" inputattr={{type:"color"}}></Input>
+                    <Input label="Readable Font"></Input>
+                    <Input label="Stand-out Font"></Input>
                     <ThemeEx/>
                 </Dropdown>
                 <Dropdown label="Experimental" desc="Funny features that haven't made the cut yet">
@@ -57,7 +70,7 @@ function SelectInput (data) {
     const [selection,setSelection] = useState(Object.entries(data.options)[0][0])
     return(
         <React.Fragment>
-        <label>Enter drag after</label>
+        <label>{data.label ?? "Label"}</label>
         <select onChange={e => setSelection(e.target.value)}>
             {Object.keys(data.options).map(key => <option key={key}>{key}</option>)}
         </select>
@@ -70,7 +83,7 @@ function Input(data) {
     return(
     <div className="input_field">
         <label>{data.label ?? "unlabeled"}</label>
-        <input type={data.type ?? "text"}></input>
+        <input {...data.inputattr}></input>
     </div>)
 }
 

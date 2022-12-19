@@ -1,4 +1,5 @@
 #edit_profile {
+    --trans-time: 0.3s;
     position: fixed;
     width: 100%;
     height: 100%;
@@ -35,10 +36,21 @@
 }
 /*Defaults of the profile editor*/
 #scrollable * {
-    text-align: center;
+    text-align: left;
     font-size: 18px;
     font-weight: 400;
     font-family: 'Segoe UI';
+}
+#edit_profile input {
+    transition: all 0.5s;
+    background-color: transparent;
+    border-radius: 5px;
+    border: 2px solid #1777;
+    margin-left: 20px;
+    padding-left: 5px;
+}
+#edit_profile input:focus-within {
+    background-color: #1777;
 }
 #edit_profile  h3 {
     text-align: left;
@@ -56,18 +68,22 @@
     font-size: 22px;
 }
 /*Collaspeables. Just because CSS is very no bueno in this field*/
-#edit_profile .dropdown .content > *{
+#edit_profile .content { transition: all var(--trans-time); }
+#edit_profile .content.open { border-top: 2px #1777 solid;}
+#edit_profile .dropdown .content > *{ 
     position: relative;
-    transition: all 0.2s;
-    height: 0;
-    overflow: hidden
-    
+    transition: all var(--trans-time);
+    overflow: hidden;
 }
-#edit_profile .dropdown .content.open  > *{
-    height: 40px;
-} 
+#edit_profile .dropdown .content:not(.open) > *{
+    height: 0;
+}
 /*Input Component styling*/
 #edit_profile .input_field {
+    height: 60px;
+}
+#edit_profile .input_field input{
+    width: calc(100% - 40px);
 
 }
 #edit_profile .input_field > label {
