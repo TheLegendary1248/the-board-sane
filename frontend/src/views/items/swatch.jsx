@@ -1,6 +1,6 @@
 import React , { useRef, useState } from "react";
 import { useEffect } from "react";
-import DragWrapper from "views/components/itemWrapper";
+import ItemWrapper from "views/components/itemWrapper";
 export default function Swatch(data)
 {
     import('../../styles/items/swatch.css')
@@ -15,10 +15,8 @@ export default function Swatch(data)
         inputRef.current.setSelectionRange(1,7)
     },[])
     return(
-        <DragWrapper>
             <div className="item i_swatch" ref={divRef}>
                 <input spellCheck="false" placeholder="Your color" ref={inputRef}className="value" defaultValue={color} onChange={UpdateColor} autoFocus/>
             </div>
-        </DragWrapper>
     )
 }

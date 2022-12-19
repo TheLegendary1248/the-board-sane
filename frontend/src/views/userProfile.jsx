@@ -2,8 +2,7 @@
 //This file is not in 'components' due to it's size being noticeably much like it's own page
 //It is also not it's own 
 import { userContext } from "views/default"
-import React, { useContext, useState } from "react"
-import { useEffect } from "react"
+import React, { useContext, useState, useEffect, useRef} from "react"
 export default function UserProfile(data) {
 
     import('../styles/profile.css')
@@ -20,6 +19,12 @@ export default function UserProfile(data) {
                 </Dropdown>
                 <Dropdown label="Settings" desc="Control over the app behaviour">
                     <Input label="Deletion Time"/>
+                    <SelectInput
+                        options={{
+                            "Distance":(<div>distance</div>),
+                            "Time":(<div>time</div>),
+                        }}>
+                    </SelectInput>
                 </Dropdown>
                 <Dropdown label="Theme" desc="Make it look how you want it to look">
                     {/**This shows off the theme the user has chosen*/}
@@ -47,7 +52,20 @@ function Dropdown(data) {
         </div>
     )
 }
-
+function SelectInput (data) {
+    let mappedOptions = useRef(null)
+    const [selection,setSelection] = useState(Object.entries(data.options)[0][0])
+    return(
+        <React.Fragment>
+        <label>Enter drag after</label>
+        <select onChange={e => setSelection(e.target.value)}>
+            {Object.keys(data.options).map(key => <option key={key}>{key}</option>)}
+        </select>
+        {data.options[selection]}   
+        </React.Fragment>
+        
+    )
+}
 function Input(data) {
     return(
     <div className="input_field">

@@ -55,7 +55,7 @@ export default function SuggestionPopup(data) {
     }, [isHidden])
     return(
     <div id="selectionPopup" hidden={isHidden}>
-        <input id="selectInput" type="text" onChange={handleInputChange} ref={inputField} tabIndex={0}></input>
+        <input id="selectInput" type="text" onBlur={() => setHidden(true)} onChange={handleInputChange} ref={inputField} tabIndex={0}></input>
         <div id="selectItem" tabIndex={-1}>
         {
             arr.map((key) => 

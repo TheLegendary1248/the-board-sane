@@ -7,8 +7,10 @@ const getX = (event) => (event.clientX - window.innerWidth / 2)
 const getY = (event) => (event.clientY - window.innerHeight / 2)
 
 //Wrapper for items
-export default function DragWrapper(data){
+//TODO Isolate Drag behaviour as it's own component possibly
+export default function ItemWrapper(data){
     const [isDraggable,setDraggable] = useState(true)
+    const [ignoreWrapper, setIgnoreWrapper] = useState(false)
     const delayDelete = useRef(null)
     useEffect(()=>{
         console.log(data.removeItem)
@@ -26,7 +28,7 @@ export default function DragWrapper(data){
         offsetX = getX(event) - event.target.offsetLeft
         offsetY = getY(event) - event.target.offsetTop
     }
-    function DeleteItem () { data.removeItem() };
+    function DeleteItem () { data.removeSelf() };
     function DeleteClick(event) {
         if(detectLeftMouseButton(event))
         {
@@ -40,17 +42,21 @@ export default function DragWrapper(data){
     function StopDrag(e){
         DeleteCancel(e); e.preventDefault(); e.stopPropagation();
     }
-    return(
-    <div className="dragwrapper" draggable={isDraggable} /*onFocus={()=>setTimeout(() => setDraggable(false),200)} onBlur={()=>setDraggable(true)}*/ onDragStart={Pickup} onDragEnd={Drop}>
-        {data.children}
-        <div className='deleteItem' draggable="true" onDragStart={StopDrag} onMouseDown={DeleteClick} onMouseUp={DeleteCancel} onMouseLeave={DeleteCancel}>
-            <div className='textbox' tabIndex={0} >
-                <div>
-                   <span className='hyperbole'>DELETE!!!</span> 
+    if(ignoreWrapper) return data.children
+    else {
+        return(
+            <div className="dragwrapper" draggable={isDraggable} /*onFocus={()=>setTimeout(() => setDraggable(false),200)} onBlur={()=>setDraggable(true)}*/ onDragStart={Pickup} onDragEnd={Drop}>
+                {data.children}
+                <div className='deleteItem' draggable="true" onDragStart={StopDrag} onMouseDown={DeleteClick} onMouseUp={DeleteCancel} onMouseLeave={DeleteCancel}>
+                    <div className='textbox' tabIndex={0} >
+                        <div>
+                        <span className='hyperbole'>DELETE!!!</span> 
+                        </div>
+                        <span>Delete Item</span>
+                    </div>
                 </div>
-                <span>Delete Item</span>
             </div>
-        </div>
-    </div>
-    )
+        )
+    }
+    
 }

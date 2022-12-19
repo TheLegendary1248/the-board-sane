@@ -8,6 +8,7 @@ import '../styles/items/default.css'
 import itemTable from './items'
 import { ResponseDefault } from 'utils'
 import ErrorLoadingItem from './board_components/errorItem'
+import ItemWrapper from './components/itemWrapper'
 //Panning
 let offsetX = 0;
 let offsetY = 0;
@@ -26,17 +27,17 @@ that they survive unmounting and will be scripted to avoid spending resources on
 */
 //Empty object that holds each item
 let itemsList = {
-    
+
 }
 //Empty object that contains pointers to items that have been 'removed'
 let removedItems = {
-        //Array the points to the removed items of this list
-        undoQueue: [],
+    //Array the points to the removed items of this list
+    undoQueue: [],
 }
 //Each item's content. Am i ignoring the React flow? Yes, i fucking am, i am so done rn about over thinking about my approach
 export let itemStates = {}
 //Contains the last visited board ID in this session since these variables are not removed when switching
-let lastVisitedID = null
+export let currentID = null
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
@@ -48,17 +49,16 @@ function Board() {
     ////The element in focus
     ////document.activeElement
     useEffect(() => {
-        lastVisitedID = params.boardId
+        currentID = params.boardId
         //TODO Load Board items here
-        return () => {}
+        return () => { }
         let abortCtrl = new AbortController
         GetBoardItems(abortCtrl)
     }, [])
-    async function GetBoardItems(abortCtrl)
-    {
+    async function GetBoardItems(abortCtrl) {
         //TODO Use local cache and check if any items need updating
         //TODO Finish this is general
-        let res = fetch("/api/board", {signal: abortCtrl.signal}) //FIXME Endpoint
+        let res = fetch("/api/board", { signal: abortCtrl.signal }) //FIXME Endpoint
         let body = await res.json()
         let itemsArr = body.itemsArr
         //Load cloud items
@@ -80,37 +80,38 @@ function Board() {
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
     //General function for panning
-    function Pan(event) {
+    function PanEnd(event) {
+        
     }
-    function PanStart(event) 
-    {
+    function PanStart(event) {
         console.log(event)
-        // event.dataTransfer.setDragImage({}, 0,0)
+        
     }
     function AddItem(name) {
         //TODO Warn client that item is not available
-        if(itemImports[name] === undefined)
-        {
+        if (itemImports[name] === undefined) {
             itemImports[name] = itemTable[name].import()
         }
         let Item = itemImports[name]
         let key = getKey()
-        let item = <WrapItem key={key}><Item removeSelf={() => RemoveItem(key)}/></WrapItem>
+        console.log(`Created ${name} item with key: ${key}`)
+        let item = <WrapItem key={key} propkey={key} Item={Item}></WrapItem>
         itemsList[key] = item
         RenderItems(Object.values(itemsList))
     }
-    function AddDefault(t) 
-    {   //Defaults to adding a note
-        RenderItems(renderItems.concat(<Suspense key={++counter}><itemImports.note text={t} /></Suspense>))}
-    function RemoveItem(key){
+    function AddDefault(t) {   //Defaults to adding a note
+        let key = getKey()
+        RenderItems(renderItems.concat(<WrapItem key={key} Item={itemImports.note} data={t} />))
+    }
+    function RemoveItem(key) {
         let deleted = itemsList[key]
         removedItems[key] = itemsList[key]
-        console.log("Removed Item:", itemsList[key])
+        console.log(`Removed Item (${key}):`, itemsList[key])
         delete itemsList[key]
         RenderItems(Object.values(itemsList))
     }
     function Click(event) {
-
+        
     }
     //On key down with the board in focus, detect input 
     function KeyDown(event) {
@@ -129,7 +130,7 @@ function Board() {
             </div>
             {/*Used to center the board screen*/}
             <div id="center">
-                <textarea id="fullscreen" draggable="true" onWheel={Zoom} onDragStart={PanStart} onDrag={Pan} onClick={Click} onChange={KeyDown}></textarea>
+                <textarea id="fullscreen" draggable="true" /*onWheel={Zoom}*/ onMouseDown={PanStart} onMouseUp={PanEnd} onClick={Click} onChange={KeyDown}></textarea>
                 <div id="itemContainer" ref={container} tabIndex={0} >
                     {renderItems}
                 </div>
@@ -137,13 +138,20 @@ function Board() {
             <SuggestionPopup setInput={SetChildInput} addItem={AddItem} addDefault={AddDefault}/>
         </div>
     )
+    function WrapItem(data) {
+        console.log(data)
+        const [posData, setPosData] = useState({x:0,y:0})
+        return (
+            //Error boundary, Suspend lazy loaded react components, generic item wrapper
+            <ErrorLoadingItem>
+                <ItemWrapper removeSelf={() => RemoveItem(data.propkey)}>
+                    <Suspense>
+                        <data.Item data={data.data} removeSelf={() => RemoveItem(data.propkey)}/>
+                    </Suspense>
+                </ItemWrapper>
+            </ErrorLoadingItem>
+        )
+    }
 }
-function WrapItem(data){
-    return (
-    <ErrorLoadingItem>
-        <Suspense>
-            {data.children}
-        </Suspense>
-    </ErrorLoadingItem>)
-}
+
 export default Board
