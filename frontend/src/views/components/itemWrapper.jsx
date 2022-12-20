@@ -20,8 +20,8 @@ export default function ItemWrapper(data){
     },[])
     //TODO Make undraggable when in focus
     function Drop(event){
-        //console.log(event)
-        console.log(`Event x and y are equal to ${event.movementX}, ${event.movementY}`)
+        //console.log(event.target)
+        console.log(`Event x and y are equal to ${event.pageX}, ${event.pageY}`)
         event.target.style.left = getX(event) - offsetX + "px"
         event.target.style.top = getY(event) - offsetY + "px"
     }
@@ -48,7 +48,7 @@ export default function ItemWrapper(data){
     else {
         return(
             <div className="dragwrapper" draggable={isDraggable} /*onFocus={()=>setTimeout(() => setDraggable(false),200)} onBlur={()=>setDraggable(true)}*/ 
-            onDragStart={Pickup} onDrag={Drop} onDragEnd={Drop}>
+            onDragStart={Pickup} onDragEnd={Drop}>
                 {data.children}
                 <div className='deleteItem' draggable="true" onDragStart={StopDrag} onMouseDown={DeleteClick} onMouseUp={DeleteCancel} onMouseLeave={DeleteCancel}>
                     <div className='textbox' tabIndex={0} >

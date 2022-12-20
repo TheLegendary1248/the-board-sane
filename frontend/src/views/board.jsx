@@ -12,6 +12,8 @@ import ItemWrapper from './components/itemWrapper'
 //Panning
 let offsetX = 0;
 let offsetY = 0;
+let clientStartX = 0;
+let clientStartY = 0;
 const getX = (event) => (event.clientX - window.innerWidth / 2)
 const getY = (event) => (event.clientY - window.innerHeight / 2)
 //Experimental for now
@@ -38,6 +40,8 @@ let removedItems = {
 export let itemStates = {}
 //Contains the last visited board ID in this session since these variables are not removed when switching
 export let currentID = null
+
+
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
@@ -45,6 +49,8 @@ function Board() {
     const container = useRef(null)
     const selection = useRef(null)
     const [renderItems, RenderItems] = useState([])
+    const dragInterval = useRef(null)
+    const centerRef = useRef(null)
     //REMINDERS
     ////The element in focus
     ////document.activeElement
@@ -81,11 +87,21 @@ function Board() {
     }
     //General function for panning
     function PanEnd(event) {
-        
+        centerRef.current.style.left = getX(event) - offsetX + "px"
+        centerRef.current.style.top = getY(event) - offsetY + "px"
+    }
+    function Panning(event){
+        centerRef.current.style.left = getX(event) - offsetX + "px"
+        centerRef.current.style.top = getY(event) - offsetY + "px"
     }
     function PanStart(event) {
-        console.log(event)
-        
+        clientStartX = event.clientX;
+        clientStartY = event.clientY;
+        offsetX = getX(event) - centerRef.current.offsetLeft
+        offsetY = getY(event) - centerRef.current.offsetTop
+        return;
+        offsetX = getX(event) - centerRef.current.offsetLeft
+        offsetY = getY(event) - centerRef.current.offsetTop
     }
     function AddItem(name) {
         //TODO Warn client that item is not available
@@ -110,9 +126,6 @@ function Board() {
         delete itemsList[key]
         RenderItems(Object.values(itemsList))
     }
-    function Click(event) {
-        
-    }
     //On key down with the board in focus, detect input 
     function KeyDown(event) {
         SetChildInput.current(event.target.value)
@@ -129,8 +142,8 @@ function Board() {
                 Start typing or drawing
             </div>
             {/*Used to center the board screen*/}
-            <div id="center">
-                <textarea id="fullscreen" draggable="true" /*onWheel={Zoom}*/ onMouseDown={PanStart} onMouseUp={PanEnd} onClick={Click} onChange={KeyDown}></textarea>
+            <div id="center" ref={centerRef}>
+                <textarea id="fullscreen" draggable="true" /*onWheel={Zoom}*/ onDragEnd={PanEnd} onDragOver={Panning} onDragStart={PanStart} onChange={KeyDown}></textarea>
                 <div id="itemContainer" ref={container} tabIndex={0} >
                     {renderItems}
                 </div>
