@@ -1,8 +1,6 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense, useState, useEffect, useRef, useContext, createContext} from 'react'
 import { useParams } from 'react-router-dom'
-import { useEffect, useRef, useContext } from 'react'
 import SuggestionPopup from './board_components/suggestionPopup'
-import note from './items/note'
 import '../styles/boardView.css'
 import '../styles/items/default.css'
 import itemTable from './items'
@@ -41,10 +39,12 @@ export let itemStates = {}
 //Contains the last visited board ID in this session since these variables are not removed when switching
 export let currentID = null
 
+export let childIsBeingDragged = createContext(false)
 
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
+    const [drag, setDrag] = useState(true)
     let params = useParams()
     const container = useRef(null)
     const selection = useRef(null)
@@ -85,21 +85,14 @@ function Board() {
         //TODO Make zoom focus on mouse location
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
-    //General function for panning
-    function PanEnd(event) {
-        centerRef.current.style.left = getX(event) - offsetX + "px"
-        centerRef.current.style.top = getY(event) - offsetY + "px"
-    }
     function Panning(event){
+        console.log("hello:", event.currentTarget)
         centerRef.current.style.left = getX(event) - offsetX + "px"
         centerRef.current.style.top = getY(event) - offsetY + "px"
     }
     function PanStart(event) {
         clientStartX = event.clientX;
         clientStartY = event.clientY;
-        offsetX = getX(event) - centerRef.current.offsetLeft
-        offsetY = getY(event) - centerRef.current.offsetTop
-        return;
         offsetX = getX(event) - centerRef.current.offsetLeft
         offsetY = getY(event) - centerRef.current.offsetTop
     }
@@ -143,7 +136,7 @@ function Board() {
             </div>
             {/*Used to center the board screen*/}
             <div id="center" ref={centerRef}>
-                <textarea id="fullscreen" draggable="true" /*onWheel={Zoom}*/ onDragEnd={PanEnd} onDragOver={Panning} onDragStart={PanStart} onChange={KeyDown}></textarea>
+                <textarea id="fullscreen" draggable={drag} /*onWheel={Zoom}*/ onDragOver={Panning} onDragStart={PanStart} onChange={KeyDown}></textarea>
                 <div id="itemContainer" ref={container} tabIndex={0} >
                     {renderItems}
                 </div>

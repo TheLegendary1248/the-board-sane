@@ -1,10 +1,10 @@
 //Router for manipulating the user's account
 const router = require('express').Router()
 const DB_user = require('../schema/user')
-const {CreateNewToken} = require('./token')
+const { CreateVerifyToken } = require('../utils/token')
 const {SendMail} = require('../utils/emailHandler')
 const {GetHtmlFile} = require('../utils/htmlReader')
-
+const path = require('path')
 //Forgot endpoint
 router.post("/forgot/:type/:value", async (req, res)=> {
     //Check the type
@@ -20,9 +20,9 @@ router.post("/forgot/:type/:value", async (req, res)=> {
         else {
             res.send(true)
             let emailHTML = await GetHtmlFile(path.join(__dirname,"../emailPresets/forgotCreds.html"))
-            let token = await CreateNewToken( res, doc, "forgot")
+            let token = await CreateVerifyToken(doc)
             //Send the token hex-fied because the URL comes out weird otherwise
-            let url =  process.env.SITE_URL = `/forgot/${hexToken}`
+            let url =  process.env.SITE_URL = `/forgot/${token}`
             emailHTML.inserts.url = url
             SendMail(doc.email, "Forgot your password?", emailHTML.Join())
         }

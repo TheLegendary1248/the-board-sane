@@ -71,7 +71,7 @@
     margin: 0px;
 }
 #R_select h1 {
-    font-size: 30px;
+    font-size: 45px;
     border-bottom: 2px solid white;
 }
 #R_select a{
@@ -126,7 +126,6 @@
     box-shadow: 3px 3px 10px #0004;
     outline: 4px solid #3335;
     outline-offset: -4px;
-    
 }
 #R_select {
     position: relative;
@@ -163,7 +162,7 @@
     width: 20px;
 }
 #R_select .cardAttr .desc {
-    transition: all 0.5s;
+    transition: all 0.2s;
     background-color: #333;
     font-weight: 600;
     position: absolute;

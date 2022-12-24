@@ -3,7 +3,7 @@
 const router = require('express').Router()
 const DB_user = require('../schema/user')
 const DB_token = require('../schema/authenticationToken')
-const { CreateNewToken, CheckToken } = require('./token')
+const { CreateNewToken, CheckToken } = require('../utils/token')
 const { SendMail } = require('../utils/emailHandler')
 const { GetHtmlFile } = require('../utils/htmlReader')
 const path = require('path')

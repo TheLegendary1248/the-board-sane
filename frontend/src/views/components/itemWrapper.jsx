@@ -21,14 +21,18 @@ export default function ItemWrapper(data){
     //TODO Make undraggable when in focus
     function Drop(event){
         //console.log(event.target)
+        event.stopPropagation()
         console.log(`Event x and y are equal to ${event.pageX}, ${event.pageY}`)
         event.target.style.left = getX(event) - offsetX + "px"
         event.target.style.top = getY(event) - offsetY + "px"
+        
     }
     function Pickup(event) {
         //document.activeElement.blur()
+        event.stopPropagation()
         offsetX = getX(event) - event.target.offsetLeft
         offsetY = getY(event) - event.target.offsetTop
+        
     }
     function DeleteItem () { data.removeSelf() };
     function DeleteClick(event) {

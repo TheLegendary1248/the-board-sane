@@ -6,7 +6,8 @@ const board_s = new mongoose.Schema({
     name:{type:String, required:true},
     //The user the board belongs to
     user: {type: mongoose.Schema.Types.ObjectId, ref:'User', required:true},
-    
+    //Board items
+    items: [{item: {type: mongoose.Schema.Types.ObjectId}, ref: {type: mongoose.Schema.Types.ObjectId}}]
     
 })
 

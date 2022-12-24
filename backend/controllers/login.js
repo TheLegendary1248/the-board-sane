@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt')
 const db_user = require('../schema/user')
 const router = require('express').Router()
-const { CreateAuthToken, DeleteToken, CheckAuthToken, CheckVerifyToken, CreateVerifyToken} = require("./token")
+const { CreateAuthToken, DeleteToken, CheckAuthToken, CheckVerifyToken, CreateVerifyToken} = require("../utils/token")
 const { SendMail } = require('../utils/emailHandler.js')
 const { GetHtmlFile } = require('../utils/htmlReader.js')
 const path = require('path');

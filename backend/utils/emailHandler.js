@@ -61,7 +61,7 @@ async function GetTransport() {
 async function SendMail(recipient, subject, html) {
     if(process.env.SENDMAIL)
     {
-        console.log("Email Handler / Sending Email to:", recipient)
+        console.log("Email Handler / Sending Email to:".cyan, recipient)
         try {
             const options = {
                 from: "The Board",
@@ -72,12 +72,13 @@ async function SendMail(recipient, subject, html) {
             let transporter = await GetTransport();
             return await transporter.sendMail(options);
         } catch (error) {
-            console.log("Email Handler / Error Sending Email:", error);
+            if(error.message === "invalid_grant") console.log("REFRESH MAILER TOKEN".bold.brightRed)
+            else console.log("Email Handler / Error Sending Email:".red, error.message);
             return null;
         }
     }
     else {
-        console.log("Email Handler / NOT Sending Email to:", recipient)
+        console.log("Email Handler / NOT Sending Email to:".yellow, recipient)
     }
     
 }

@@ -1,7 +1,7 @@
 //Controls routing for accessing boards
 const router = require("express").Router()
 const db_board = require("../schema/board")
-const {CheckAuthToken, CheckAuthTokenCatchInvalid} = require("./token")
+const {CheckAuthToken, CheckAuthTokenCatchInvalid} = require("../utils/token")
 
 //TODO Make sure to authenticate usage
 //Retrieve all boards a user has access to
@@ -47,24 +47,12 @@ router.post('/', async (req, res) =>{
 }
 )
 
-//Retrieve a certain board
+//Get paths to all of a boards items
 router.get('/:id', (req, res) => {
-    res.render("board")
-})
-
-//Post an item
-router.post('/:id/item', (req, res) => {
-    res.status(404).end()
-})
-
-//Patch an item
-router.patch('/:id/item', (req, res) => {
-    res.status(404).end()
-})
-
-//Delete an item
-router.delete('/:id/item/:itemid', (req, res) => {
-    res.status(404).end()
+    //Retrieve board doc
+    //Send array of board items
+    
+    
 })
 
 //TODO Mark board for deletion incase of accidents, instead of straight up deleting it
@@ -77,4 +65,31 @@ router.delete('/:id', (req, res) => {
     res.status(301).redirect("/board")
 })
 
+//===ITEMS===
+//Get item at path
+router.get('/item/:ref/:item',(req, res) => {
+    //TODO Respect If-Modified-Since
+    //Return item at path
+})
+
+//Post an item
+router.post('/item/:ref', (req, res) => {
+    //Check user-limit
+    //START TRANSACTION
+    //Add item referenced collection
+    //Get board, add item ref to board array of items
+    //Return success condition
+    res.status(404).end()
+})
+
+//Patch an item at path
+router.patch('/item/:ref/:id', (req, res) => {
+    //Patch item at path
+    res.status(404).end()
+})
+
+//Delete an item
+router.delete('/item/:id/:itemid', (req, res) => {
+    res.status(404).end()
+})
 module.exports = router
