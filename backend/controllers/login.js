@@ -116,6 +116,7 @@ router.post("/", async (req, res) => {
     
 //Path for LOGGING IN BY EMAIL LINK. Multipurpose, email verification and password forgotten (but the user doesn't need to know that)
 router.post("/verify", async (req, res) => {
+    //TODO Accept password change through body too
     let body = req.body
     res.set('Content-Type','text/plain')
     if(body.useFakeResponse) 

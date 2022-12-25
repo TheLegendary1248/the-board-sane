@@ -7,14 +7,25 @@ export default function ChangeLogin(data) {
     let { userID, token } = useParams()
     useEffect(() => {
         //If the forgot flag is set, authenticate with the parameters
-
-        HandleForgotSection()
+        let abortCtrl = new AbortController()
+        if(userID & token) 
+        { 
+            HandleForgotSection(abortCtrl) 
+        }
+        return () => {
+            abortCtrl.abort()
+        }
     }, [])
-    async function HandleForgotSection() {
+    /**
+     * Handles the "Forgot Password" part of this section
+     * @param {AbortController} abortCtrl 
+     */
+    async function HandleForgotSection(abortCtrl) {
         console.log(userID)
         console.log(JSON.stringify({ userID: userID, token: token }))
         if (data.forgot) {
             let req = await fetch("/api/login/verify", {
+                signal: abortCtrl.signal,
                 method: "POST",
                 body: JSON.stringify({ userID, token }),
                 headers: { "Content-Type": "application/json"},
@@ -24,6 +35,7 @@ export default function ChangeLogin(data) {
 
     }
     //Shaddup. It's my mess, not yours.
+    //TODO ADD A FLIPPIN BUTTON TO SUBMIT PASSWORD CHANGE YOU ABSOLUTE MORON
     let forgot =
         <div id="block">
             <div id="warn_token" hidden={showMessage}>

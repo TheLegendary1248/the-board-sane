@@ -71,7 +71,6 @@ function Login(data) {
             console.log("Email checked")
             setEmailValidity(null)
             //If email is a valid email address - yes the Regex was pulled off the internet, it's very confusing 
-            //FIXME This regex tends to have 'recursion' errors with weird emails, typically ones I make up for the sake of it
             if (emailRef.current.value.match(emailRegex)) {
                 let get = await fetch("/api/checkEmail/" + emailRef.current.value, { signal: checkAborter.signal });
                 get.json().then(res => { setEmailValidity(!res); prevEmail = emailRef.current.value; })

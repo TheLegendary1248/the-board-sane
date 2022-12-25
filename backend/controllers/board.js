@@ -1,5 +1,6 @@
 //Controls routing for accessing boards
 const router = require("express").Router()
+const { db } = require("../schema/board")
 const db_board = require("../schema/board")
 const {CheckAuthToken, CheckAuthTokenCatchInvalid} = require("../utils/token")
 
@@ -23,6 +24,7 @@ router.get('/', async (req, res) => {
 
 //Add a board, primarily giving access to the user
 router.post('/', async (req, res) =>{
+    //TODO Delete any boards marked to be deleted
     //Authenticate
     let doc_user = await CheckAuthTokenCatchInvalid(req)
     console.log("User document:", doc_user)
@@ -46,34 +48,44 @@ router.post('/', async (req, res) =>{
     }
 }
 )
-
+//TODO ENSURE AUTH CHECK ON ALLA THESEEEEEEEEE
 //Get paths to all of a boards items
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
     //Retrieve board doc
+    let doc_board = await db_board.findById(req.params.id)
     //Send array of board items
-    
-    
+    res.send(doc_board.items)
 })
 
 //TODO Mark board for deletion incase of accidents, instead of straight up deleting it
 //Delete a board
-router.delete('/:id', (req, res) => {
+router.delete('/:id', async (req, res) => {
+    let doc_board = await db_board.findById(req.params.id)
     //Ensure the user has permissions
-    //Delete board information
-    //Delete board itself
+    doc_board.markForDeletion = false
+    doc_board.save()
     //Return to board screen
     res.status(301).redirect("/board")
 })
 
+const items = require('../schema/item')
 //===ITEMS===
 //Get item at path
-router.get('/item/:ref/:item',(req, res) => {
+router.get('/item/:item/:id', async (req, res) => {
     //TODO Respect If-Modified-Since
+    let doc_item = await items["note"].findById(req.params.item)
+    
     //Return item at path
 })
 
 //Post an item
-router.post('/item/:ref', (req, res) => {
+router.post('/item/:item', async (req, res) => {
+    let item = await new items["note"]()
+    
+    //Make sure the given item works
+    item.validate()
+
+    res.send(item.id)
     //Check user-limit
     //START TRANSACTION
     //Add item referenced collection
@@ -83,13 +95,29 @@ router.post('/item/:ref', (req, res) => {
 })
 
 //Patch an item at path
-router.patch('/item/:ref/:id', (req, res) => {
+router.patch('/item/:item/:id', async (req, res) => {
+    let doc_item = await items["note"].findById(req.params.item)
+    //Uhhh, yes i would know what to do here
+    //Iterate over given object and update each field...
+    //this is already a utility function somewhere, i know it is...
+    doc_item.validate() //just make sure
     //Patch item at path
     res.status(404).end()
 })
 
-//Delete an item
-router.delete('/item/:id/:itemid', (req, res) => {
+//Mark an item for deletion
+router.delete('/item/:item/:id', async (req, res) => {
+    let doc_item = await items["note"].findById(req.params.item)
+    //Mark for deletion
     res.status(404).end()
 })
+
+/*TODO Make all data marked for deletion get deleted under the conditions...
+    - the user's limit is reached
+    - it's been 7 days since marking
+        ^ unless set by user
+            ^ Avoid malicous deletion through reconfiguring this default by keeping a 
+            timestamp of the furthest time that said data would've been deleted before said change
+    - User manually force deletes said data and confirms with password
+*/
 module.exports = router

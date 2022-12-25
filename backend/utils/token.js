@@ -122,7 +122,7 @@ async function CheckAuthTokenCatchInvalid (req, res)
 async function CreateVerifyToken(doc_user) {
     let token = uuid.v4();
     let hash = await bcrypt.hash(token, salt)
-    console.log("Creating new verification token:", token);
+    console.log("Creating new verification token:".yellow, token);
     //Check for a previous token, probably from a resubmit
     let previousToken = await db_verifyToken.findOne({ user: doc_user._id }).exec()
     //If it doesn't exist, create a new one that expires in five minutes 
@@ -159,16 +159,16 @@ async function CheckVerifyToken(req, res) {
     //If document exists
     if(!doc_user) 
     {   //User document is null
-        console.log("Verification: Account does not exist"); 
+        console.warn("Verification: Account does not exist".yellow); 
         res.status(404).send("Verification / Bad request. Body 'userID' key is not valid"); return}
+    let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
     if(!doc_verifyToken)
     {   //Verify Token document is null
-        console.log("Verification: Token does not exist"); 
+        console.warn("Verification: Token does not exist".yellow); 
         res.status(400).send("Verification / Bad request. Body 'token' key is not valid"); return}
-    let doc_verifyToken = await db_verifyToken.findOne({user: doc_user._id}).exec()
     if(!await bcrypt.compare(req.body.token, doc_verifyToken.token)) 
     {   //If token fails to match hash
-        console.log("Verification: Token hash does not match")
+        console.warn("Verification: Token hash does not match".yellow)
         res.status(403).send("Verification failed"); return}
     //Delete verification token regardless of outcome
     db_verifyToken.findByIdAndDelete(doc_verifyToken._id).exec()  
