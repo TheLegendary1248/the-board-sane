@@ -190,14 +190,14 @@ function Login(data) {
                         <div id="emailSection">
                             <label htmlFor="email">Email - only required to sign up</label>
                             <br />
-                            <input ref={emailField} onChange={e => { setIsLogin(e.currentTarget.value === ""); DelayCheck(); }} id="email" name={isLogin ? "" : "email"} type="email" placeholder="Ex: hello@example.com - only required to sign up" />
+                            <input class="default" ref={emailField} onChange={e => { setIsLogin(e.currentTarget.value === ""); DelayCheck(); }} id="email" name={isLogin ? "" : "email"} type="email" placeholder="Ex: hello@example.com - only required to sign up" />
                             <p id="email_availability" className='warn' hidden={isLogin ? true : emailIsValid ?? true}>That email is already in use!</p>
                         </div>
                         <br />
                         <div id="usernameSection">
                             <label htmlFor="username" >Username</label>
                             <br />
-                            <input ref={userField} onChange={isLogin ? null : DelayCheck} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
+                            <input class="default" ref={userField} onChange={isLogin ? null : DelayCheck} id="username" name="name" type="text" placeholder="What do you like to go by?" required />
                             <p id="user_availability" className='warn' hidden={isLogin ? true : nameIsValid ?? true}>That username is already taken. Sorry :(</p>
                         </div>
                         <div id="passwordSection">
@@ -205,7 +205,7 @@ function Login(data) {
                             <label htmlFor="password" >Password</label>
                             <br />
                             <input
-                                id="password" name="pass" placeholder="Make sure it's a strong password"
+                                class="default" id="password" name="pass" placeholder="Make sure it's a strong password"
                                 onChange={OnPassChange} type={showPass ? "text" : "password"} required />
                             <span id="show_pass" className={showPass ? "shown" : ""} onClick={() => setPassVisible(!showPass)}>{showPass ? "Hide" : "Show"}</span>
                             <div id="user_pass_warn" hidden={isLogin ? true : (passWarn === "")}>
@@ -214,7 +214,7 @@ function Login(data) {
                             </div>
                         </div>
                         <br />
-                        <input id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} 
+                        <input class="default" id="submit_form" type="submit" value={isLogin ? "Login" : "Sign up"} 
                         disabled={
                             //Keep enabled if it's a login
                             isLogin ? false : 
@@ -226,7 +226,7 @@ function Login(data) {
                                 !(nameIsValid && emailIsValid) : true} />
                         
                     </form>
-                    <input id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>
+                    <input class="default" id="forgot_pass" type="submit" value="Forgot Password?" hidden={!showForgot} onClick={IdentityCrisis}></input>
                     <div id="inform_await" hidden={!awaitingFetch}>
                         <p>Awaiting request from server</p>
                         <div id="progress_bar"><div id="progress_bar_fill"></div></div>
@@ -238,9 +238,9 @@ function Login(data) {
                     <form onSubmit={HandleCorrection}>
                         <label htmlFor="correct_email">Correct Email</label>
                         <br/>
-                        <input id="correct_email" placeholder="Did you mispell your email that badly?" onChange={DelayCheck} type="email" defaultValue={emailValue} ref={correctEmailField} name="email" required></input>
+                        <input class="default" id="correct_email" placeholder="Did you mispell your email that badly?" onChange={DelayCheck} type="email" defaultValue={emailValue} ref={correctEmailField} name="email" required></input>
                         <p id="email_availability" className='warn' hidden={emailIsValid ?? true}>That email is already in use!</p>
-                        <input type="submit" value="Fix email" disabled={awaitingFetch ? true : credsChecked ? !emailIsValid : true}></input>
+                        <input class="default "type="submit" value="Fix email" disabled={awaitingFetch ? true : credsChecked ? !emailIsValid : true}></input>
                         <div id="inform_await" hidden={!awaitingFetch}>
                         <p>Awaiting request from server</p>
                         <div id="progress_bar"><div id="progress_bar_fill"></div></div>

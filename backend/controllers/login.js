@@ -40,9 +40,9 @@ router.post("/new", async (req, res) => {
         let doc_userDupe = await db_user.findOne({ name: body.name }, 'name email verified _id').exec()
         let doc_emailDupe = await db_user.findOne({ email: body.email }, 'verified _id').exec()
         //If they happen to be the same, repeat the request if not verified, whilst using the new body password (as if the request was somehow repeated)
-        console.log("Document null check:", (doc_userDupe && doc_emailDupe))
-        console.log("Id match check:", doc_userDupe?.equals(doc_emailDupe))
-        console.log("Email:", doc_emailDupe, "User:", doc_userDupe)
+        console.log("Document null check:".yellow, (doc_userDupe && doc_emailDupe))
+        console.log("Id match check:".yellow, doc_userDupe?.equals(doc_emailDupe))
+        console.log("Email:".yellow, doc_emailDupe, "User:", doc_userDupe)
         if ((doc_userDupe && doc_emailDupe) && doc_userDupe.equals(doc_emailDupe)) {
             console.log("Register attempt with prexisting user")
             if (doc_userDupe.verified) res.status(409).send(false)

@@ -111,6 +111,7 @@ async function CheckAuthToken(req) {
 async function CheckAuthTokenCatchInvalid (req, res)
 {
     let doc_user = await CheckAuthToken(req)
+    
     if(!doc_user) res.status(401).end()
     return doc_user;
 }
@@ -177,6 +178,11 @@ async function CheckVerifyToken(req, res) {
         console.log("Verification: Token has expired".yellow); res.status(403).send("Verifcation failed"); return }
     //Token IS NOT expired
     console.log("Verification: Succeeded".green)
+    let newpass = req.body.newpass
+    if(typeof(newpass) === 'string')
+    {   //If body requests change password
+        let hash = await bcrypt.hash(newpass, 12)
+        doc_user.pass = hash;}
     await CreateAuthToken(res, doc_user)
     res.status(201).send(doc_user.name)
     doc_user.verified = true

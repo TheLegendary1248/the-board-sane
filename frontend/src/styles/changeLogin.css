@@ -9,6 +9,7 @@
 }
 #R_changelogin input {
     width: calc(100% - 30px);
+    margin: 10px 0px;
 }
 #R_changelogin #tiltedText {
     background-color: #a004;
