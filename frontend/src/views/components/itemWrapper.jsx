@@ -26,7 +26,6 @@ export default function ItemWrapper(data){
         //console.log(event.target)
         beingDragged(false)
         event.stopPropagation()
-        console.log(`Event x and y are equal to ${event.pageX}, ${event.pageY}`)
         event.target.style.left = getX(event) - offsetX + "px"
         event.target.style.top = getY(event) - offsetY + "px"
         

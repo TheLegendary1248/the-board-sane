@@ -41,6 +41,12 @@ export let currentID = null
 
 export let ct_AvoidDrag = createContext()
 
+//This function exists for 'Error Cards', so that they can be immediately removed without causing rerender
+export function SilentRemoveItem(key) {
+    removedItems[key] = itemsList[key]
+    console.log(`Silently Removed Item (${key}):`, itemsList[key])
+    delete itemsList[key]
+}
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
 function Board() {
@@ -88,7 +94,6 @@ function Board() {
     }
     function Panning(event){
         if(draggingChild.current) return;
-        //console.log("hello:", event.currentTarget)
         centerRef.current.style.left = getX(event) - offsetX + "px"
         centerRef.current.style.top = getY(event) - offsetY + "px"
     }
@@ -104,19 +109,23 @@ function Board() {
         if (itemImports[name] === undefined) {
             itemImports[name] = itemTable[name].import()
         }
-        let Item = itemImports[name]
         let key = getKey()
         console.log(`Created ${name} item with key: ${key}`)
-        let item = <WrapItem key={key} propkey={key} Item={Item}></WrapItem>
+        let item = <WrapItem key={key} propkey={key} Item={itemImports[name]}></WrapItem>
         itemsList[key] = item
         RenderItems(Object.values(itemsList))
     }
-    function AddDefault(t) {   //Defaults to adding a note
+    function AddDefault(t) { 
+        if (itemImports["note"] === undefined) {
+            itemImports["note"] = itemTable["note"].import()
+        }
         let key = getKey()
-        RenderItems(renderItems.concat(<WrapItem key={key} Item={itemImports.note} data={t} />))
+        console.log(`Created Note item with key: ${key}`)
+        let item = <WrapItem key={key} propkey={key} Item={itemImports["note"]}></WrapItem>
+        itemsList[key] = item
+        RenderItems(Object.values(itemsList))
     }
     function RemoveItem(key) {
-        let deleted = itemsList[key]
         removedItems[key] = itemsList[key]
         console.log(`Removed Item (${key}):`, itemsList[key])
         delete itemsList[key]
@@ -150,11 +159,11 @@ function Board() {
         </div>
     )
     function WrapItem(data) {
-        console.log(data)
+        console.log("Wrap Item data", data)
         const [posData, setPosData] = useState({x:0,y:0})
         return (
             //Error boundary, Suspend lazy loaded react components, generic item wrapper
-            <ErrorLoadingItem>
+            <ErrorLoadingItem propkey={data.propkey}>
                 <ItemWrapper removeSelf={() => RemoveItem(data.propkey)}>
                     <Suspense>
                         <data.Item data={data.data} removeSelf={() => RemoveItem(data.propkey)}/>

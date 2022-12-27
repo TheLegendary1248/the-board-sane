@@ -3,7 +3,7 @@
 ### A website application intended to be like Ever Note, One Note, Milanote and Trello  
 
 Major Technologies Used  
-Front End: React - Create From Create React App  
+Front End: React - Created From Create React App command  
 Back End: Node JS  
 Database: MongoDB  
 Hosting: Firebase(frontend) / Cloud Run(backend)

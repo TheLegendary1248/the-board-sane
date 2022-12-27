@@ -10,6 +10,7 @@ function About()
             <br></br>
             <p>Insert text about us</p>
             <p>Insert information about the whole project</p>
+            <p>You can view the <a target="_blank" href='https://github.com/TheLegendary1248/the-board-sane'>source code here</a></p>
         </main>
     )
 }
