@@ -104,14 +104,14 @@ function Board() {
         offsetX = getX(event) - centerRef.current.offsetLeft
         offsetY = getY(event) - centerRef.current.offsetTop
     }
-    function AddItem(name) {
+    function AddItem(name, itemData) {
         //TODO Warn client that item is not available
         if (itemImports[name] === undefined) {
             itemImports[name] = itemTable[name].import()
         }
         let key = getKey()
         console.log(`Created ${name} item with key: ${key}`)
-        let item = <WrapItem key={key} propkey={key} Item={itemImports[name]}></WrapItem>
+        let item = <WrapItem key={key} propkey={key} Item={itemImports[name]} itemData={itemData}></WrapItem>
         itemsList[key] = item
         RenderItems(Object.values(itemsList))
     }
@@ -121,7 +121,8 @@ function Board() {
         }
         let key = getKey()
         console.log(`Created Note item with key: ${key}`)
-        let item = <WrapItem key={key} propkey={key} Item={itemImports["note"]}></WrapItem>
+        console.log("text:", t)
+        let item = <WrapItem key={key} propkey={key} Item={itemImports["note"]} itemData={{text: t}}></WrapItem>
         itemsList[key] = item
         RenderItems(Object.values(itemsList))
     }
@@ -149,7 +150,7 @@ function Board() {
             {/*Used to center the board screen*/}
             <div id="center" ref={centerRef}>
                 <textarea id="fullscreen" draggable={drag} /*onWheel={Zoom}*/ onDragOver={Panning} onDragStart={PanStart} onChange={KeyDown}></textarea>
-                <div id="itemContainer" ref={container} tabIndex={0} >
+                <div id="itemContainer" ref={container} tabIndex={0}>
                     <ct_AvoidDrag.Provider value={m => {draggingChild.current = m}}>
                     {renderItems}
                     </ct_AvoidDrag.Provider>
@@ -166,7 +167,7 @@ function Board() {
             <ErrorLoadingItem propkey={data.propkey}>
                 <ItemWrapper removeSelf={() => RemoveItem(data.propkey)}>
                     <Suspense>
-                        <data.Item data={data.data} removeSelf={() => RemoveItem(data.propkey)}/>
+                        <data.Item itemData={data.itemData} removeSelf={() => RemoveItem(data.propkey)}/>
                     </Suspense>
                 </ItemWrapper>
             </ErrorLoadingItem>
