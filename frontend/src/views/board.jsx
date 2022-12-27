@@ -39,7 +39,7 @@ export let itemStates = {}
 //Contains the last visited board ID in this session since these variables are not removed when switching
 export let currentID = null
 
-export let childIsBeingDragged = createContext(false)
+export let ct_AvoidDrag = createContext()
 
 //TODO Figure out how to make this page accessible offline - (WEB WORKERS)
 //TODO Allow this page to be accessed without signing up. Use local storage to save board info for unregistered users
@@ -51,6 +51,7 @@ function Board() {
     const [renderItems, RenderItems] = useState([])
     const dragInterval = useRef(null)
     const centerRef = useRef(null)
+    const draggingChild = useRef(false)
     //REMINDERS
     ////The element in focus
     ////document.activeElement
@@ -86,11 +87,13 @@ function Board() {
         if (event.deltaY) container.current.style.transform = `scale(${zoom += (zoom / -event.deltaY) * 10})`
     }
     function Panning(event){
-        console.log("hello:", event.currentTarget)
+        if(draggingChild.current) return;
+        //console.log("hello:", event.currentTarget)
         centerRef.current.style.left = getX(event) - offsetX + "px"
         centerRef.current.style.top = getY(event) - offsetY + "px"
     }
     function PanStart(event) {
+        if(draggingChild.current) return;
         clientStartX = event.clientX;
         clientStartY = event.clientY;
         offsetX = getX(event) - centerRef.current.offsetLeft
@@ -138,7 +141,9 @@ function Board() {
             <div id="center" ref={centerRef}>
                 <textarea id="fullscreen" draggable={drag} /*onWheel={Zoom}*/ onDragOver={Panning} onDragStart={PanStart} onChange={KeyDown}></textarea>
                 <div id="itemContainer" ref={container} tabIndex={0} >
+                    <ct_AvoidDrag.Provider value={m => {draggingChild.current = m}}>
                     {renderItems}
+                    </ct_AvoidDrag.Provider>
                 </div>
             </div>
             <SuggestionPopup setInput={SetChildInput} addItem={AddItem} addDefault={AddDefault}/>

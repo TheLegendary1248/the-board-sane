@@ -36,6 +36,7 @@ router.post("/new", async (req, res) => {
         //Fake response option
         if(body.useFakeResponse)
             return res.send(body.fakeResponse ? true : false)
+        //TODO Do not let gmail duplicates through '+' option
         //Get any duplicates
         let doc_userDupe = await db_user.findOne({ name: body.name }, 'name email verified _id').exec()
         let doc_emailDupe = await db_user.findOne({ email: body.email }, 'verified _id').exec()

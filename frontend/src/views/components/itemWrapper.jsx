@@ -1,14 +1,17 @@
 import React from 'react'
-import { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect, useContext } from 'react';
 import { detectLeftMouseButton } from 'utils';
+import { ct_AvoidDrag } from 'views/board';
 let offsetX = 0;
 let offsetY = 0;
-const getX = (event) => (event.pageX - window.innerWidth / 2)
-const getY = (event) => (event.pageY - window.innerHeight / 2)
+const getX = (event) => (event.clientX - window.innerWidth / 2)
+const getY = (event) => (event.clientY - window.innerHeight / 2)
+//TODO make sure you rename this appropiately; NAMING CONVENTION
 
 //Wrapper for items
 //TODO Isolate Drag behaviour as it's own component possibly
 export default function ItemWrapper(data){
+    const beingDragged = useContext(ct_AvoidDrag)
     const [isDraggable,setDraggable] = useState(true)
     const [ignoreWrapper, setIgnoreWrapper] = useState(false)
     const delayDelete = useRef(null)
@@ -21,6 +24,7 @@ export default function ItemWrapper(data){
     //TODO Make undraggable when in focus
     function Drop(event){
         //console.log(event.target)
+        beingDragged(false)
         event.stopPropagation()
         console.log(`Event x and y are equal to ${event.pageX}, ${event.pageY}`)
         event.target.style.left = getX(event) - offsetX + "px"
@@ -29,6 +33,7 @@ export default function ItemWrapper(data){
     }
     function Pickup(event) {
         //document.activeElement.blur()
+        beingDragged(true)
         event.stopPropagation()
         offsetX = getX(event) - event.target.offsetLeft
         offsetY = getY(event) - event.target.offsetTop
