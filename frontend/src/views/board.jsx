@@ -144,8 +144,8 @@ function Board() {
             <div id="focusLevel">
                 Focus Level: Note
             </div>
-            <div id="hint">
-                Start typing or drawing
+            <div id="hint" hidden={Object.keys(itemsList).length}>
+                Start typing to bring up menu
             </div>
             {/*Used to center the board screen*/}
             <div id="center" ref={centerRef}>
