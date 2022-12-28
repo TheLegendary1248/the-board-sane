@@ -10,7 +10,6 @@ const isMobile = createContext(null)
 
 export default function Default(data) {
     const [userState, setUserState] = useState(null)
-    let m = useContext(userContext)
     useEffect(() => {
         let name = LocalStore.username
         if(name) setUserState({ name })
@@ -55,7 +54,6 @@ export default function Default(data) {
         <Fragment>
             <userPrefsContext.Provider value={true}>
                 <userContext.Provider value={userState}>
-                    
                     {data.children}
                 </userContext.Provider>
             </userPrefsContext.Provider>

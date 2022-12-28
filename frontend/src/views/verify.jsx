@@ -19,16 +19,18 @@ export default function Verify(data)
         let cancelInterval = setInterval(() => setTimeSince(prevCount => prevCount + 1),1000)
         //Catch any errors related to request, including abortion
         try {
-            let req = await fetch("/api/login/verify", {method: "POST", signal: abort.signal, 
+            let res = await fetch("/api/login/verify", {method: "POST", signal: abort.signal, 
             body: JSON.stringify({userID, token, 
             //serverOptions: {delay: 2500}
             }), headers: {'Content-Type': 'application/json'}})
-            //The response should be text
-            let res = await req.text()
-            //Set values accordingly. The response should be the user's name
-            verify(!!res)
-            setName(res)
-            if(!!res) localStorage.setItem("Username",res)
+            verify(res.ok)
+            if(res.ok)
+            {   //If verification succeeds
+                let resText = await res.text()
+                //Set values accordingly. The response should be the user's name
+                setName(resText)
+                localStorage.setItem("Username",resText)
+            }
         } catch (error) {
             console.warn(error)
         }
