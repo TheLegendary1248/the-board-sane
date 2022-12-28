@@ -16,7 +16,6 @@ router.get('/', async (req, res) => {
         //Virtual Testing. Not working yet
         //let t = (await token.populate('user')).user
         //let b = await t.populate('Board')
-        //console.log(b)
         let boards = await db_board.find({user: doc_user._id}).lean().exec()
         res.send(boards)
     } 

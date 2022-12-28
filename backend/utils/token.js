@@ -73,33 +73,34 @@ async function CheckAuthToken(req) {
     let sessionID = req.cookies.SessionID
     if (!mongoose.isValidObjectId(userID)) 
     {   //Validate userID cookie
-        console.warn(__filename, `: CheckAuthToken: UserID cookie(${userID}) is not valid`.yellow); return null; } 
+        req.logger.warn(__filename, `: CheckAuthToken: UserID cookie(${userID}) is not valid`.yellow); return null; } 
     if (!mongoose.isValidObjectId(sessionID)) 
     {   //Validate session ID
-        console.warn(__filename, `: CheckAuthToken: SessionID cookie(${sessionID}) is not a valid Object ID`.yellow); return null;}
+        req.logger.warn(__filename, `: CheckAuthToken: SessionID cookie(${sessionID}) is not a valid Object ID`.yellow); return null;}
     if (!uuid.validate(sessionVal)) 
     {   //Validate session token
-        console.warn(__filename, `: CheckAuthToken: SessionVal cookie(${sessionVal}) is not valid`.yellow); return null; }
-    console.log(`Checking Auth Token ( UserID: ${userID}, SessionVal: ${sessionVal}), SessionID: ${sessionID})`)
-    let doc_user = await db_user.findById(req.cookies.UserID).lean().exec()
+        req.logger.warn(__filename, `: CheckAuthToken: SessionVal cookie(${sessionVal}) is not valid`.yellow); return null; }
+    req.logger.log(`Checking Auth Token ( UserID: ${userID}, SessionVal: ${sessionVal}), SessionID: ${sessionID})`)
+    let doc_user = await db_user.findById(userID).lean().exec()
     if (doc_user === null) 
     {   //Check user document existence
-        console.warn(__filename, ": CheckAuthToken: User does not exist".yellow); return null; }
+        req.logger.warn(__filename, ": CheckAuthToken: User does not exist".yellow)
+        return null; }
     //Check the given ID of the session token
     let doc_token = await db_authToken.findById(sessionID).lean().exec()
     if (doc_token === null) 
-        //If the token does not exist
-        console.log(__filename, ": CheckAuthToken: Session token does not exist".yellow); 
+    {   //If the token does not exist
+        req.logger.log(__filename, ": CheckAuthToken: Session token does not exist".yellow)}
     else if (!doc_token.user.equals(doc_user._id)) 
-        //If the belonging user of the token does not match
-        console.log(__filename, ": CheckAuthToken: User ID cookie does not match".yellow);
+    {   //If the belonging user of the token does not match
+        req.logger.log(__filename, ": CheckAuthToken: User ID cookie does not match".yellow)}
     else if (await bcrypt.compare(sessionVal, doc_token.token))
     {   //If the token is valid
-        console.log(__filename, ": CheckAuthToken: Token is valid".green);
+        req.logger.log(__filename, ": CheckAuthToken: Token is valid".green);
         return doc_user; }
     else 
-        //I think you get the gist
-        console.log(__filename, ": CheckAuthToken: Session token is not correct".yellow)
+    {   //I think you get the gist
+        req.logger.log(__filename, ": CheckAuthToken: Session token is not correct".yellow)}
     return null;
 }
 /**
