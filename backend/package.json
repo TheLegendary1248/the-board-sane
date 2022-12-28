@@ -18,6 +18,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "start": "nodemon server"
+    "start": "nodemon server",
+    "deploy": "docker build -t board-backend . && docker tag board-backend gcr.io/the-board-ab255/board-backend:%npm_package_version% && docker push gcr.io/the-board-ab255/board-backend:%npm_package_version% && gcloud run deploy board-backend --image=gcr.io/the-board-ab255/board-backend:%npm_package_version% --region=us-central1"
   }
 }

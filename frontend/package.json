@@ -21,7 +21,8 @@
     "build": "react-scripts build",
     "test": "echo \"Error no test specified\" && exit 1",
     "eject": "react-scripts eject",
-    "runbuild": "set NODE_ENV=production&& nodemon back/server"
+    "runbuild": "set NODE_ENV=production&& nodemon back/server",
+    "deploy": "react-scripts build && firebase deploy"
   },
   "eslintConfig": {
     "extends": [

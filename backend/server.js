@@ -16,7 +16,7 @@ mongoose.connect(process.env.MONGO, {
   useNewUrlParser: true, 
   useUnifiedTopology: true
 }, () => {console.log('Connected to mongo')})
-
+console.warn("CHECKING DEPLOY WORKs")
 ////Setup external library middleware
 //Parse request cookies
 app.use(cookieParser())
