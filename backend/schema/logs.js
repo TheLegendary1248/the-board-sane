@@ -3,11 +3,12 @@ const mongoose = require("mongoose")
 
 const log_s = new mongoose.Schema({
     //The logs
-    log: [{type: String, required:true, alias: 'logs'}],
+    log: [{type: String, required:true}],
     //Pointers to which logs are important
-    ptr: [{type:Number, required: true, alias: 'flaggedLogs'}],
+    ptr: [{type:Number, required:true}],
     //Severity of the log
     svr: {type: Number, enum: [0,1,2], required: true, alias: 'severity'},
+    pth: {type:String, required:true, alias: 'path'},
     //Cookies of the request, if it pertains to the errors
     c: {type:Object, alias:'cookies'},
     //Body of the request, if it pertains to the errors

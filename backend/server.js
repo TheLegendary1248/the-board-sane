@@ -31,61 +31,64 @@ app.use(express.urlencoded({ extended: true }))
 app.use((req, res, next) => {
   //TODO Write log object
   const logger = {
-      _id: new mongoose.Types.ObjectId(),
-      logs: [],
-      flaggedLogs: [],
-      shouldBeSaved: false,
+    //The object used with document creation
+    //Attempting to save an object with functions attached results in the object's attached code messing with document creation
+    data: {
+      log: [],
+      ptr: [],
       severity: 0,
       path: req.originalUrl,
-      includeBody: false,
-      includeCookies: false,
-      log(...str) 
-      {
-        if(process.env.NODE_ENV=="development") console.log(`Request Instance(${this._id}):`.brightBlue,...str)
-        this.logs.push(str.join(" ")); },
-      warn(...str) 
-      {
-        if(process.env.NODE_ENV=="development") console.warn(`Request Instance(${this._id}):`.brightBlue, ...str)
-        this.logs.push(str.join(" "));
-        this.shouldBeSaved = true; 
-        this.severity = 1 > this.severity ? 1 : this.severity; 
-        this.flaggedLogs.push(this.logs.length); 
-        },
-      error(...str) 
-      {
-        if(process.env.NODE_ENV=="development") console.error(`Request Instance(${this._id}):`.brightBlue,...str)
-        this.logs.push(str.join(" "));
-        this.shouldBeSaved = true; 
-        this.severity = 2 > this.severity ? 2 : this.severity; 
-        this.flaggedLogs.push(this.logs.length); 
-        },
-      async finalize() 
-      { //Finishes work with logs
-        if(!this.shouldBeSaved)
-        { //If the log shouldn't be saved
-          console.log(`Request log ${this._id} was discarded`); return}
-        switch (flagSeverity) 
-        { //Console log flags
-          case 0:
-            console.log(`Request logged at ${this._id}`.cyan)
-            break;
-          case 1:
-            console.warn(`Request logged at ${this._id} with warning`.yellow)
-            break;
-          case 2:
-            console.warn(`Request logged at ${this._id} with error`.red)
-            break;
-        }
-        //delete this.shouldBeSaved
-        if(this.includeBody) {this.body= req.body}
-        if(this.includeCookies) {this.cookies= req.cookies}
-        //delete this.includeBody
-        try {await db_log.create(this)}
-        catch(error) { console.error(`Error trying to log request ${this._id}`.red,error) }
+      _id: new mongoose.Types.ObjectId(),
+    },
+    shouldBeSaved: false,
+    severity: 0,
+    includeBody: false,
+    includeCookies: false,
+    log(...str) 
+    {
+      if(process.env.NODE_ENV=="development") console.log("LOG".bgWhite.black,`Request Instance(${this.data._id}):`.brightBlue,...str)
+      this.data.log.push(str.join(" ")); },
+    warn(...str) 
+    {
+      if(process.env.NODE_ENV=="development") console.warn("WARN".bgYellow.black,`Request Instance(${this.data._id}):`.brightBlue, ...str)
+      this.data.log.push(str.join(" "));
+      this.shouldBeSaved = true; 
+      this.data.severity = 1 > this.data.severity ? 1 : this.data.severity; 
+      this.data.ptr.push(this.data.log.length); 
+    },
+    error(...str) 
+    {
+      if(process.env.NODE_ENV=="development") console.error("ERROR".bgRed,`Request Instance(${this.data._id}):`.brightBlue,...str)
+      this.data.log.push(str.join(" "));
+      this.shouldBeSaved = true; 
+      this.data.severity = 2 > this.data.severity ? 2 : this.data.severity; 
+      this.data.ptr.push(this.data.log.length); 
+    },
+    async finalize() 
+    { //Finishes work with logs
+      if(!this.shouldBeSaved)
+      { //If the log shouldn't be saved
+        console.log(`Request log ${this.data._id} was discarded`); return}
+      switch (this.data.severity) 
+      { //Console log flags
+        case 0:
+          console.log(`Request logged at ${this.data._id}`.cyan)
+          break;
+        case 1:
+          console.warn(`Request logged at ${this.data._id} with warning`.yellow)
+          break;
+        case 2:
+          console.warn(`Request logged at ${this.data._id} with error`.red)
+          break;
       }
+      console.log("Logging",this.data.log)
+      if(this.includeBody) {this.data.body= req.body}
+      if(this.includeCookies) {this.data.cookies= req.cookies}
+      try {await db_log.create(this.data)}
+      catch(error) { console.error(`Error trying to log request ${this.data._id}`.red,error) }
+    }
   }
   req.logger = logger
-  req.logger.log("Hello world")
   //res.header("Access-Control-Allow-Origin", `http://localhost:${process.env.PORT}`);
   //res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   //Server options

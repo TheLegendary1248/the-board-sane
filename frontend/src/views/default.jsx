@@ -15,11 +15,14 @@ export default function Default(data) {
         if(name) setUserState({ name })
         let abortCtrl = new AbortController()
         CheckCredentials(abortCtrl)
-        return () => abortCtrl.abort()
+        return () =>  
+        { abortCtrl.abort("Page left before request could complete") }
     }, [])
-    //Checks credentials on website load
+    
     async function CheckCredentials(abortCtrl) 
-    {   //Set up headers
+    {   //Checks credentials on website load
+        //FIXME Only check if all three cookies for auth exist
+        //Set up headers
         let options = { signal: abortCtrl.signal, headers: { } }
         Object.assign(options, {'If-Modified-Since': LocalStore.userprofileUpdateTime})
         //Check with server about login

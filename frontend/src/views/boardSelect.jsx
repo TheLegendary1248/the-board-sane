@@ -89,6 +89,9 @@ function BoardSelect(data) {
     useEffect(() => {   //Abort controller for cancelling the request if the page is left early
         let abortCtrl = new AbortController()
         GetBoards(abortCtrl)
+        return () => {
+            abortCtrl.abort("Page left before request could complete")
+        }
     }, [])
     if (boards.length == 0) boards = <h3>You currently have no boards</h3>
     return (

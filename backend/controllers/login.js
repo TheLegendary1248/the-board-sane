@@ -79,10 +79,10 @@ router.post("/new", async (req, res) => {
 router.post("/", async (req, res) => {
     //Check that request can be processed
     let body = req.body
-    console.log(`Login attempt with ( User: ${body.name}, Pass: ${body.pass})`)
+    req.logger.log(`Login attempt with ( User: ${body.name}, Pass: ${body.pass})`)
     //Ensure the request has the correct fields
     if ((typeof body.name !== 'string') || (typeof body.pass !== 'string')) {
-        console.log("Request does not contain the fields required".yellow)
+        req.logger.log("Request does not contain the fields required".yellow)
         res.status(400).send("Request does not contain the fields required")
         return;
     }
@@ -123,7 +123,7 @@ router.post("/verify", async (req, res) => {
     if(body.useFakeResponse) 
         return res.send(body.fakeResponse ? "John Doe" : "")
     if (body.userID === undefined || body.token === undefined) {
-        console.log("/verify : Bad request. Body:", req.body)    
+        req.logger.log("/verify : Bad request. Body:", req.body)    
         res.status(400).end()
     }
     else CheckVerifyToken(req, res)
