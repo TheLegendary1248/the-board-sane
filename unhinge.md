@@ -1,6 +1,13 @@
 # **Unhinged.md**
 ## This will serve as a long log of each and every time I've decide go into a rabbit hole trying to solve the simplest of solutions, because my commit history _obviously_ does not tell the full truth blood, sweat, and tears poured into this 
 
+### FIREBASE + CLOUD RUN = NO COOKIES
+###### 12/29/2022
+AAAAAAAAAAAAAAAAAAAA**AAAAAAAAAAAAAAAAAAAAAAAAAAAA**  
+***YOU CAN'T USE (COOKIES WITH BOTH)[https://firebase.google.com/docs/hosting/manage-cache#using_cookies]***  
+***INVALIDATING MY ENTIRE HOMEBREWED AUTH***  
+***AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA***  
+
 ### Custom Emails
 ##### 11/2/2022 3:30am ~ 6:30am
 I'm actually more proud of this dumb feature than regretting it. Essentially, I wrote code to read an html file on the backend that allows me to insert text where %%VAR%% appears.

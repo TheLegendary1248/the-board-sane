@@ -71,6 +71,7 @@ async function CheckAuthToken(req) {
     let userID = req.cookies.UserID
     let sessionVal = req.cookies.SessionVal
     let sessionID = req.cookies.SessionID
+    req.logger.includeCookies = true; 
     if (!mongoose.isValidObjectId(userID)) 
     {   //Validate userID cookie
         req.logger.warn(__filename, `: CheckAuthToken: UserID cookie(${userID}) is not valid`.yellow); return null; } 
@@ -80,6 +81,7 @@ async function CheckAuthToken(req) {
     if (!uuid.validate(sessionVal)) 
     {   //Validate session token
         req.logger.warn(__filename, `: CheckAuthToken: SessionVal cookie(${sessionVal}) is not valid`.yellow); return null; }
+    req.logger.includeCookies = false; 
     req.logger.log(`Checking Auth Token ( UserID: ${userID}, SessionVal: ${sessionVal}), SessionID: ${sessionID})`)
     let doc_user = await db_user.findById(userID).lean().exec()
     if (doc_user === null) 

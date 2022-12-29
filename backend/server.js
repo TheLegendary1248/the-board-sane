@@ -51,18 +51,18 @@ app.use((req, res, next) => {
     warn(...str) 
     {
       if(process.env.NODE_ENV=="development") console.warn("WARN".bgYellow.black,`Request Instance(${this.data._id}):`.brightBlue, ...str)
+      this.data.ptr.push(this.data.log.length); 
       this.data.log.push(str.join(" "));
       this.shouldBeSaved = true; 
       this.data.severity = 1 > this.data.severity ? 1 : this.data.severity; 
-      this.data.ptr.push(this.data.log.length); 
     },
     error(...str) 
     {
       if(process.env.NODE_ENV=="development") console.error("ERROR".bgRed,`Request Instance(${this.data._id}):`.brightBlue,...str)
+      this.data.ptr.push(this.data.log.length); 
       this.data.log.push(str.join(" "));
       this.shouldBeSaved = true; 
       this.data.severity = 2 > this.data.severity ? 2 : this.data.severity; 
-      this.data.ptr.push(this.data.log.length); 
     },
     async finalize() 
     { //Finishes work with logs
@@ -81,7 +81,6 @@ app.use((req, res, next) => {
           console.warn(`Request logged at ${this.data._id} with error`.red)
           break;
       }
-      console.log("Logging",this.data.log)
       if(this.includeBody) {this.data.body= req.body}
       if(this.includeCookies) {this.data.cookies= req.cookies}
       try {await db_log.create(this.data)}
